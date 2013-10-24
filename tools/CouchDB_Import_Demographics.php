@@ -42,18 +42,50 @@ class CouchDBDemographicsImporter {
             'Description' => 'Whether Recycling Bin Candidate was failure or withdrawal',
             'Type' => "enum('Failure','Withdrawal','Neither')",
         ),
-       'Project' => array(
-            'Description' => 'Project for which the candidate belongs',
-            'Type' => "enum('IBIS1','IBIS2','Fragile X', 'EARLI Collaboration')",
-        ),
-        'Plan' => array(
+	'Status' => array(
+	    'Description' => 'Participant status',
+	    'Type' => "varchar(255)"
+	),
+	'ApoE_112' => array(
+	    'Description' => 'ApoE 112',
+	    'Type' => "varchar(10)"
+	),
+	'ApoE_158' => array(
+	    'Description' => 'ApoE 158',
+	    'Type' => "varchar(10)"
+	),
+	'ApoE_genotype_1' => array(
+	    'Description' => 'ApoE genotype 1',
+	    'Type' => "varchar(10)"
+	),
+	'ApoE_genotype_2' => array(
+	    'Description' => 'ApoE genotype 2',
+	    'Type' => "varchar(10)"
+	),
+	'BchE' => array(
+	    'Description' => 'BchE',
+	    'Type' => "varchar(10)"
+	),
+	'BDNF' => array(
+	    'Description' => 'BDNF',
+	    'Type' => "varchar(10)"
+	),
+	'HMGR_intron_M' => array(
+	    'Description' => 'HMGR intron M',
+	    'Type' => "varchar(10)"
+	)
+      // 'Project' => array(
+       //     'Description' => 'Project for which the candidate belongs',
+        //    'Type' => "enum('IBIS1','IBIS2','Fragile X', 'EARLI Collaboration')",
+       // ),
+  /*      'Plan' => array(
             'Description' => 'Plan for IBIS2 candidate',
             'Type' => "varchar(20)",
         ),
         'EDC' => array(
             'Description' => 'Expected Date of Confinement (Due Date)',
             'Type' => "varchar(255)",
-        )
+        )*/
 
     );
     function __construct() {
@@ -92,13 +124,13 @@ class CouchDBDemographicsImporter {
         );
 
         // Project, Plan, EDC
-        $demographics = $this->SQLDB->pselect("SELECT c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, s.Current_stage, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pc_plan.Value as Plan, c.EDC as EDC FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) WHERE s.Active='Y' AND c.Active='Y' AND c.PSCID <> 'scanner'", array());
+        $demographics = $this->SQLDB->pselect("SELECT c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, s.Current_stage, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) LEFT JOIN participant_status ps ON c.CandID=ps.CandID LEFT JOIN participant_status_options as pso ON ps.participant_status=pso.ID LEFT JOIN genetics as g ON g.CandID=c.CandID WHERE s.Active='Y' AND c.Active='Y' AND c.PSCID <> 'scanner'", array());
         foreach($demographics as $demographics) {
             $id = 'Demographics_Session_' . $demographics['PSCID'] . '_' . $demographics['Visit_label'];
             $demographics['Cohort'] = $this->_getSubproject($demographics['SubprojectID']);
             unset($demographics['SubprojectID']);
-            $demographics['Project'] = $this->_getProject($demographics['ProjectID']);
-            unset($demographics['ProjectID']);
+//            $demographics['Project'] = $this->_getProject($demographics['ProjectID']);
+ //           unset($demographics['ProjectID']);
             $success = $this->CouchDB->replaceDoc($id, array('Meta' => array(
                 'DocType' => 'demographics',
                 'identifier' => array($demographics['PSCID'], $demographics['Visit_label'])
