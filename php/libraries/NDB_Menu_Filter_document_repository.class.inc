@@ -41,7 +41,7 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
         }
         
         $query = " FROM document_repository v"; 
-        $query .= " WHERE (v.hide_video=false OR v.hide_video IS NULL)";
+//        $query .= " WHERE (v.hide_video=false OR v.hide_video IS NULL)";
 
         // set the class variables
         $this->columns = array('v.record_id', 'v.File_name', 'v.version', 'v.File_size', 'v.File_category', 'v.File_type', 'v.Instrument', 'v.uploaded_by', 'v.For_site', 'v.comments', 'v.Data_dir', 'v.Date_uploaded');
