@@ -46,33 +46,109 @@ class CouchDBDemographicsImporter {
 	    'Description' => 'Participant status',
 	    'Type' => "varchar(255)"
 	),
+	'ApoE' => array(
+	    'Description' => 'ApoE',
+	    'Type' => "varchar(255)"
+	),
 	'ApoE_112' => array(
 	    'Description' => 'ApoE 112',
-	    'Type' => "varchar(10)"
+	    'Type' => "int(10)"
 	),
 	'ApoE_158' => array(
 	    'Description' => 'ApoE 158',
-	    'Type' => "varchar(10)"
+	    'Type' => "int(10)"
 	),
-	'ApoE_genotype_1' => array(
-	    'Description' => 'ApoE genotype 1',
-	    'Type' => "varchar(10)"
+	'apoE_allele_no' => array(
+	    'Description' => 'ApoE allele number',
+	    'Type' => "int(10)"
 	),
-	'ApoE_genotype_2' => array(
-	    'Description' => 'ApoE genotype 2',
-	    'Type' => "varchar(10)"
+	'E4_allele_Bin' => array(
+	    'Description' => 'E4 allele binary',
+	    'Type' => "int(1)"
 	),
-	'BchE' => array(
-	    'Description' => 'BchE',
-	    'Type' => "varchar(10)"
+	'Technicien_ApoE' => array(
+	    'Description' => 'Technicien ApoE',
+	    'Type' => "varchar(255)"
+	),
+	'Method_ApoE' => array(
+	    'Description' => 'Method ApoE',
+	    'Type' => "varchar(255)"
+	),
+	'Reference_ApoE' => array(
+	    'Description' => 'Reference ApoE',
+	    'Type' => "date"
+	),
+	'BchE_K_variant' => array(
+	    'Description' => 'BchE K variant',
+	    'Type' => "varchar(255)"
+	),
+	'K_variant_copie_no' => array(
+	    'Description' => 'K variant copie number',
+	    'Type' => "int(10)"
+	),
+	'K_variant_bin' => array(
+	    'Description' => 'K variant binary',
+	    'Type' => "int(1)"
+	),
+	'Technicien_BchE' => array(
+	    'Description' => 'Technicien BchE',
+	    'Type' => "varchar(255)"
+	),
+	'Method_BchE' => array(
+	    'Description' => 'Method BchE',
+	    'Type' => "varchar(255)"
+	),
+	'Reference_BchE' => array(
+	    'Description' => 'Reference BchE',
+	    'Type' => "date"
 	),
 	'BDNF' => array(
 	    'Description' => 'BDNF',
-	    'Type' => "varchar(10)"
+	    'Type' => "varchar(255)"
 	),
-	'HMGR_intron_M' => array(
+	'BDNF_allele_no' => array(
+	    'Description' => 'BDNF allele number',
+	    'Type' => "int(10)"
+	),
+	'BDNF_copie_bin' => array(
+	    'Description' => 'BDNF copie binary',
+	    'Type' => "int(1)"
+	),
+	'Technicien_BDNF' => array(
+	    'Description' => 'Technicien BDNF',
+	    'Type' => "varchar(255)"
+	),
+	'Method_BDNF' => array(
+	    'Description' => 'Method BDNF',
+	    'Type' => "varchar(255)"
+	),
+	'Reference_BDNF' => array(
+	    'Description' => 'Reference BDNF',
+	    'Type' => "date"
+	),
+	'HMGR_Intron_M' => array(
 	    'Description' => 'HMGR intron M',
-	    'Type' => "varchar(10)"
+	    'Type' => "varchar(255)"
+	),
+	'Intron_M_allele_no' => array(
+	    'Description' => 'Intron M allele number',
+	    'Type' => "int(10)"
+	),
+	'Intron_M_copie_Bin' => array(
+	    'Description' => 'Intron M copie Binary',
+	    'Type' => "int(1)"
+	),
+	'Technicien' => array(
+	    'Description' => 'Technicien',
+	    'Type' => "varchar(255)"
+	),
+	'Method' => array(
+	    'Description' => 'Method',
+	    'Type' => "varchar(255)"
+	),
+	'Reference_M' => array(
+	    'Description' => 'Reference M',
+	    'Type' => "date"
 	)
       // 'Project' => array(
        //     'Description' => 'Project for which the candidate belongs',
