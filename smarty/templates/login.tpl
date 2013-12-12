@@ -129,42 +129,52 @@ BrowserDetect.init();
 <form action="{$action}" method="post">
 
 
-<table align="center" bgcolor="#EEF" border="0" cellpadding="2" cellspacing="0" width="100%" style="height:100%" >
-    <tr>&nbsp;</tr>
-	<tr>
-			<th align="center" class="loginheader" colspan="3" style="padding:5px;"  background="images/title_background.jpg">
-			<img src="{$study_logo}" border="0" width="64" height="57" />{$study_title}
-			</br>
-    	    Douglas Hospital Research Centre Prevent-AD Study
-	    </th>
+
+<!--<table align="center" bgcolor="#D3DCE3" "#ededed" border="0" cellpadding="2" cellspacing="0">-->
+<table align="center" border="0" cellpadding="2" cellspacing="0" width="100%" style="height:100%" > 
+<tr>
+<!--td style="padding:0px"><img src="images/neuro_logo_blue.gif" alt="Montreal Neurological Institute" border="0" width="64" height="57" /></td-->
+<th align="center" class="loginheader" colspan="3" style="padding:5px;"  background="images/title_background.jpg">
+<img src="{$study_logo}" border="0" width="64" height="57" />{$study_title}
+</br>
+<!--</th>
+</tr>
+<tr>
+<th align="left" class="banner login" colspan="3" style="padding:2px;" background="images/title_background.jpg">-->
+</th>
+<!--td style="padding:0px;"><img src="images/mni_logo_blue.gif" alt="Montreal Neurological Institute" border="0" width="64" height="57" /></td-->
+
+</tr>
+<td align="center" colspan="2">{$error_message}&nbsp;</td>
+</tr>
+</table>
+<br>
+<table align="center" bgcolor="#D3DCE3" border="0" cellpadding="2" cellspacing="0">
+    <tr>
+        <th align="left" class="banner" colspan="2" >
+            LORIS Login
+        </th>
     </tr>
     <tr>
-    	<td><img src="images/douglas_logo.png" alt="Montreal Neurological Institute" border="0" width="128" height="106" /></td>
-	    <td>
-	        <table border="0" cellpadding="2" cellspacing="2" style="background-color:transparent;">
-        		<tr>
-		            <td align="center" colspan="2">{$error_message}&nbsp;</td>
-    		    </tr>
-        		<tr>
-	        	    <th align="right">User:</th>
-		            <td align="left"><input name="username" size="40" tabindex="1" type="text" value="{$username}" /></td>
-		            <td align="center" rowspan="2" valign="center"><input class="button" name="login" type="submit" value="login" /></td>
-        		</tr>
-	        	<tr>
-		            <th align="right">Password:</th>
-		            <td align="left"><input name="password" size="40" tabindex="2" type="password" /></td>
-        		</tr>
+        <td>
+            <table border="0" cellpadding="2" cellspacing="2" style="background-color:transparent;">
                 <tr>
-	                <td align="center" colspan="2"><a href="lost_password.php">Forgot your password?</a></td>
-	            </tr>
-   	        </table>
-    	</td>
-	<td><img src="images/mni_logo_transparent.gif" alt="Montreal Neurological Institute" border="0" width="128" height="106" /></td>
-    </tr>
-    <tr>
-    	<td align="left" class="tabox" colspan="2">
-    	    Created By: <a href="http://www.bic.mni.mcgill.ca" target="_blank">ACE lab/McConnell Brain Imaging Centre</a>
-	    </td>
+                    <td align="center" colspan="2">{$error_message}&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="center">User:</th>
+                    <td align="left"><input name="username" size="40" tabindex="1" type="text" value="{$username}" /></td>
+                    <td align="center" rowspan="2" valign="center"><input class="button" name="login" type="submit" value="login" /></td>
+                </tr>
+                <tr>
+                    <th align="right">Password:</th>
+                    <td align="left"><input name="password" size="40" tabindex="2" type="password" /></td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2"><a href="lost_password.php">Forgot your password?</a></td>
+                </tr>
+            </table>
+        </td>
     </tr>
 </table>
 <table class="StudyWeblinks" align="center">
