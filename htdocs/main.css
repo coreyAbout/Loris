@@ -115,6 +115,7 @@ th {
 th.banner {
 	background: #696; /*green*/ /*633355; /*333399;/*#08245b;*/
 	color: #fff;
+	font-size: 120%;
     	border-style: solid;
     	border-color: #696; /*633355; /*#08245b;*/
     	border-width: 1px;
@@ -484,10 +485,10 @@ table.data {
     margin-top: 5px;
 }
 .header {
-background:#08245b;
+background:#696; //#08245b;
 }
 .loginheader {
-background: #08245b;
+background: #696; //#08245b;
 color: #fff;
 padding-top: 3px;
 font-size: 130%;
@@ -503,12 +504,12 @@ width:110%;
     font-size: 0.9em;
     color: #aaa;
     text-align: center;
-    background: #08245b;
+    background: #696;
     vertical-align: bottom;
 }
 .LoginBackground {
 background-repeat: no-repeat; 
-background-position: 55% 250px;
+background-position: 50% 250px;
 }
 .MainFooter {
     position:absolute;
@@ -517,7 +518,7 @@ background-position: 55% 250px;
     font-size: 0.9em;
     color: #aaa;
     text-align: center;
-    background: #08245b;
+    background: #696; //#08245b;
     vertical-align: bottom;
 }
 .mriFooter {
@@ -527,7 +528,7 @@ background-position: 55% 250px;
     font-size: 0.9em;
     color: #aaa;
     text-align: center;
-    background: #08245b;
+    background: #696; //#08245b;
     vertical-align: bottom;
 }
 
