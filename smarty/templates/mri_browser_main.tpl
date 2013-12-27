@@ -231,34 +231,7 @@ JSFX_FloatDiv("divBottomLeft",    10, 300).flt();
 <tr>
 <td align="center" colspan="1" style="color:#fff" >Powered by LORIS &copy; 2013. All rights reserved.</td>
 </tr>
-<tr>
-    <td width="10%" class="tabox" valign="top" nowrap="nowrap">
-    
-        <!-- Start Section on the left -->
-        <table border="0" valign="top" cellpadding="1" cellspacing="1" width="100px"><tr>
-        
-        <tr>
-            <td class="controlPanelItem">
-                <a href="{$mantis}" target="mantis"><img src="images/transfer.gif" alt="Mantis" border="0" width="12" height="12">&nbsp;Mantis</a>
-            </td>
-        </tr>
-        </table>
-    </td>
-    
-    
-    <!-- main page table tags -->
-    <td width=100% class="tabox" valign="top">
-    
-    
-    <!-- Start workspace area -->
-    
-    {$body}
-    
-    <!-- end workspace area -->
-    
-    <!-- end Main Table and HTML PAGE -->
-    </td>
-</tr>
+<!--removed old code in light of new gui changes-->
 </table>
 
 </BODY>
