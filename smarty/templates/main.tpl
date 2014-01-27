@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{$css}" type="text/css" />
 <link rel="shortcut icon" href="images/mni_icon.ico" type="image/ico" />
 <title>{$study_title}</title>
-<link rel="stylesheet" type="text/css" href="js/jquery/jquery-1.4.2.min.js" />
+<script src="js/jquery/jquery-1.4.2.min.js" type="text/javascript" />
 
 <link type="text/css" href="css/jquery-ui-1.8.2.custom.css" rel="Stylesheet" />	
 <script src="js/jquery/jquery-1.4.2.min.js" type="text/javascript"></script>
@@ -194,7 +194,7 @@ If this error persists, please report a bug using <a target="mantis" href="{$man
 
 {if $candID != ""}
 <!-- table with candidate profile info -->
-<table cellpadding="2" class="list" style='width:600px; float:left'>
+<table cellpadding="2" class="list" style='width:600px'>
 <!-- column headings -->
 <tr>
 <th nowrap="nowrap">DOB</th>
@@ -255,7 +255,6 @@ If this error persists, please report a bug using <a target="mantis" href="{$man
 </tr>
 </table>
 
-</p>
 {if $sessionID != ""}
 <table cellpadding="2" class="list" style='width:700px'>
 <!-- visit statuses -->

@@ -922,6 +922,7 @@ CREATE TABLE `parameter_type` (
   `SourceCondition` text,
   `CurrentGUITable` varchar(255) default NULL,
   `Queryable` tinyint(1) default '1',
+  `IsFile` tinyint(1) default '0',
   PRIMARY KEY  (`ParameterTypeID`),
   KEY `name` (`Name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='dictionary of all the variables in the project';
@@ -1359,7 +1360,6 @@ CREATE TABLE `test_names` (
   `ID` int(10) unsigned NOT NULL auto_increment,
   `Test_name` varchar(255) default NULL,
   `Full_name` varchar(255) default NULL,
-  `LimitAge` smallint(5) unsigned NOT NULL default '0',
   `Sub_group` int(11) unsigned default NULL,
   PRIMARY KEY  (`ID`),
   UNIQUE KEY `Test_name` (`Test_name`),
