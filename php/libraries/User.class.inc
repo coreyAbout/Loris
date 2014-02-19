@@ -372,6 +372,7 @@ class User extends UserPermissions
         return true;
     }
 
+
     function updateCouchUser($password) {
         $factory = NDB_Factory::singleton();
         $cdb = $factory->CouchDB();
@@ -404,5 +405,20 @@ class User extends UserPermissions
             $auth
         );
     }
+
+
+    /**
+     * Check if user belongs to DCC
+     *
+     *
+     * @return boolean
+     * @access public
+     */
+
+     function isUserDCC() {
+      //DCC site = 1 by LORIS convention
+      return ($this->userInfo['CenterID']== 1);     
+     }
+
 }
 ?>
