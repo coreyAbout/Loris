@@ -1,5 +1,5 @@
 <br>
-<h1 style="float:left">Actions:&nbsp&nbsp</h1> {$controlPanel}
+<h1 style="float:left"><button onclick="window.history.back()">Guess who's back</button>&nbsp;&nbsp;Actions:&nbsp&nbsp</h1> {$controlPanel}
 <br>
 <br>
 
