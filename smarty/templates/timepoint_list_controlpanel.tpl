@@ -1,4 +1,3 @@
-
 {if $isDataEntryPerson}
 <button class="button" onclick="location.href='main.php?test_name=create_timepoint&candID={$candID}&identifier={$candID}'">Create time point</button>
 {else}
