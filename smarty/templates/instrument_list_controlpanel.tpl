@@ -1,6 +1,3 @@
-        <h3 class="controlPanelSection">Navigation</h3>
-	<button onclick="window.history.back()">Guess who's back</button>
-
 	<h3 class="controlPanelSection">Actions</h3>
 	<ul class="controlPanel">
 	    	<li>

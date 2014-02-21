@@ -10,9 +10,6 @@
     </li>
 </ul>
 {/if}
-<h3 class="controlPanelSection">Navigation</h3>
-<button onclick="window.history.back()">Guess who's back</button>
-
 <h3 class="controlPanelSection">Administration</h3>
 <ul class="controlPanel">
 {section name=item loop=$administration}
