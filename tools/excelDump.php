@@ -91,6 +91,23 @@ foreach ($instruments as $instrument) {
 
 } //end foreach instrument
 
+/*
+* Special figs_year3_relatives query
+*/
+//check if figs table exists
+$query = "SHOW TABLES LIKE 'figs_year3_relatives'";
+$DB->select($query,$result);
+if ($result > 0) {
+	$Test_name = "figs_year3_relatives";
+	$query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, fyr.* from candidate c, session s, flag f, figs_year3_relatives fyr where c.PSCID not like 'dcc%' and fyr.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = fyr.CommentID AND c.Active='Y' AND s.Active='Y' order by s.Visit_label, c.PSCID";
+	$DB->select($query, $instrument_table);
+	if(PEAR::isError($instrument_table)) {
+		print "Cannot figs_year3_relatives data ".$instrument_table->getMessage()."<br>\n";
+		die();
+	}
+	MapSubprojectID($instrument_table);
+	writeExcel($Test_name, $instrument_table, $dataDir);
+}
 
 /*
 * Candidate Information query
