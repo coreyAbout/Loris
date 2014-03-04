@@ -17,7 +17,7 @@ require_once "Archive/Tar.php";
 //$dataDir = "dataDump" . date("dMy");
 $dumpName = "dataDump" . date("dMy"); // label for dump
 $dataDir = $config['paths']['base'] . "tools/$dumpName/"; //temporary working directory
-$destinationDir = $config['paths']['base'] . "htdocs/excel_dumps"; //temporary working directory
+$destinationDir = $config['paths']['base'] . "htdocs/dataDumps"; //temporary working directory
 
 /*
 * Prepare output directory, if needed.
@@ -97,7 +97,7 @@ foreach ($instruments as $instrument) {
 //check if figs table exists
 $query = "SHOW TABLES LIKE 'figs_year3_relatives'";
 $DB->select($query,$result);
-if ($result > 0) {
+if (count($result) > 0) {
 	$Test_name = "figs_year3_relatives";
 	$query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, fyr.* from candidate c, session s, flag f, figs_year3_relatives fyr where c.PSCID not like 'dcc%' and fyr.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = fyr.CommentID AND c.Active='Y' AND s.Active='Y' order by s.Visit_label, c.PSCID";
 	$DB->select($query, $instrument_table);
