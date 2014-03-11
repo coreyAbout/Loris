@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../test_includes.php';
-require_once 'NDB_Config.class.inc';
+set_include_path(get_include_path().":" . __DIR__ . "/../../php/libraries/");
+require_once 'simpletest/autorun.php';
 require_once 'CouchDB.class.inc';
 
 Mock::generatePartial('CouchDB', 'MockCouchDBWrap', array('_getRelativeURL', '_postRelativeURL'));
