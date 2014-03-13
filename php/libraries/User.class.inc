@@ -1,4 +1,16 @@
 <?php
+/**
+ * This file contains the Loris user class
+ *
+ * PHP Version 5
+ *
+ * @category Main
+ * @package  Main
+ * @author   Alex Zijdenbos <zijdenbos@example.com>
+ * @license  Loris license
+ * @link     https://www.github.com/aces/Loris-Trunk/
+ */
+
 require_once 'NDB_Factory.class.inc';
 require_once 'UserPermissions.class.inc';
 require_once 'CouchDB.class.inc';
