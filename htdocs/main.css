@@ -662,6 +662,7 @@ h2.statsH2 {
   height: 10px;
   padding-bottom: 5px;
 }
+
 .watermark{
     position:absolute;
     bottom:0;
@@ -736,3 +737,7 @@ vertical-align: bottom;
     text-align: center;
 }
 
+
+tr.directentry {
+    background: #BDDDBD;
+}
