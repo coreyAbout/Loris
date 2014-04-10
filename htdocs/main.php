@@ -135,6 +135,7 @@ $link_args['MRIBrowser'] = $argstring;
 $timer->setMarker('Configured browser arguments for the MRI browser');
 
 //--------------------------------------------------
+
 $paths = $config->getSetting('paths');
 
 if (!empty($TestName)) {
