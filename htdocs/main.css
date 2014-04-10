@@ -282,7 +282,7 @@ box-shadow: 1px 1px 2px 2px rgba(0,0,0,0.4);
 /* fancy table for mri_browser and dicom archive visit list */
 table.fancytable, table.listColorCoded {
   margin: 1em 1em 1em 0;
-  background: #efefef; /*#DDD;*/
+  background: #696; /*#efefef; #DDD;*/
   border-collapse: collapse;
   text-align: center;
 }
@@ -1195,17 +1195,6 @@ table.data {
     margin-left: 5px;
     margin-top: 5px;
 }
-.header {
-background:#064785;
-}
-.loginheader {
-background: #064785;
-color: #fff;
-padding-top: 3px;
-font-size: 130%;
-text-align: center;
-width:110%;
-}
 .LoginFooter {
     position:absolute;
     bottom:0;
@@ -1260,18 +1249,6 @@ list-style-type: none;
 
 #navlist a { padding: 5px; }
 
-#navlist a:link, #navlist a:visited
-{
-color: #064785;
-text-decoration: none;
-}
-
-#navlist a:hover
-{
-color: #064785;
-/*background-color: #369;*/
-text-decoration: none;
-}
 #navbarspacer{
 padding-right:5px;
 }
