@@ -6,9 +6,9 @@
 <link rel="shortcut icon" href="images/mni_icon.ico" type="image/ico" />
 <title>{$study_title}</title>
 
-<link type="text/css" href="css/jquery-ui-1.8.2.custom.css" rel="Stylesheet" />	
-<script src="js/jquery/jquery-1.4.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/jquery/jquery-ui-1.8.2.custom.min.js"></script>
+<link type="text/css" href="css/jquery-ui-1.8.10.custom.css" rel="Stylesheet" />	
+<script src="js/jquery/jquery-1.11.0.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
 <script type="text/javascript" src="js/modules/direct_entry.js"></script>
 
 {if $test_name_js}
@@ -61,27 +61,11 @@
 <h1 align="center">Review Page</h1>
 <p>Please review the data entered below. Unanwered questions are highlighed in red. Please use the back button to go access the previous pages and enter any data that is missing.</p>
 <p>Unanswered questions are highlighted in red.</p>
+{if $review}
 <hr>
-
 <br><br>
-<table class="instrument_review" width="75%" align="center">
-    <thead>
-        <tr>
-            <th>Question</th>
-            <th>Response</th>
-        </tr>
-    </thead>
-    <tbody>
-{foreach item=row from=$questions}
-        <tr {if $row.response==''}class="unanswered"{/if}>
-            <td>{$row.question}</td>
-            <td>{$row.response|default:"-"|replace:"_":" "|capitalize}</td>
-        </tr>
-
-
-{/foreach}
-    </tbody>
-</table>
+{$review}
+{/if}
 <hr>
 <form id="test_form" method="post">
 <br>

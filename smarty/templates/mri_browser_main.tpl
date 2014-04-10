@@ -9,17 +9,16 @@
 <!-- page title -->
 <TITLE>MRI - {$study_title}</TITLE>
 
-<link rel="stylesheet" type="text/css" href="js/jquery/JQeggplant/css/eggplant/jquery-ui-1.8.2.custom.css" />
-<link type="text/css" href="css/jquery-ui-1.8.2.custom.css" rel="Stylesheet" /> 
-<script src="js/jquery/jquery-1.4.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/jquery/jquery-ui-1.8.2.custom.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/loris-jquery/jquery-ui-1.10.4.custom.min.css" />
+<script src="js/jquery/jquery-1.11.0.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="js/mribrowser.js"></script>
 {if $test_name_js}
 <script type="text/javascript" src="{$test_name_js}"></script>
 {/if}
 
 
 <link type="text/css" href="css/jqueryslidemenu.css" rel="Stylesheet" />
-<script type="text/javascript" src="js/jquery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jquery/jqueryslidemenu.js"></script>
 
 <!-- end page header -->
@@ -120,11 +119,15 @@ function FeedbackButtonClicked() {
 </div>
 {if $showFloatJIV}
 <div id="divTopRight">
-<h3>3D Panel Viewing<br><br>
+<h3>JIV Panel</h3>
+<br>
 <input type="button" accesskey="c" class="button" value="3D+Overlay" onClick="javascript:show_jiv(jivNames, jivData, true);"><br>
 <input type="button" accesskey="d" class="button" value="3D Only" onClick="javascript:show_jiv(jivNames, jivData, false);">
-</h3>
-</h3>
+
+<h3>BrainBrowser</h3>
+<br>
+<input type="button" value="3D+Overlay" id="bboverlay" class="button"><br/>
+<input type="button" value="3D Only" id="bbonly" class="button"><br/>
 </div>
 <div id="divBottomRight">
 <h3>Links</h3><br>
@@ -193,6 +196,7 @@ function FeedbackButtonClicked() {
 <tr>
 <div id="footerLinks">
 <td width="100%">
+<hr width= 70%>
 <ul id="navlist" style="margin-top: 5px; margin-bottom: 2px;" >
 <li id="active">|</li>
 {foreach from=$links item=link}
@@ -203,9 +207,12 @@ function FeedbackButtonClicked() {
 </div>
 </tr>
 <tr>
-<td align="center" colspan="1" style="color:#fff" >Powered by LORIS &copy; 2013. All rights reserved.</td>
+<td align="center" colspan="1" style="color:#808080" >Powered by LORIS &copy; 2013. All rights reserved.</td>
 </tr>
 <!--removed old code in light of new gui changes-->
+<tr>
+<td align="center" colspan="1"><a href="http://cbrain.mcgill.ca" style="color: #2a2a2a;" target="_blank">Created by ACElab</a></td>
+</tr>
 </table>
 
 </BODY>
