@@ -2,6 +2,7 @@
 require_once 'NDB_Page.class.inc';
 require_once "PEAR.php";
 require_once "HTML/QuickForm.php";
+require_once 'NDB_BVL_InstrumentStatus_ControlPanel.class.inc';
 include_once ('HTML/QuickForm/Renderer/Default.php');
 
 /**
@@ -362,7 +363,12 @@ class NDB_BVL_Instrument extends NDB_Page
         // return $this->form->toHTML();
         
         $renderer = new HTML_QuickForm_Renderer_Default();
-        $renderer->setFormTemplate("<form{attributes}><table class=\"instrument\">{content}</table></form>");
+        if(isset($this->testName)) {
+            $renderer->setFormTemplate("<form{attributes}><table id=\"instrument_" . $this->testName . "\" class=\"instrument\">{content}</table></form>");
+        } else {
+            $renderer->setFormTemplate("<form{attributes}><table class=\"instrument\">{content}</table></form>");
+        }
+ 
         $renderer->setElementTemplate("<tr><td class=\"lab\"><!-- BEGIN required --><span style=\"color: #ff0000\">*</span><!-- END required -->{label}</td><td class=\"ele\"><!-- BEGIN error --><span style=\"color: #ff0000\">{error}</span><br /><!-- END error -->{element}</td></tr>");
         $renderer->setElementTemplate("<tr><td class=\"lab\"><i>{label}</i></td><td class=\"ele\">\t<i>{element}</i></td></tr>", "static");
         $renderer->setHeaderTemplate("<tr><th colspan=\"2\"><br><b>{header}</b></th></tr>");
@@ -1834,6 +1840,64 @@ class NDB_BVL_Instrument extends NDB_Page
             }
             fclose($fp);
         }
+    }
+
+    function getControlPanel() {
+        if (!empty($_REQUEST['commentID'])) {
+            // make the control panel object for the current instrument
+            $controlPanel = new NDB_BVL_InstrumentStatus_ControlPanel;
+            $success = $controlPanel->select($_REQUEST['commentID']);
+            if (Utility::isErrorX($success)) {
+                $tpl_data['error_message'][] = $success->getMessage();
+            } else {
+                if (empty($subtest)) {
+                    // check if the file/class exists
+                    if (file_exists($paths['base']."project/instruments/NDB_BVL_Instrument_$TestName.class.inc") || file_exists($paths['base']."project/instruments/$TestName.linst")) {
+                        // save possible changes from the control panel...
+                        $success = $controlPanel->save();
+                        if (Utility::isErrorX($success)) {
+                            $tpl_data['error_message'][] = $success->getMessage();
+                        }
+                    }
+                }
+
+                // display the control panel
+                $html = $controlPanel->display();
+                return $html;
+
+            }
+        }
+    }
+
+    function getReview() {
+        $DB = Database::singleton();
+        $smarty = new Smarty_neurodb();
+        $tpl_data = array();
+
+        $tpl_data['questions'] = $DB->pselect(
+            "SELECT Description as question,
+            SourceField FROM parameter_type 
+            WHERE SourceFrom=:TN AND 
+            SourceField NOT IN ('Validity', 'Administration')",
+                array(
+                    'TN' => $this->testName 
+                )
+            );
+
+        $Responses = $DB->pselectRow(
+            "SELECT * FROM " . $this->testName . " WHERE CommentID=:CID",
+            array('CID' => $this->getCommentID())
+        );
+
+        foreach ($tpl_data['questions'] as &$row) {
+            if (isset($Responses[$row['SourceField']])) {
+                $row['response'] = $Responses[$row['SourceField']];
+            }
+        }
+
+        $smarty->assign($tpl_data);
+        $html = $smarty->fetch("directentry_review.tpl");
+        return $html;
     }
 }
 

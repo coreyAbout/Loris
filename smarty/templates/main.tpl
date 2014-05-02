@@ -2,11 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%">
 <head>
 <link rel="stylesheet" href="{$css}" type="text/css" />
+{if $test_name_css}
+<link rel="stylesheet" href="css/instruments/{$test_name_css}" type="text/css" />
+{/if}
 <link rel="shortcut icon" href="images/mni_icon.ico" type="image/ico" />
-<link type="text/css" href="css/jquery-ui-1.8.2.custom.css" rel="Stylesheet" />	
+<script src="js/jquery/jquery-1.11.0.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+<link type="text/css" href="css/loris-jquery/jquery-ui-1.10.4.custom.min.css" rel="Stylesheet" />
 <title>{$study_title}</title>
-<script src="js/jquery/jquery-1.4.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/jquery/jquery-ui-1.8.2.custom.min.js"></script>
 
 {if $test_name_js}
 <script type="text/javascript" src="{$test_name_js}"></script>
@@ -58,7 +61,6 @@ function getCookie(c_name) {
 </script>
 {/literal}
 <link type="text/css" href="css/jqueryslidemenu.css" rel="Stylesheet" />
-<script type="text/javascript" src="js/jquery/jquery-ui-1.8.2.custom.min.js"></script>
 <script type="text/javascript" src="js/jquery/jqueryslidemenu.js"></script>
 
 </head>
@@ -125,32 +127,12 @@ onload="feedback_bvl_popup();"
 <img src="images/title_background.jpg" colspan="2" width="100%" height="2">
 <table border="0" cellpadding="3" cellspacing="2" width="100%" class="mainlayout">
 <tr>
-{if $lastURL != ""}
 <!-- left section -->
-<td class="tabox sidenav" valign="top">
-{if $lastURL != "" && $sessionID != ""}
-<ul class="controlPanel">
-{$control_panel}
-</ul>
+{if $control_panel}
+    <td class="tabox sidenav" valign="top">
+    {$control_panel}
+    </td>
 {/if}
-{/if}
-{if $test_name != "" && $error_message == ""}
-{if $commentID != ""}
-<!-- instrument status flags -->
-{elseif $sessionID != ""}
-<!-- instrument list control panel -->
-{elseif $candID != ""}
-<!-- timepoint list control panel -->
-{/if}
-{/if}
-<!--links
-<h3 class="controlPanelSection">Links</h3>
-<ul class="controlPanel">
-{foreach from=$links item=link}
-<li class="linkButton"><a href="{$link.url}" target="{$link.windowName}">{$link.label}</a></li>
-{/foreach}
-</ul-->
-</td>
 
 
 <!-- main page table tags -->
@@ -188,8 +170,8 @@ onload="feedback_bvl_popup();"
 If this error persists, please report a bug using <a target="mantis" href="{$mantis_url}">Mantis</a>.</p>
 <p><a href="javascript:history.back(-1)">Please click here to go back</a>.</p>
 {elseif $test_name == ""}
-<h1>Welcome to the LORIS Database!</h1>
-<p width=50%>This database provides an on-line mechanism to store both MRI and behavioral data collected from various locations. Within this framework, there are several tools that will make this process as efficient and simple as possible. For more detailed information regarding any aspect of the database, please click on the Help icon at the top right. Otherwise, feel free to contact us at the DCC. We strive to make data collection almost fun.</p>
+<h1 style="align:center">Welcome to the LORIS Database!</h1>
+<div style="width:50%">This database provides an on-line mechanism to store both MRI and behavioral data collected from various locations. Within this framework, there are several tools that will make this process as efficient and simple as possible. For more detailed information regarding any aspect of the database, please click on the Help icon at the top right. Otherwise, feel free to contact us at the DCC. We strive to make data collection almost fun.</div>
 {else}
 
 {if $candID != ""}
@@ -293,6 +275,7 @@ If this error persists, please report a bug using <a target="mantis" href="{$man
 <table class="MainFooter" align="center">
 <tr>
 <div id="footerLinks">
+<hr width = 70%>
 <td width="100%">
 <ul id="navlist" style="margin-top: 5px; margin-bottom: 2px;" >
 <li id="active">|</li>
@@ -304,10 +287,10 @@ If this error persists, please report a bug using <a target="mantis" href="{$man
 </div>
 </tr>
 <tr>
-<td align="center" colspan="1" style="color:#fff" >Powered by LORIS &copy; 2013. All rights reserved.</td>
+<td align="center" colspan="1" style="color:#808080" >Powered by LORIS &copy; 2013. All rights reserved.</td>
 </tr>
 <tr>
-<td align="center" colspan="1"><a href="http://cbrain.mcgill.ca" style="color: #348b8d;" target="_blank">Created by ACElab</a></td>
+<td align="center" colspan="1"><a href="http://cbrain.mcgill.ca" style="color: #064785" target="_blank">Created by ACElab</a></td>
 </tr>
 </table>
 {/if}

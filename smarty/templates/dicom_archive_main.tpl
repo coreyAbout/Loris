@@ -4,7 +4,7 @@
 <HEAD>
 <div id="page">
 <LINK REL=StyleSheet HREF="{$css}" TYPE="text/css">
-<link rel=StyleSheet HREF="css/jquery-ui-1.8.2.custom.css" TYPE="text/css">
+<link rel=StyleSheet HREF="css/loris-jquery/jquery-ui-1.10.4.custom.min.css" TYPE="text/css">
 <link rel=StyleSheet HREF="css/jqueryslidemenu.css" TYPE="text/css">
 <!-- shortcut icon that displays on the browser window -->
 <link rel="shortcut icon" href="images/mni_icon.ico" type="image/ico" />
@@ -12,8 +12,7 @@
 <TITLE>DICOM - {$study_title}</TITLE>
 
 <link type="text/css" href="css/jqueryslidemenu.css" rel="Stylesheet" />
-<script type="text/javascript" src="js/jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/jquery/jquery-ui-1.8.2.custom.min.js"></script>
+<script type="text/javascript" src="js/jquery/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="js/jquery/jqueryslidemenu.js"></script>
 <!-- end page header -->
 </HEAD>
@@ -157,10 +156,10 @@ JSFX_FloatDiv("divTopLeft",10, 200).flt();
 </div>
 </tr>
 <tr>
-<td align="center" colspan="1" style="color:#fff" >Powered by LORIS &copy; 2013. All rights reserved.</td>
+<td align="center" colspan="1" style="color:#808080" >Powered by LORIS &copy; 2013. All rights reserved.</td>
 </tr>
 <tr>
-<td align="center" colspan="1"><a href="http://cbrain.mcgill.ca" style="color: #348b8d;" target="_blank">Created by ACElab</a></td>
+<td align="center" colspan="1"><a href="http://cbrain.mcgill.ca" style="color: #064785;" target="_blank">Created by ACElab</a></td>
 </tr>
 </table>
 </div>

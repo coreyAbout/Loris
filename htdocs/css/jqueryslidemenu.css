@@ -19,8 +19,7 @@ margin: 0;
 padding: 0;
 list-style-type: none;
 z-index:10;
-background: #696; //#08245b;
-
+background: #696;
 }
 
 /*Top level list items*/
@@ -28,7 +27,7 @@ background: #696; //#08245b;
 position: relative;
 display: inline;
 float: left;
-background: #696; //#08245b;
+background: #696;
 z-index:10;
 font-size:10;
 }
@@ -36,7 +35,7 @@ font-size:10;
 /*Top level menu link items style*/
 .jqueryslidemenu ul li a{
 display: block;
-background: #696; //#08245b; /*background of tabs (default state)*/
+background: #696; /*background of tabs (default state)*/
 padding: 8px 10px;
 border-right: 1px solid #778;
 border-bottom: 1px solid #778;
@@ -55,7 +54,7 @@ color: white;
 }
 
 .jqueryslidemenu ul li a:hover{
-background: black; /*tab link background during hover state*/
+background: #999; /*tab link background during hover state*/
 color: white;
 }
     
@@ -90,7 +89,7 @@ border-bottom: 1px solid gray;
 }
 
 .jqueryslidemenuz ul li ul li a:hover{ /*sub menus hover style*/
-background: #eff9ff;
+background: gray; /*#eff9ff;*/
 color: black;
 z-index:-1;
 }
