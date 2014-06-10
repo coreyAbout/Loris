@@ -50,10 +50,38 @@ class CouchDBDemographicsImporter {
 	    'Description' => 'Participant status reason',
 	    'Type' => "text"
 	),
+        'withdrawal_reasons' => array(
+            'Description' => 'Participant status withdrawal reason',
+            'Type' => "enum('1_voluntary_withdrawal','2_recommended_withdrawal','3_lost_follow_up','4_other')"
+        ),
 	'withdrawal_reasons_other_specify' => array(
 	    'Description' => 'Other reason for withdrawal',
 	    'Type' => "text"
 	),
+        'naproxen_eligibility' => array(
+            'Description' => 'Naproxen Eligibility',
+            'Type' => "enum('yes','no')"
+        ),
+        'naproxen_eligibility_status' => array(
+            'Description' => 'Naproxen Eligibility Status',
+            'Type' => "enum('active','stop_medication_active','withdrawn','excluded','death','completed','stop_medication_completed')"
+        ),
+        'naproxen_withdrawal_reasons' => array(
+            'Description' => 'Naproxen Withdrawal Reason',
+            'Type' => "enum('1_voluntary_withdrawal','2_recommended_withdrawal','3_lost_follow_up','4_other')"
+        ),
+        'probucol_eligibility' => array(
+            'Description' => 'Probucol Eligibility',
+            'Type' => "enum('yes','no')"
+        ),
+        'probucol_eligibility_status' => array(
+            'Description' => 'Probucol Eligibility Status',
+            'Type' => "enum('active','stop_medication_active','withdrawn','excluded','death','completed','stop_medication_completed')"
+        ),
+        'probucol_withdrawal_reasons' => array(
+            'Description' => 'Probucol Withdrawal Reason',
+            'Type' => "enum('1_voluntary_withdrawal','2_recommended_withdrawal','3_lost_follow_up','4_other')"
+        ),
 	'ApoE' => array(
 	    'Description' => 'ApoE',
 	    'Type' => "varchar(255)"
@@ -212,7 +240,7 @@ class CouchDBDemographicsImporter {
         );
 
         // Project, Plan, EDC
-        $demographics = $this->SQLDB->pselect("SELECT ps.reason_specify, ps.withdrawal_reasons_other_specify, scan_done, ApoE, ApoE_112, ApoE_158, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Intron_M_copie_Bin, Technicien, Method, Reference_M, c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, s.Current_stage, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) LEFT JOIN participant_status ps ON c.CandID=ps.CandID LEFT JOIN participant_status_options as pso ON ps.participant_status=pso.ID LEFT JOIN genetics as g ON g.Subject_ID=c.PSCID WHERE s.Active='Y' AND c.Active='Y' AND c.PSCID <> 'scanner'", array());
+        $demographics = $this->SQLDB->pselect("SELECT withdrawal_reasons, naproxen_eligibility, naproxen_eligibility_status, naproxen_withdrawal_reasons, probucol_eligibility, probucol_eligibility_status, probucol_withdrawal_reasons, pso.description,ps.reason_specify, ps.withdrawal_reasons_other_specify, scan_done, ApoE, ApoE_112, ApoE_158, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Intron_M_copie_Bin, Technicien, Method, Reference_M, c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, s.Current_stage, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) LEFT JOIN participant_status ps ON c.CandID=ps.CandID LEFT JOIN participant_status_options as pso ON ps.participant_status=pso.ID LEFT JOIN genetics as g ON g.Subject_ID=c.PSCID WHERE s.Active='Y' AND c.Active='Y' AND c.PSCID <> 'scanner'", array());
         foreach($demographics as $demographics) {
             $id = 'Demographics_Session_' . $demographics['PSCID'] . '_' . $demographics['Visit_label'];
             $demographics['Cohort'] = $this->_getSubproject($demographics['SubprojectID']);
