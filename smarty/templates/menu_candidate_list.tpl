@@ -96,6 +96,7 @@ $(function(){
     {/if}
 </table>
 </form>
+<!--
 <form name="accessProfileForm" method="get" action="main.php" onSubmit="return checkAccessProfileForm();">
 <input type="hidden" name="test_name" value="timepoint_list">
 <table style="width:50; float:right; margin-top:15px" border="0" cellpadding="2" cellspacing="2">
@@ -116,7 +117,7 @@ $(function(){
 </td>
 </tr>
 </table>
-</table>
+-->
 <table>
 <!--  title table with pagination -->
 <table border="0" valign="bottom" width="100%">
