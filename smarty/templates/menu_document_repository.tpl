@@ -51,9 +51,9 @@
     {if $val != "Any"}
 	<tr>
 	{if $val != "Minutes"}
-        <td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background-color: #e0dde2; padding: 3px;"><span></span>{$val}s</h3>
+        <td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background: #696; border: #696; padding: 3px;"><span></span>{$val}s</h3>
 	{else}
-        <td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background-color: #e0dde2; padding: 3px;"><span></span>{$val}</h3>
+        <td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background: #696; border: #696; padding: 3px;"><span></span>{$val}</h3>
 	{/if}
 </tr>
 
