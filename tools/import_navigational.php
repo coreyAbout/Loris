@@ -1,7 +1,11 @@
-<?php 
+<?php
 require_once "generic_includes.php";
 require_once "PEAR.php";
 
+/*
+Import script for the SMART study (Navigational task)
+The data that comes in is a nightmare
+*/
 
 //exec("perl cleanup.pl EARLI-DATA-AOSI-1328311043.csv >/tmp/cleanup_xyz");
 $fixedLines = file("/tmp/SMART_data_final_version.csv");
