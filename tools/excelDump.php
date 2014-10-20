@@ -141,6 +141,8 @@ if (PEAR::isError($dictionary)) {
 }
 writeExcel($Test_name, $dictionary, $dataDir);
 
+// disabling .tgz compression format
+/*
 // Clean up
 // tar and gzip the product
 $tarFile = $dumpName . ".tgz"; // produced dump file name and extension
@@ -156,8 +158,26 @@ delTree($dataDir);
 
 // Announce completion
 echo "$tarFile ready in $destinationDir\n";
+*/
 
+// enabling .zip compression format
+$zipFile = $dumpName . ".zip";
+$zip = new ZipArchive();
 
+if ($zip->open($zipFile, ZipArchive::CREATE)!==TRUE) {
+    exit("cannot open <$zipFile>\n");
+}
+
+$zip->addGlob("./$dumpName/*")
+or die ("Could not add files!");
+
+$zip->close();
+
+rename("./$zipFile", "$destinationDir/$zipFile"); //change, if not a subdirectory
+
+delTree($dataDir);
+
+echo "$zipFile ready in $destinationDir\n";
 
 
 /**
