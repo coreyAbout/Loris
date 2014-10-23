@@ -47,6 +47,7 @@ foreach ($candidates as $key=>$value) {
     //numerize with decimals
     $mri_weight = (float)$mri_weight * 1.0;
     $mri_height = (float)$mri_height * 1.0;
+    //if height is in meters...
     if ($mri_height < 3.0)
      $mri_height = $mri_height * 100.0;
    }
@@ -65,7 +66,7 @@ if (count($gen_phys_commentid) > 1) die();
     $old_weight_units = $DB->pselectOne("select 4_weight_units from general_physical where commentid='{$value3['commentid']}'",array());
     $old_height = $DB->pselectOne("select 5_height from general_physical where commentid='{$value3['commentid']}'",array());
     $old_height_units = $DB->pselectOne("select 5_height_units from general_physical where commentid='{$value3['commentid']}'",array());
-    if ($old_weight_units!=null && $old_weight_units === 'lb') {
+    if ($old_weight_units!=null && $old_weight!='not answered' && $old_weight_units === 'lb') {
       $new_weight = round($old_weight * 0.45359237,1);
       $new_weight_units = "kg";
       $weight_difference = 0;
@@ -93,7 +94,7 @@ if ($no_mri) {
       echo $value3['commentid'] . " " . $old_weight . $old_weight_units . " converted to " . $new_weight . $new_weight_units . " | MRI: " . $mri_weight . " | Accuracy: " . $weight_difference . "%" . " | Elapsed time between: " . $diff->format("%R%a days");echo "\n";
 }
     }
-    if ($old_height_units!=null && $old_height_units === 'in') {
+    if ($old_height_units!=null && $old_height!='not answered' && $old_height_units === 'in') {
       $new_height = round($old_height / 0.39370,1);
       $new_height_units = "cm";
       $height_difference = 0;
@@ -103,9 +104,9 @@ if ($no_mri) {
 if ($no_mri) {
       echo $value3['commentid'] . " " . $old_height . $old_height_units . " converted to " . $new_height . $new_height_units . " | No MRI";echo "\n";
 } elseif ($height_difference > 200.00) {
-      echo "*** >200 ***" . $value3['commentid'] . " " . $old_height . $old_height_units . " converted to " . $new_height . $new_height_units . " | MRI: " . $mri_height . " | Accuracy: " . $height_difference , "%" . " | Elapsed time between: " . $diff->format("%R%a days");echo "\n";
+      echo "*** >200 *** " . $value3['commentid'] . " " . $old_height . $old_height_units . " converted to " . $new_height . $new_height_units . " | MRI: " . $mri_height . " | Accuracy: " . $height_difference , "%" . " | Elapsed time between: " . $diff->format("%R%a days");echo "\n";
 } elseif ($height_difference > 102.00 || $height_difference < 98.00) {
-      echo "*** >102 || <98 ***" . $value3['commentid'] . " " . $old_height . $old_height_units . " converted to " . $new_height . $new_height_units . " | MRI: " . $mri_height . " | Accuracy: " . $height_difference , "%" . " | Elapsed time between: " . $diff->format("%R%a days");echo "\n";
+      echo "*** >102 || <98 *** " . $value3['commentid'] . " " . $old_height . $old_height_units . " converted to " . $new_height . $new_height_units . " | MRI: " . $mri_height . " | Accuracy: " . $height_difference , "%" . " | Elapsed time between: " . $diff->format("%R%a days");echo "\n";
 } else {
       echo $value3['commentid'] . " " . $old_height . $old_height_units . " converted to " . $new_height . $new_height_units . " | MRI: " . $mri_height . " | Accuracy: " . $height_difference , "%" . " | Elapsed time between: " . $diff->format("%R%a days");echo "\n";
 }
@@ -122,6 +123,7 @@ if ($no_mri) {
 */
     }
    }
+   echo "\n";
   }
  }
 
