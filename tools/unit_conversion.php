@@ -76,12 +76,12 @@ if (count($gen_phys_commentid) > 1) die();
       }
 /*      $success = $DB->update("general_physical", array('4_weight'=>$new_weight), array('commentid'=>$value3['commentid']));
       if(PEAR::isError($success)) {
-          fwrite(STDERR,"Error, to update $value3['commentid']\n".$success->getMessage()."\n");
+          fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
           return false;
       }
       $success = $DB->update("general_physical", array('4_weight_units'=>$new_weight_units), array('commentid'=>$value3['commentid']));
       if(PEAR::isError($success)) {
-          fwrite(STDERR,"Error, to update $value3['commentid']\n".$success->getMessage()."\n");
+          fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
           return false;
       }
 */
@@ -113,12 +113,12 @@ if ($no_mri) {
 }
 /*      $success = $DB->update("general_physical", array('5_height'=>$new_height), array('commentid'=>$value3['commentid']));
       if(PEAR::isError($success)) {
-          fwrite(STDERR,"Error, to update $value3['commentid']\n".$success->getMessage()."\n");
+          fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
           return false;
       }
       $success = $DB->update("general_physical", array('5_height_units'=>$new_height_units), array('commentid'=>$value3['commentid']));
       if(PEAR::isError($success)) {
-          fwrite(STDERR,"Error, to update $value3['commentid']\n".$success->getMessage()."\n");
+          fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
           return false;
       }
 */
