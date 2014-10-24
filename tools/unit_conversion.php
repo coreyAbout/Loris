@@ -21,7 +21,7 @@ Can be better rewritten in the year 2020
 
 $config = NDB_Config::singleton();
 
-$candidates= $DB->pselect("SELECT CandID FROM candidate where candid!=702711 and candid!=424640 and candid!=576695 and candid!=175961 and candid!=998877", array());
+$candidates= $DB->pselect("SELECT CandID FROM candidate where candid!=702711 and candid!=424640 and candid!=576695 and candid!=175961 and candid!=998877 order by PSCID", array());
 
 foreach ($candidates as $key=>$value) {
  echo "\n";
