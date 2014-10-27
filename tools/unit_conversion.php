@@ -84,15 +84,20 @@ if (count($gen_phys_commentid) > 1) die();
           fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
           return false;
       }
-      //update DDE
-*/
+//update DDE(all corresponding DDE were Complete at this point in time so updating all corresponding entries)
       $DDECommentID = "DDE_" . $value3['commentid'];
       $DDEStatus = $DB->pselectOne("select Data_entry from flag where commentid='{$DDECommentID}'",array());
-       if ($DDEStatus == "Complete")
-        print ('xyz');
-       else
-        print ("!" . " $DDECommentID " . $DDEStatus . "\n");
-
+      $success = $DB->update("general_physical", array('4_weight'=>$new_weight), array('commentid'=>$DDECommentID));
+      if(PEAR::isError($success)) {
+          fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
+          return false;
+      }
+      $success = $DB->update("general_physical", array('4_weight_units'=>$new_weight_units), array('commentid'=>$DDECommentID));
+      if(PEAR::isError($success)) {
+          fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
+          return false;
+      }
+*/
 if ($no_mri) {
       echo $value3['commentid'] . " " . $old_weight . $old_weight_units . " converted to " . $new_weight . $new_weight_units . " | No MRI";echo "\n";
 } elseif ($weight_difference > 200.00) {
@@ -125,6 +130,16 @@ if ($no_mri) {
           return false;
       }
       $success = $DB->update("general_physical", array('5_height_units'=>$new_height_units), array('commentid'=>$value3['commentid']));
+      if(PEAR::isError($success)) {
+          fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
+          return false;
+      }
+      $success = $DB->update("general_physical", array('5_height'=>$new_height), array('commentid'=>$DDECommentID));
+      if(PEAR::isError($success)) {
+          fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
+          return false;
+      }
+      $success = $DB->update("general_physical", array('5_height_units'=>$new_height_units), array('commentid'=>$DDECommentID));
       if(PEAR::isError($success)) {
           fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
           return false;
