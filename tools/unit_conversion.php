@@ -86,7 +86,6 @@ if (count($gen_phys_commentid) > 1) die();
       }
 //update DDE(all corresponding DDE were Complete at this point in time so updating all corresponding entries)
       $DDECommentID = "DDE_" . $value3['commentid'];
-      $DDEStatus = $DB->pselectOne("select Data_entry from flag where commentid='{$DDECommentID}'",array());
       $success = $DB->update("general_physical", array('4_weight'=>$new_weight), array('commentid'=>$DDECommentID));
       if(PEAR::isError($success)) {
           fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
@@ -134,6 +133,7 @@ if ($no_mri) {
           fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
           return false;
       }
+      $DDECommentID = "DDE_" . $value3['commentid'];
       $success = $DB->update("general_physical", array('5_height'=>$new_height), array('commentid'=>$DDECommentID));
       if(PEAR::isError($success)) {
           fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
