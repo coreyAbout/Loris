@@ -84,7 +84,15 @@ if (count($gen_phys_commentid) > 1) die();
           fwrite(STDERR,"Error, to update {$value3['commentid']}\n".$success->getMessage()."\n");
           return false;
       }
+      //update DDE
 */
+      $DDECommentID = "DDE_" . $value3['commentid'];
+      $DDEStatus = $DB->pselectOne("select Data_entry from flag where commentid='{$DDECommentID}'",array());
+       if ($DDEStatus == "Complete")
+        print ('xyz');
+       else
+        print ("!" . " $DDECommentID " . $DDEStatus . "\n");
+
 if ($no_mri) {
       echo $value3['commentid'] . " " . $old_weight . $old_weight_units . " converted to " . $new_weight . $new_weight_units . " | No MRI";echo "\n";
 } elseif ($weight_difference > 200.00) {
