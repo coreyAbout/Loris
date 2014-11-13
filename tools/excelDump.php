@@ -141,6 +141,18 @@ if (PEAR::isError($dictionary)) {
 }
 writeExcel($Test_name, $dictionary, $dataDir);
 
+/*
+* Participant Status History
+*/
+$Test_name = "ParticipantStatusHistory";
+$query = "select candidate.PSCID, candidate.CandID, psh.* from participant_status_history as psh join candidate on (candidate.CandID=psh.CandID) join participant_status_options as pso on (psh.participant_status=pso.ID) where PSCID not like 'MTL0000' and PSCID not like 'MTL999%' order by candidate.PSCID asc";
+$DB->select($query, $participantstatus);
+if (PEAR::isError($participantstatus)) {
+        PEAR::raiseError("Could not generate participant status history. " . $participantstatus->getMessage());
+}
+writeExcel($Test_name, $participantstatus, $dataDir);
+
+
 // disabling .tgz compression format
 /*
 // Clean up
