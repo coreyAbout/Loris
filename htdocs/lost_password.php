@@ -1,5 +1,6 @@
 <?php
 set_include_path(get_include_path().":../project/libraries:../php/libraries:");
+ini_set('default_charset', 'utf-8');
 
 /**
  * lost password form
@@ -19,6 +20,8 @@ $tpl_data = array();
 // create an instance of the config object
 $config =& NDB_Config::singleton();
 $tpl_data['css']=$config->getSetting('css');
+$tpl_data['study_title'] = $config->getSetting('title');
+$tpl_data['study_logo']  = "../".$config->getSetting('studylogo');
 
 if (isset($_POST['username'])) {
 

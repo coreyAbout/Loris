@@ -1052,30 +1052,6 @@ table.fancytable caption, table.listColorCoded caption {
   margin-right: inherit;
 }
 
-/* fancy table with ALIGN LEFT  */
-table.fancytableleft {
-  margin: 1em 1em 1em 0;
-  background: #FF;
-  border-collapse: collapse;
-  text-align: left;
-}
-table.fancytableleft tr:hover {
-   background: snow !important;
-}
-table.fancytableleft th, table.fancytableleft td {
-  border: 1px silver solid;
-  padding: 0.3em;
-}
-table.fancytableleft th {
-  background: #999999;
-  text-align: left;
-}
-table.fancytableleft caption {
-  margin-left: inherit;
-  margin-right: inherit;
-}
-
-
 /* form elements */
 
 .button
@@ -1335,12 +1311,6 @@ h2.statsH2 {
 .fieldsSelect{
    cursor: pointer;
 }
-.toggle_mri_tbl{
-  cursor: pointer;
-  width: 140px;
-  height: 10px;
-  padding-bottom: 5px;
-}
 
 .watermark{
     position:absolute;
@@ -1419,4 +1389,47 @@ vertical-align: bottom;
 
 tr.directentry {
     background: #BDDDBD;
+}
+.help-content {
+    max-height: 96%;
+    width: 600px;
+    height: auto;
+    position: fixed;
+    top: 50px;
+    right: 0px;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: all 0.6s ease 0s;
+}
+
+.help-content pre {
+    background: #064785;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #FFFFFF;
+    white-space: pre-wrap;
+    word-break: normal;
+}
+#helpclose {
+   position: absolute;
+   right:    0;
+   top:   20px;
+   margin-right : 5px;
+}
+#helpedit {
+   position: absolute;
+   right:    0;
+   top:   20px;
+   margin-right : 75px;
+}
+
+.help-content h3 {
+    color: #FFFFFF;
+}
+
+.help-content a {
+   position: absolute;
+   right:    0;
+   bottom: 20px;
+   color: #FFFFFF;
 }
