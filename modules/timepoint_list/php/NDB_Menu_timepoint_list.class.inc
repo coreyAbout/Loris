@@ -55,6 +55,7 @@ class NDB_Menu_timepoint_list extends NDB_Menu
         }
         
         $numberOfVisits = 0;
+        $this->tpl_data['lastURL'] = $_SESSION['State']->getLastURL();
         $this->tpl_data['candID'] = $_REQUEST['candID'];
         $this->tpl_data['PSCID'] = $candidate->getPSCID();
         $listOfTimePoints = $candidate->getListOfTimePoints();
