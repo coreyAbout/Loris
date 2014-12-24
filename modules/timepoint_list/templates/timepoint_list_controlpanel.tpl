@@ -9,3 +9,8 @@ Create time point
 {else}
 Edit Candidate Info
 {/if}
+{if $isDataEntryPerson}
+<button class="btn btn-primary" onclick="location.href='main.php?test_name=participant_status&candID={$candID}&identifier={$candID}'">Participant Status</button>
+{else}
+Edit Candidate Info
+{/if}
