@@ -58,7 +58,6 @@ class NDB_Menu_Filter_instrument_list extends NDB_Menu_Filter
     function setup()
     {
         // set template data
-        $this->tpl_data['lastURL'] = $_SESSION['State']->getLastURL();
         $this->tpl_data['candID'] = $_REQUEST['candID'];
         $this->tpl_data['sessionID'] = $_REQUEST['sessionID'];
 

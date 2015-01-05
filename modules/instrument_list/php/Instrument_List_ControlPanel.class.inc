@@ -23,6 +23,7 @@ Class Instrument_List_ControlPanel extends TimePoint
      */
     function display()
     {
+        $this->tpl_data['lastURL'] = $_SESSION['State']->getLastURL();
         $this->tpl_data['candID'] = $this->getData('CandID');
         $this->tpl_data['sessionID'] = $this->getData('SessionID');
 
