@@ -1,3 +1,11 @@
+        <h3 class="controlPanelSection">Navigation</h3>
+        <ul class="controlPanel">
+                <li>
+                        <button onclick="location.href='{$lastURL}'">Back</button>
+                </li>
+        </ul>
+
+
 	<h3 class="controlPanelSection">Actions</h3>
 	<ul class="controlPanel">
 	    	<li>
