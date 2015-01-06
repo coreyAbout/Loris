@@ -58,7 +58,6 @@ $DB =& Database::singleton();
 $query="SELECT ID, subprojectID from session";
 if (!empty($argv[1]) && $argv[1]!="confirm") {
     $query.=" WHERE visit_label='$argv[1]'";
-   $visit_label = $argv[1];
 } else {
     $visit_labels = $DB->pselect(
         "SELECT DISTINCT Visit_label FROM session
