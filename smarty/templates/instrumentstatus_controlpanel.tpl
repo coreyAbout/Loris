@@ -13,7 +13,7 @@
 <h3 class="controlPanelSection">Navigation</h3>
 <ul class="controlPanel">
     <li>
-        <button onclick="location.href='{$lastURL}'">Back</button>
+        <button onclick="location.href='main.php?test_name=instrument_list&candID={$candID}&sessionID={$sessionID}'">Back</button>
     </li>
 </ul>
 

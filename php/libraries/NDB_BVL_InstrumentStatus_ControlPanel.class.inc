@@ -38,9 +38,6 @@ class NDB_BVL_InstrumentStatus_ControlPanel extends NDB_BVL_InstrumentStatus
             return PEAR::raiseError("No instrument instance selected");
         }
 
-        $this->tpl_data['lastURL']   = $_SESSION['State']->getLastURL();
-echo "\n\n". "getlasturl: " . $_SESSION['State']->getLastURL() ." end";
-
         $this->tpl_data['candID']    = isset($_REQUEST['candID'])
             ? $_REQUEST['candID']
             : '';
