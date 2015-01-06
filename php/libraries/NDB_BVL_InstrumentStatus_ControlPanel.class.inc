@@ -39,7 +39,8 @@ class NDB_BVL_InstrumentStatus_ControlPanel extends NDB_BVL_InstrumentStatus
         }
 
         $this->tpl_data['lastURL']   = $_SESSION['State']->getLastURL();
-echo "yy" . $_SESSION['State']->getLastURL() ."xx";
+echo "\n\n". "getlasturl: " . $_SESSION['State']->getLastURL() ." end";
+
         $this->tpl_data['candID']    = isset($_REQUEST['candID'])
             ? $_REQUEST['candID']
             : '';

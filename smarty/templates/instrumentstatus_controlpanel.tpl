@@ -10,6 +10,13 @@
     </li>
 </ul>
 {/if}
+<h3 class="controlPanelSection">Navigation</h3>
+<ul class="controlPanel">
+    <li>
+        <button onclick="location.href='{$lastURL}'">Back</button>
+    </li>
+</ul>
+
 <h3 class="controlPanelSection">Administration</h3>
 <ul class="controlPanel">
 {section name=item loop=$administration}
