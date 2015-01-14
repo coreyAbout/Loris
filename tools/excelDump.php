@@ -182,7 +182,7 @@ if ($zip->open($zipFile, ZipArchive::CREATE)!==TRUE) {
     exit("cannot open <$zipFile>\n");
 }
 
-$zip->addGlob("./$dumpName/*")
+$zip->addGlob("$dumpName/*")
 or die ("Could not add files!");
 
 $zip->close();
