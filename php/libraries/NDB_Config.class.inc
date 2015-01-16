@@ -79,7 +79,14 @@ class NDB_Config
     function load($configFile = "../project/config.xml")
     {
         // load the configuration data into a global variable $config
-        $newroot         = simplexml_load_file($configFile);
+        $newroot = simplexml_load_file($configFile);
+
+        if ($newroot === false || $newroot === null) {
+            throw new Exception(
+                "Could not load Loris config file $configFile"
+            );
+        }
+
         $this->_settings = NDB_Config::convertToArray($newroot);
     }
 
@@ -347,16 +354,16 @@ class NDB_Config
     function getSetting($name)
     {
         try {
-            $DBValue = $this->getSettingFromDB($name);
+            $XMLValue = $this->getSettingFromXML($name);
 
-            if ($DBValue !== null) {
-                return $DBValue;
+            if ($XMLValue !== null) {
+                return $XMLValue;
             }
         } catch(Exception $e) {
         }
 
-        // nothing in the database, so get the value from config.xml
-        return $this->getSettingFromXML($name);
+        // nothing in the config file, so get the value from the DB
+        return $this->getSettingFromDB($name);
     }
 
     /**

@@ -58,6 +58,7 @@ class NDB_Form_user_accounts extends NDB_Form
 
     function _process($values)
     {
+        $config = NDB_Config::singleton();
     	// build the "real name"
     	$values['Real_name'] = $values['First_name'] . ' ' . $values['Last_name'];
     	
@@ -114,7 +115,6 @@ class NDB_Form_user_accounts extends NDB_Form
             $config =& NDB_Config::singleton();
             $couch_config = $config->getSetting("CouchDB");
             if ($couch_config['SyncAccounts'] === "true") {
-                $user =& User::factory($set['UserID']);
                 $user->updateCouchUser($set['Password_md5']);
             }
 
@@ -181,7 +181,6 @@ class NDB_Form_user_accounts extends NDB_Form
         }
 
         // get config options relating to proftpd
-        $config =& NDB_Config::singleton();
         $ftpSettings = $config->getSetting("proftpd");
         
         // if proftpd stuff is enabled:
