@@ -2016,9 +2016,10 @@ class NDB_BVL_Instrument extends NDB_Page
             $field . "_group",
             array(array(array("Value must be numeric.", 'numeric')))
         );
+        $rules_array = array_merge(array($field.'_status{@}=={@}'),$options);
         $this->XINRegisterRule(
             $field,
-            array($field . '_status{@}=={@}'),
+            $rules_array,
             'This field is required',
             $field . '_group'
         );
