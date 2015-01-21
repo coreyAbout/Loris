@@ -1998,7 +1998,7 @@ class NDB_BVL_Instrument extends NDB_Page
      *
      * @return none
      */
-    function addNumericElement($field, $label, $options = null)
+    function addNumericElement($field, $label, $options = array())
     {
         $group[] = $this->createText($field, $label);
         $group[] = $this->createSelect(
