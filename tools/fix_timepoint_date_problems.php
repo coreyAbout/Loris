@@ -41,6 +41,8 @@
  * @package behavioural
  */
 
+require_once __DIR__ . "/../vendor/autoload.php";
+
 set_include_path(get_include_path().":../project/libraries:../php/libraries:");
 
 // path to config file
