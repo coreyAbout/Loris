@@ -1,5 +1,5 @@
 <div class="col-xs-12 row">
-<button onclick="location.href='{$lastURL}'">Back</button>&nbsp;&nbsp;
+<button class="btn btn-info" onclick="location.href='{$lastURL}'">Back</button>&nbsp;&nbsp;
     <!-- <div class="col-xs-1"> -->
         <h3>Actions:&nbsp&nbsp</h3> 
     <!-- </div> -->

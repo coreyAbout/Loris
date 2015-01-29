@@ -1,7 +1,7 @@
         <h3 class="controlPanelSection">Navigation</h3>
         <ul class="controlPanel">
                 <li>
-                        <button onclick="location.href='{$lastURL}'">Back</button>
+                        <button class="btn btn-info" onclick="location.href='{$lastURL}'">Back</button>
                 </li>
         </ul>
 
