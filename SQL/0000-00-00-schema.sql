@@ -986,9 +986,10 @@ INSERT INTO `permissions` VALUES
     (32,'data_team_helper','Data Team Helper','2'),
     (33,'candidate_parameter_view','View Candidate Parameters','2'),
     (34,'candidate_parameter_edit','Edit Candidate Parameters','2'),
-    (35,'file_upload','Access Document Repository','2'),
-    (36,'genomic_browser_view_site','View Genomic Browser data from own site','2'),
-    (37,'genomic_browser_view_allsites','View Genomic Browser data across all sites','2');
+    (35,'genomic_browser_view_site','View Genomic Browser data from own site','2'),
+    (36,'genomic_browser_view_allsites','View Genomic Browser data across all sites','2'),
+    (37,'document_repository_view','View and upload files in Document Repository','2'),
+    (38,'document_repository_delete','Delete files in Document Repository','2');
 
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -2114,6 +2115,7 @@ INSERT INTO ConfigSettings (Name, Description, Visible, AllowMultiple, DataType,
 INSERT INTO ConfigSettings (Name, Description, Visible, AllowMultiple, DataType, Parent, Label, OrderNumber) SELECT 'useScreening', "Enable if there is a Screening stage with its own distinct instruments, administered before the Visit stage", 1, 0, 'boolean', ID, 'Use screening', 13 FROM ConfigSettings WHERE Name="study";
 INSERT INTO ConfigSettings (Name, Description, Visible, AllowMultiple, DataType, Parent, Label, OrderNumber) SELECT 'excluded_instruments', "Instruments to be excluded from the Data Dictionary and download via the Data Query Tool", 1, 1, 'instrument', ID, 'Excluded instruments', 15 FROM ConfigSettings WHERE Name="study";
 INSERT INTO ConfigSettings (Name, Description, Visible, AllowMultiple, DataType, Parent, Label, OrderNumber) SELECT 'DoubleDataEntryInstruments', "Instruments for which double data entry should be enabled", 1, 1, 'instrument', ID, 'Double data entry instruments', 16 FROM ConfigSettings WHERE Name="study";
+INSERT INTO ConfigSettings (Name, Description, Visible, AllowMultiple, DataType, Parent, Label, OrderNumber) SELECT 'InstrumentResetting', 'Allows resetting of instrument data', 1, 0, 'boolean', ID, 'Instrument Resetting', 15 FROM ConfigSettings WHERE Name="study";
 
 -- paths
 INSERT INTO ConfigSettings (Name, Description, Visible, AllowMultiple, Label, OrderNumber) VALUES ('paths', 'Specify directories where LORIS-related files are stored or created. Take care when editing these fields as changing them incorrectly can cause certain modules to lose functionality.', 1, 0, 'Paths', 2);
@@ -2301,7 +2303,7 @@ CREATE TABLE `SNP` (
   `SNPExternalSource` varchar(255) DEFAULT NULL,
   `ObservedBase` enum('A','C','T','G') DEFAULT NULL,
   `ReferenceBase` enum('A','C','T','G') DEFAULT NULL,
-  `ArrayReport` enum('Normal','Uncertain','Pending','Uncertain') DEFAULT NULL,
+  `ArrayReport` enum('Normal','Pending','Uncertain') DEFAULT NULL,
   `Markers` varchar(255) DEFAULT NULL,
   `ArrayReportDetail` varchar(255) DEFAULT NULL,
   `ValidationMethod` varchar(50) DEFAULT NULL,
@@ -2328,7 +2330,7 @@ CREATE TABLE `CNV` (
   `Characteristics` enum('Benign','Pathogenic','Unknown') DEFAULT NULL,
   `CopyNumChange` int(11) DEFAULT NULL,
   `Inheritance` enum('de novo','NA','unclassified','unknown','maternal','paternal') DEFAULT NULL,
-  `ArrayReport` enum('Normal','Abnormal','Uncertain','Pending','Uncertain') DEFAULT NULL,
+  `ArrayReport` enum('Normal','Abnormal','Pending','Uncertain') DEFAULT NULL,
   `Markers` varchar(255) DEFAULT NULL,
   `ArrayReportDetail` varchar(255) DEFAULT NULL,
   `ValidationMethod` varchar(50) DEFAULT NULL,
