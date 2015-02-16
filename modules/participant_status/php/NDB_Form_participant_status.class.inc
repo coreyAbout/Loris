@@ -21,7 +21,6 @@ require_once "Utility.class.inc";
 class NDB_Form_participant_status extends NDB_Form
 {
     var $indent = "&nbsp;&nbsp;&nbsp;&nbsp;";
-    var $multipleSelect = array('excluded_from_trial');
 
     /**
      * Determine if the user should have access to this page.
@@ -226,13 +225,6 @@ class NDB_Form_participant_status extends NDB_Form
             if ($subproject['id'] != 1)
                 $subprojects[$subproject['id']]=$subproject['title'];
         }
-
-        $this->addSelect(
-            'excluded_from_trial',
-            $this->indent . "If excluded from trial, specify which trial(s)",
-            $subprojects, 
-            "multiple size = '3'"
-        );
 
 
 	$eligibilityYesNo = array("null"=>"","yes"=>"Yes","no"=>"No");
