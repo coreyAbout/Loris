@@ -183,5 +183,27 @@ function parseElements($elements, $groupLabel=""){
     //print_r($obj->form);
 }
 
+/**
+ * Get the excluded instruments from the config file
+ *
+ * @return Array   List of instruments to be skipped
+ */
+function getExcludedInstruments()
+{
+
+    // Get the abbreviated instruments
+    $config =& NDB_Config::singleton();
+    $excluded_instruments = $config->getSetting('excluded_instruments');
+    
+    $ex_instruments=array();
+    foreach ($excluded_instruments as $instruments) {
+        foreach (Utility::asArray($instruments) as $instrument) {
+            $ex_instruments[$instrument] = $instrument;
+        }
+
+    }
+    return $ex_instruments;
+}
+
 ?>
 
