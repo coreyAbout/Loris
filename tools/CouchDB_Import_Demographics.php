@@ -178,15 +178,11 @@ class CouchDBDemographicsImporter {
 	    'Description' => 'Intron M allele number',
 	    'Type' => "int(10)"
 	),
-	'Intron_M_copie_Bin' => array(
-	    'Description' => 'Intron M copie Binary',
-	    'Type' => "int(1)"
-	),
-	'Technicien' => array(
+	'Technicien_M' => array(
 	    'Description' => 'Technicien',
 	    'Type' => "varchar(255)"
 	),
-	'Method' => array(
+	'Method_M' => array(
 	    'Description' => 'Method',
 	    'Type' => "varchar(255)"
 	),
@@ -194,6 +190,58 @@ class CouchDBDemographicsImporter {
 	    'Description' => 'Reference M',
 	    'Type' => "date"
 	),
+        'TLR4_rs_4986790' => array(
+            'Description' => 'TLR4 rs 4986790',
+            'Type' => "varchar(255)"
+        ),
+        'TLR4_allele_no' => array(
+            'Description' => 'TLR4 allele no',
+            'Type' => "varchar(255)"
+        ),
+        'Technicien_TLR4' => array(
+            'Description' => 'Technicien TLR4',
+            'Type' => "varchar(255)"
+        ),
+        'Method_TLR4' => array(
+            'Description' => 'Method TLR4',
+            'Type' => "varchar(255)"
+        ),
+        'Reference_TLR4' => array(
+            'Description' => 'Reference TLR4',
+            'Type' => "date"
+        ),
+        'PPP2r1A_rs_10406151' => array(
+            'Description' => 'PPP2r1A rs 10406151',
+            'Type' => "varchar(255)"
+        ),
+        'ppp2r1A_allele_no' => array(
+            'Description' => 'ppp2r1A allele no',
+            'Type' => "varchar(255)"
+        ),
+        'ppp2r1A_copie_no' => array(
+            'Description' => 'ppp2r1A copie no',
+            'Type' => "varchar(255)"
+        ),
+        'Technicien_ppp2r1a' => array(
+            'Description' => 'Technicien ppp2r1a',
+            'Type' => "varchar(255)"
+        ),
+        'Method_ppp2r1a' => array(
+            'Description' => 'Method ppp2r1a',
+            'Type' => "varchar(255)"
+        ),
+        'Reference_ppp2r1a' => array(
+            'Description' => 'Reference ppp2r1a',
+            'Type' => "date"
+        ),
+        'comments' => array(
+            'Description' => 'comments',
+            'Type' => "varchar(255)"
+        ),
+        'is_destroyed' => array(
+            'Description' => 'is_destroyed',
+            'Type' => "varchar(255)"
+        ),
         'scan_done' => array(
             'Description' => 'Scan done',
             'Type' => "enum('N', 'Y')"
@@ -240,8 +288,8 @@ class CouchDBDemographicsImporter {
 
     function _generateQuery() {
         $config = NDB_Config::singleton();
-        $fieldsInQuery = "SELECT withdrawal_reasons, naproxen_eligibility, naproxen_eligibility_status, naproxen_withdrawal_reasons, probucol_eligibility, probucol_eligibility_status, probucol_withdrawal_reasons, pso.description,ps.reason_specify, ps.withdrawal_reasons_other_specify, scan_done, ApoE, ApoE_112, ApoE_158, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Intron_M_copie_Bin, Technicien, Method, Reference_M, c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, c.DoB, s.Current_stage, s.Visit, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status";
-        $tablesToJoin = " FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) LEFT JOIN participant_status ps ON c.CandID=ps.CandID LEFT JOIN participant_status_options as pso ON ps.participant_status=pso.ID LEFT JOIN genetics as g ON g.Subject_ID=c.PSCID";
+        $fieldsInQuery = "SELECT withdrawal_reasons, naproxen_eligibility, naproxen_eligibility_status, naproxen_withdrawal_reasons, probucol_eligibility, probucol_eligibility_status, probucol_withdrawal_reasons, pso.description,ps.reason_specify, ps.withdrawal_reasons_other_specify, scan_done, ApoE, ApoE_112, ApoE_158, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Technicien_M, Method_M, Reference_M, TLR4_rs_4986790, TLR4_allele_no, Technicien_TLR4, Method_TLR4, Reference_TLR4, PPP2r1A_rs_10406151, ppp2r1A_allele_no, ppp2r1A_copie_no, Technicien_ppp2r1a, Method_ppp2r1a, Reference_ppp2r1a, comments, is_destroyed, c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, c.DoB, s.Current_stage, s.Visit, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status";
+        $tablesToJoin = " FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) LEFT JOIN participant_status ps ON c.CandID=ps.CandID LEFT JOIN participant_status_options as pso ON ps.participant_status=pso.ID LEFT JOIN genetics as g ON g.PSCID=c.PSCID";
         // If proband fields are being used, add proband information into the query
         if ($config->getSetting("useProband") === "true") {
             $probandFields = ", c.ProbandGender as Gender_proband, ROUND(DATEDIFF(c.DoB, c.ProbandDoB) / (365/12)) AS Age_difference";
