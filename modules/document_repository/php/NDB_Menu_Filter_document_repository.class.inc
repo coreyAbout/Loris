@@ -239,7 +239,7 @@ class NDB_Menu_Filter_Document_Repository extends NDB_Menu_Filter
     {
         $DB = Database::singleton();
         $results = array();
-        $dbresult= $DB->pselect("SELECT * FROM document_repository_categories ORDER BY parent_id ASC", array());
+        $dbresult= $DB->pselect("SELECT * FROM document_repository_categories ORDER BY category_name", array());
         foreach ($dbresult as $row) {
             $results[]=$row;
             $tree = null;
