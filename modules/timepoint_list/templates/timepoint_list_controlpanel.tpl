@@ -12,5 +12,10 @@ Edit Candidate Info
 {if $isDataEntryPerson}
 <button class="btn btn-primary" onclick="location.href='main.php?test_name=participant_status&candID={$candID}&identifier={$candID}'">Participant Status</button>
 {else}
-Edit Candidate Info
+Edit Participant Status
+{/if}
+{if $isDataEntryPerson}
+<button class="btn btn-primary" onclick="location.href='main.php?test_name=family_information&candID={$candID}&identifier={$candID}'">Family Information</button>
+{else}
+Edit Family Information
 {/if}
