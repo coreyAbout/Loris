@@ -10,9 +10,9 @@
  *
  *  @category Behavioural 
  *  @package  Main
- *  @author   Zia Mohadesz <zia.mohades@gmail.com>
+ *  @author   Justin Kat <justinkat@gmail.com>
  *  @license  Loris License
- *  @link     https://github.com/aces/Loris-Trunk
+ *  @link     https://github.com/Jkat/Loris
  */
 require_once "NDB_Form.class.inc";
 require_once "Utility.class.inc";
