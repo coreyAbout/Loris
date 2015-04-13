@@ -243,6 +243,15 @@ class NDB_Form_family_information extends NDB_Form
             $errors['related_participant_status'] = 'Required!';
         }
 
+        $DB =& Database::singleton();
+        $pscid = $DB->pselectOne(
+            'SELECT PSCID FROM candidate where CandID = :Candid',
+            array('Candid'=>$this->identifier)
+        );
+        if ($fields['related_participant_PSCID'] == $pscid) {
+            $errors['related_participant_PSCID'] = "Can't select the same PSCID!";
+        }
+
         // if related participant status is 'other', related_participant_status_specify must be populated
         if ($fields['related_participant_status'] == "other" && $fields['related_participant_status_specify'] == null) {
             $errors['related_participant_status_specify'] = 'Required if Related Participant Status is "Other"';
