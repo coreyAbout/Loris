@@ -10,7 +10,7 @@
     </tr>
     <tr>
         <td nowrap="nowrap">{$form.entry_staff.label}</td>
-        <td nowrap="nowrap">{$form.entry_staff.html}
+        <td nowrap="nowrap">{$entry_staff}
         </td>
     </tr>
     <tr>
