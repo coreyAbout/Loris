@@ -157,13 +157,20 @@ class NDB_Form_family_information extends NDB_Form
         $DB =& Database::singleton();
 
         //entry staff info
+        if (!(is_null($_SESSION['State']))) {
+            $currentUser =& User::singleton($_SESSION['State']->getUsername());
+            $id = $currentUser->getData("UserID");
+            $entry_staff = $id;
+        }
         $this->addScoreColumn('entry_staff', 'Data Entry Staff');
+        $this->tpl_data['entry_staff'] = $entry_staff;
 
         $pscid = $DB->pselectOne(
             'SELECT PSCID FROM candidate where CandID = :Candid',
             array('Candid'=>$this->identifier)
         );
         $this->addScoreColumn('pscid', 'PSCID');
+        $this->tpl_data['pscid'] = $pscid;
 
         $pscidList = $DB->pselect(
             'SELECT PSCID FROM candidate'
@@ -209,8 +216,6 @@ class NDB_Form_family_information extends NDB_Form
                 'SELECT PSCID FROM candidate where CandID = :candid',
                 array('candid'=>$this->identifier)
                 );
-
-        $this->tpl_data['pscid'] = $pscid;
 
         $result = $DB->pselect("SELECT 
                   related_participant_PSCID,related_participant_CandID,
