@@ -51,23 +51,6 @@ class NDB_Form_family_information extends NDB_Form
      */
     function _getDefaults()
     {
-
-        $DB =& Database::singleton();
-/*
-        $defaults = $DB->pselectRow(
-            "SELECT * FROM family_information WHERE CandID = :cid", 
-            array('cid'=>$this->identifier)
-        );
-*/
-
-        if(!empty($this->multipleSelect)){
-            foreach($this->multipleSelect AS $elname){
-                if(stristr($defaults[$elname], "{@}")){
-                    $defaults[$elname]=explode("{@}",$defaults[$elname]);
-                }
-            }
-        }
-
         return $defaults;
     }
     /**
