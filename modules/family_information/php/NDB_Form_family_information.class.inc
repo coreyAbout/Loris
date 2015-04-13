@@ -198,7 +198,7 @@ class NDB_Form_family_information extends NDB_Form
 
         $this->addBasicText(
             'related_participant_status_specify',
-            'If Other, please specify:'
+            $this->indent . 'If Other, please specify:'
         );
 
         $this->family_information_details();
