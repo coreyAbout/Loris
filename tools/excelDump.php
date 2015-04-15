@@ -155,6 +155,17 @@ if (PEAR::isError($participantstatus)) {
 writeExcel($Test_name, $participantstatus, $dataDir);
 
 /*
+* Family Information
+*/
+$Test_name = "FamilyInformation";
+$query = "select PSCID, family_information.CandID, entry_staff, related_participant_PSCID, related_participant_CandID, related_participant_status_degree, related_participant_status, related_participant_status_specify from family_information join candidate on family_information.CandID=candidate.CandID where PSCID not like '%MTL999%' and PSCID not like 'MTL0000' order by PSCID";
+$DB->select($query, $familyinformation);
+if (PEAR::isError($familyinformation)) {
+        PEAR::raiseError("Could not generate family information. " . $participantstatus->getMessage());
+}
+writeExcel($Test_name, $familyinformation, $dataDir);
+
+/*
 * MRI feedbacks
 */
 //List of all scan types we want MRI feedbacks for
