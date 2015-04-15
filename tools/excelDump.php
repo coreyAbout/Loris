@@ -75,7 +75,9 @@ foreach ($instruments as $instrument) {
     if ($Test_name == 'prefrontal_task') {
 	    $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, 'See validity_of_data field' as Validity, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' order by s.Visit_label, c.PSCID";
     } else if ($Test_name == 'radiology_review') {
-        $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, 'Site review:', i.*, 'Final Review:', COALESCE(fr.Review_Done, 0) as Review_Done, fr.Final_Review_Results, fr.Final_Exclusionary, fr.Final_Incidental_Findings, fre.full_name as Final_Examiner_Name, fr.Final_Review_Results2, fre2.full_name as Final_Examiner2_Name, fr.Final_Exclusionary2, COALESCE(fr.Review_Done2, 0) as Review_Done2, fr.Final_Incidental_Findings2, fr.Finalized from candidate c, session s, flag f, $Test_name i left join final_radiological_review fr ON (fr.CommentID=i.CommentID) left outer join examiners e on (i.Examiner = e.examinerID) left join examiners fre ON (fr.Final_Examiner=fre.examinerID) left join examiners fre2 ON (fre2.examinerID=fr.Final_Examiner2) where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' order by s.Visit_label, c.PSCID";
+        $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, 'Site review:', i.*, 'Final Review:', COALESCE(fr.Review_Done, 0) as Review_Done, fr.Final_Review_Results, fr.Final_Exclusionary, fr.Final_Incidental_Findings, fre.full_name as Final_Examiner_Name, fr.Final_Review_Results2, fre2.full_name as Final_Examiner2_Name, fr.Final_Exclusionary2, COALESCE(fr.Review_Done2, 0) as Review_Done2, fr.Final_Incidental_Findings2, fr.Finalized from candidate c, session s, flag f, $Test_name i left join final_radiological_review fr ON (fr.CommentID=i.CommentID) left outer join examiners e on (i.Examiner = e.examinerID) left join examiners fre ON (fr.Final_Examiner=fre.examinerID) left join examiners fre2 ON (fre2.examinerID=fr.Final_Examiner2) where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' AND Scan_done='Y' order by s.Visit_label, c.PSCID";
+    } else if ($Test_name == 'genetics') {
+        $query = "select * from genetics";
     } else {
         if (is_file("../project/instruments/NDB_BVL_Instrument_$Test_name.class.inc")) {
             $instrument =& NDB_BVL_Instrument::factory($Test_name, '', false);
@@ -121,7 +123,7 @@ if (count($result) > 0) {
 */
 $Test_name = "candidate_info";
 //this query is a but clunky, but it gets rid of all the crap that would otherwise appear.
-$query = "select distinct c.PSCID, c.CandID, c.Gender, c.DoB, s.SubprojectID from candidate c, session s where c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' order by c.PSCID";
+$query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' order by c.PSCID";
 $DB->select($query, $results);
 if (PEAR::isError($results)) {
 	PEAR::raiseError("Couldn't get candidate info. " . $results->getMessage());
@@ -147,13 +149,56 @@ writeExcel($Test_name, $dictionary, $dataDir);
 * Participant Status History
 */
 $Test_name = "ParticipantStatusHistory";
-$query = "select candidate.PSCID, candidate.CandID, psh.*, pso.Description as 'Participant Status Description' from participant_status_history as psh join candidate on (candidate.CandID=psh.CandID) join participant_status_options as pso on (psh.participant_status=pso.ID) where candidate.PSCID not like 'MTL0000' AND candidate.PSCID not like 'MTL999%' order by candidate.PSCID asc";
+$query = "select candidate.PSCID, candidate.CandID, data_changed_date, data_entry_date, pso.Description as 'Participant Status Description', reason_specify, reason_specify_status, withdrawal_reasons, withdrawal_reasons_other_specify, withdrawal_reasons_other_specify_status, naproxen_eligibility, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_eligibility_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status from participant_status_history as psh join candidate on (candidate.CandID=psh.CandID) join participant_status_options as pso on (psh.participant_status=pso.ID) where candidate.PSCID not like 'MTL0000' AND candidate.PSCID not like 'MTL999%' order by candidate.PSCID asc";
 $DB->select($query, $participantstatus);
 if (PEAR::isError($participantstatus)) {
         PEAR::raiseError("Could not generate participant status history. " . $participantstatus->getMessage());
 }
 writeExcel($Test_name, $participantstatus, $dataDir);
 
+/*
+* MRI feedbacks
+*/
+//List of all scan types we want MRI feedbacks for
+$query = "select * from mri_scan_type order by Scan_type";
+//$query = "select * from test_names where Test_name like 'a%' order by Test_name";  //for rapid testing
+$DB->select($query, $scan_types);
+if (PEAR::isError($scan_types)) {
+        PEAR::raiseError("Couldn't get scan types. " . $scan_types->getMessage());
+}
+//loop through all scan types
+foreach ($scan_types as $scan_type) {
+    //Query to pull the data from the DB
+    $Test_name = $scan_type['Scan_type'];
+
+    if ((preg_match("/bval/", $Test_name)) 
+         or (preg_match("/Report/", $Test_name)) 
+         or (preg_match("/qc/", $Test_name)) 
+         or (preg_match("/rgb/", $Test_name))
+         or (preg_match("/Siemens/", $Test_name))
+         or (preg_match("/HighRes/", $Test_name))
+         or ($Test_name == 'FinalQCedDTI')
+         or ($Test_name == 'QCedDTI')) {
+        continue;
+    } elseif (preg_match("/noRegQCedDTI/i", $Test_name)) {
+        $query = file_get_contents("MRI_feedbacks_FinalQCedDWI_query.sql");
+        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" GROUP BY f.File';
+    } elseif (($Test_name == 'Encoding') or ($Test_name == 'Retrieval')) {
+        $query = file_get_contents("MRI_feedbacks_query.sql");
+        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" AND Visit_label NOT LIKE "%EN00%" GROUP BY f.File';
+    } else {
+        $query = file_get_contents("MRI_feedbacks_query.sql");
+        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" GROUP BY f.File';
+    }
+
+    $DB->select($query, $scan_type_table);
+    if (PEAR::isError($scan_type_table)) {
+        print "Cannot pull scan type table data ".$scan_type_table->getMessage()."<br>\n";
+        die();
+    }
+    MapSubprojectID($scan_type_table);
+    writeExcel("mri_feedbacks_$Test_name", $scan_type_table, $dataDir);
+}
 
 // disabling .tgz compression format
 /*
