@@ -128,8 +128,6 @@ $DB->select($query, $results);
 if (PEAR::isError($results)) {
 	PEAR::raiseError("Couldn't get candidate info. " . $results->getMessage());
 }
-
-
 MapSubprojectID(&$results);
 writeExcel($Test_name, $results, $dataDir);
 
@@ -171,9 +169,9 @@ foreach ($scan_types as $scan_type) {
     //Query to pull the data from the DB
     $Test_name = $scan_type['Scan_type'];
 
-    if ((preg_match("/bval/", $Test_name)) 
-         or (preg_match("/Report/", $Test_name)) 
-         or (preg_match("/qc/", $Test_name)) 
+    if ((preg_match("/bval/", $Test_name))
+         or (preg_match("/Report/", $Test_name))
+         or (preg_match("/qc/", $Test_name))
          or (preg_match("/rgb/", $Test_name))
          or (preg_match("/Siemens/", $Test_name))
          or (preg_match("/HighRes/", $Test_name))
