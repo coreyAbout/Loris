@@ -356,6 +356,48 @@ class CouchDBDemographicsImporter {
                 $demographics['Project'] = $this->_getProject($demographics['ProjectID']);
                 unset($demographics['ProjectID']);
             }
+
+            // family_information
+            $exists = $this->SQLDB->pselectOne("SELECT ID FROM family_information WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+            if (!empty($exists)) {
+                $entries = 1;
+//$this->SQLDB->pselectOne("select count(*) from family_information where candid=:cid order by count(*) desc", array('cid'=>$demographics['CandID']));
+                $family_information_fields = $this->SQLDB->pselect("SELECT CandID, related_participant_PSCID, related_participant_CandID, related_participant_status_degree, related_participant_status, related_participant_status_specify FROM family_information WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+                foreach ($family_information_fields as $row) {
+                    $this->Dictionary["participant_CandID_" . $entries] = array(
+                           'Description' => "Participant's CandID " . $entries,
+                           'Type'        => "int(6)",
+                    );
+                    $this->Dictionary["related_participant_PSCID_" . $entries] = array(
+                           'Description' => "Related participant's PSCID " . $entries,
+                           'Type'        => "varchar(255)",
+                    );
+                    $this->Dictionary["related_participant_CandID_" . $entries] = array(
+                           'Description' => "Related participant's CandID " . $entries,
+                           'Type'        => "int(6)",
+                    );
+                    $this->Dictionary["related_participant_status_degree_" . $entries] = array(
+                           'Description' => "Related participant's status degree " . $entries,
+                           'Type'        => "enum('1st degree relative','2nd degree relative','3rd degree relative','other')",
+                    );
+                    $this->Dictionary["related_participant_status_" . $entries] = array(
+                           'Description' => "Related participant's status " . $entries,
+                           'Type'        => "enum('sibling','parent','child','aunt/uncle','niece/nephew','half-sibling','first-cousin','other')",
+                    );
+                    $this->Dictionary["related_participant_status_specify_" . $entries] = array(
+                           'Description' => "Related participant's status specify " . $entries,
+                           'Type'        => "varchar(255)",
+                    );
+                    $demographics["participant_CandID_" . $entries] = $row['CandID'];
+                    $demographics["related_participant_PSCID_" . $entries] = $row['related_participant_PSCID'];
+                    $demographics["related_participant_CandID_" . $entries] = $row['related_participant_CandID'];
+                    $demographics["related_participant_status_degree_" . $entries] = $row['related_participant_status_degree'];
+                    $demographics["related_participant_status_" . $entries] = $row['related_participant_status'];
+                    $demographics["related_participant_status_specify_" . $entries] = $row['related_participant_status_specify'];
+                    $entries++;
+                }
+            }
+
             if ($config_setting->getSetting("useFamilyID") === "true") {
                 $familyID     = $this->SQLDB->pselectOne("SELECT FamilyID FROM family
                                                           WHERE CandID=:cid",
