@@ -361,7 +361,6 @@ class CouchDBDemographicsImporter {
             $exists = $this->SQLDB->pselectOne("SELECT ID FROM family_information WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
             if (!empty($exists)) {
                 $entries = 1;
-//$this->SQLDB->pselectOne("select count(*) from family_information where candid=:cid order by count(*) desc", array('cid'=>$demographics['CandID']));
                 $family_information_fields = $this->SQLDB->pselect("SELECT CandID, related_participant_PSCID, related_participant_CandID, related_participant_status_degree, related_participant_status, related_participant_status_specify FROM family_information WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
                 foreach ($family_information_fields as $row) {
                     $this->Dictionary["participant_CandID_" . $entries] = array(
