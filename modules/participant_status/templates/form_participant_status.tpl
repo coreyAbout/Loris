@@ -60,6 +60,30 @@
         {/if}
         </td>
     </tr>
+    <tr>
+        <td nowrap="nowrap">{$form.dna_collected_eligibility.label}</td>
+        <td nowrap="nowrap">{$form.dna_collected_eligibility.html}
+        {if $form.dna_collected_eligibility.error}
+            <span class='error'>{$form.dna_collected_eligibility.error}</span>
+        {/if}
+        </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">{$form.dna_request_destroy.label}</td>
+        <td nowrap="nowrap">{$form.dna_request_destroy.html}
+        {if $form.dna_request_destroy.error}
+            <span class='error'>{$form.dna_request_destroy.error}</span>
+        {/if}
+        </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">{$form.dna_destroy_date.label}</td>
+        <td nowrap="nowrap">{$form.dna_destroy_date.html}
+        {if $form.errors.dna_destroy_date}
+            <span class='error'>{$form.errors.dna_destroy_date}</span>
+        {/if}
+        </td>
+    </tr>
 
 
     <tr><th colspan="9">Naproxen Participant Status</th></tr>

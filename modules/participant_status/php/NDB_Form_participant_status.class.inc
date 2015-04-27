@@ -331,6 +331,19 @@ class NDB_Form_participant_status extends NDB_Form
             array(null => null) + $notAns4
         );
 
+        $DNAYesNo = array("null"=>"","yes"=>"Yes","no"=>"No","not_answered"=>"Not Answered");
+        $this->addSelect(
+            'dna_collected_eligibility',
+            "If status is Ineligible, was DNA collected at the Eligibility Visit?",
+            $DNAYesNo
+        );
+        $this->addSelect(
+            'dna_request_destroy',
+            "If status is Excluded or Withdrawn, request to destroy DNA samples?",
+            $DNAYesNo
+        );
+        $this->addBasicDate("dna_destroy_date", "Date of destruction:", $dateOptions);
+
 
         $this->form->addFormRule(array(&$this,'_validate'));
     }
@@ -472,6 +485,17 @@ class NDB_Form_participant_status extends NDB_Form
         if ($fields['participant_status'] == 1 && ($fields['naproxen_eligibility'] == 'null' && $fields['probucol_eligibility'] == 'null')) {
             $errors['participant_status'] = "Please specify at least 1 trial eligibility below";
         }
+
+        // if Global Ineligible, must answer if DNA collected at Eligibility Visit
+        if ($fields['participant_status'] == 4 && $fields['dna_collected_eligibility'] == 'null') {
+            $errors['dna_collected_eligibility'] = "Required if Global Status is Ineligible";
+        }
+
+        // if Global Excluded or Withdrawn, must answer if request to destroy DNA
+        if (($fields['participant_status'] == 3 || $fields['participant_status'] == 5) && $fields['dna_request_destroy'] == 'null') {
+            $errors['dna_request_destroy'] = "Required if Global Status is Excluded or Withdrawn";
+        }
+
 
 	// date of status change required
 	if ($fields['data_changed_date']['Y'] == "" || $fields['data_changed_date']['M'] == "" || $fields['data_changed_date']['d'] == "") {
