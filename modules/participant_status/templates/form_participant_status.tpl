@@ -77,10 +77,10 @@
         </td>
     </tr>
     <tr>
-        <td nowrap="nowrap">{$form.dna_destroy_date.label}</td>
-        <td nowrap="nowrap">{$form.dna_destroy_date.html}
-        {if $form.errors.dna_destroy_date}
-            <span class='error'>{$form.errors.dna_destroy_date}</span>
+        <td nowrap="nowrap">{$form.dna_destroy_date_group.label}</td>
+        <td nowrap="nowrap">{$form.dna_destroy_date_group.html}
+        {if $form.dna_destroy_date_group.error}
+            <span class='error'>{$form.dna_destroy_date_group.error}</span>
         {/if}
         </td>
     </tr>

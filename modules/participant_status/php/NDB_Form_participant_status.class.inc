@@ -83,6 +83,27 @@ class NDB_Form_participant_status extends NDB_Form
         }
 */
 
+        $DNA_PSCID = $DB->pselectOne(
+            "SELECT PSCID FROM candidate WHERE CandID = :cid",
+            array('cid'=>$this->identifier)
+        );
+        $defaults['dna_collected_eligibility'] = $DB->pselectOne(
+            "SELECT dna_collected_eligibility FROM genetics WHERE PSCID = :pscid",
+            array('pscid'=>$DNA_PSCID)
+        );
+        $defaults['dna_request_destroy'] = $DB->pselectOne(
+            "SELECT dna_request_destroy FROM genetics WHERE PSCID = :pscid",
+            array('pscid'=>$DNA_PSCID)
+        );
+        $defaults['dna_destroy_date'] = $DB->pselectOne(
+            "SELECT dna_destroy_date FROM genetics WHERE PSCID = :pscid",
+            array('pscid'=>$DNA_PSCID)
+        );
+        $defaults['dna_destroy_date_status'] = $DB->pselectOne(
+            "SELECT dna_destroy_date_status FROM genetics WHERE PSCID = :pscid",
+            array('pscid'=>$DNA_PSCID)
+        );
+
             //clearing this date because don't want to accidentally reuse last saved date
             $defaults['data_changed_date'] = null;
         return $defaults;
@@ -129,8 +150,37 @@ class NDB_Form_participant_status extends NDB_Form
 		$values['participant_status'] = 6;
 	}
 
+        $values['dna_destroy_date'] = sprintf("%04d-%02d-%02d", $values['dna_destroy_date']['Y'], $values['dna_destroy_date']['M'], $values['dna_destroy_date']['d']);
+        // save the DNA values
+        //if it exists update it
+        $DNA_values['dna_collected_eligibility'] = $values['dna_collected_eligibility'];
+        unset($values['dna_collected_eligibility']);
+        $DNA_values['dna_request_destroy'] = $values['dna_request_destroy'];
+        unset($values['dna_request_destroy']);
+        $DNA_values['dna_destroy_date'] = $values['dna_destroy_date'];
+        unset($values['dna_destroy_date']);
+        $DNA_values['dna_destroy_date_status'] = $values['dna_destroy_date_status'];
+        unset($values['dna_destroy_date_status']);
+        $DNA_PSCID = $DB->pselectOne(
+            "SELECT PSCID FROM candidate WHERE CandID = :cid",
+            array('cid'=>$values['CandID'])                       
+        );
+        $GeneticsCount = $DB->pselectOne(
+            "SELECT COUNT(*) FROM genetics WHERE PSCID = :pscid",
+            array("pscid"=>$DNA_PSCID)
+        );
+        if ($GeneticsCount > 0) {
+            $success = $DB->update(
+                "genetics",
+                $DNA_values,
+                array("PSCID"=>$DNA_PSCID)
+            );
+        } else {
+            //insert it
+            $success = $DB->insert("genetics", $DNA_values);
+        }
 
-        // save the values
+        // save the participant status values
         //if it exists update it
         $ParticipantCount = $DB->pselectOne(
             "SELECT COUNT(*) FROM participant_status WHERE CandID = :cid", 
@@ -342,7 +392,35 @@ class NDB_Form_participant_status extends NDB_Form
             "If status is Excluded or Withdrawn, request to destroy DNA samples?",
             $DNAYesNo
         );
-        $this->addBasicDate("dna_destroy_date", "Date of destruction:", $dateOptions);
+        $group[] = $this->createDate(
+            "dna_destroy_date",
+            null,
+            $dateOptions,
+            array(
+             'class' => 'form-control input-sm '."dna_destroy_date",
+             'style' => 'max-width:25%; display:inline-block;',
+            )
+        );
+        $group[] = $this->createSelect(
+            "dna_destroy_date_status",
+            null,
+            array(
+             null           => "",
+             'not_answered' => "Not Answered",
+            ),
+            array(
+             'class' => 'form-control input-sm not-answered',
+             'style' => 'max-width:25%; display:inline-block;',
+            )
+        );
+        $this->addGroup(
+            $group,
+            "dna_destroy_date_group",
+            "Date of destruction:",
+            "",
+            false
+        );
+        unset($group);
 
 
         $this->form->addFormRule(array(&$this,'_validate'));
