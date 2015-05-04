@@ -177,6 +177,7 @@ class NDB_Form_participant_status extends NDB_Form
             );
         } else {
             //insert it
+            $DNA_values['PSCID'] = $DNA_PSCID;
             $success = $DB->insert("genetics", $DNA_values);
         }
 
