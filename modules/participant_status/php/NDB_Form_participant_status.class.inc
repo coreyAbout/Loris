@@ -575,6 +575,10 @@ class NDB_Form_participant_status extends NDB_Form
             $errors['dna_request_destroy'] = "Required if Global Status is Excluded or Withdrawn";
         }
 
+        // (if Global Ineligible and DNA collected at Eligibility) or (if Global Excluded or Withdrawn and request to destroy DNA), date of destruction should be required
+        if ((($fields['dna_collected_eligibility'] == 'yes') || ($fields['dna_request_destroy'] == 'yes')) && (($fields['dna_destroy_date']['Y'] == "" || $fields['dna_destroy_date']['M'] == "" || $fields['dna_destroy_date']['d'] == "") && $fields['dna_destroy_date_status'] != 'not_answered')) {
+            $errors['dna_destroy_date_group'] = "Required";
+        }
 
 	// date of status change required
 	if ($fields['data_changed_date']['Y'] == "" || $fields['data_changed_date']['M'] == "" || $fields['data_changed_date']['d'] == "") {
