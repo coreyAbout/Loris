@@ -62,6 +62,7 @@ table th{
 }
 .colm-static{
     left: 3em;
+    background: white;
 }
 
 /*
@@ -149,4 +150,9 @@ ul#navlist {
     background: none repeat scroll 0 0 transparent;
     cursor: inherit;
     display: block;
+}
+
+div.navbar div.container div.navbar-brand {
+    background: inherit;
+    text-align: center;
 }

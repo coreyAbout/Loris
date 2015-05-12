@@ -20,34 +20,8 @@
     </div>
     <div class="panel-body" id="panel-body">
         <form method="post" action="main.php?test_name=imaging_browser">
-            <div class="row">
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-12 col-md-4">
-                        {$form.ProjectID.label}
-                    </label>
-                    <div class="col-sm-12 col-md-8">
-                        {$form.ProjectID.html}
-                    </div>
-                </div>
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-12 col-md-4">
-                        {$form.DCCID.label}
-                    </label>
-                    <div class="col-sm-12 col-md-8">
-                        {$form.DCCID.html}
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-12 col-md-4">
-                        {$form.SiteID.label}
-                    </label>
-                    <div class="col-sm-12 col-md-8">
-                        {$form.SiteID.html}
-                    </div>
-                </div>
-                <div class="form-group col-sm-6">
+             <div class="row">
+                <div class="form-group col-sm-4">
                     <label class="col-sm-12 col-md-4">
                         {$form.pscid.label}
                     </label>
@@ -55,17 +29,15 @@
                         {$form.pscid.html}
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6">
+                 <div class="form-group col-sm-4">
                     <label class="col-sm-12 col-md-4">
-                        {$form.VisitQCStatus.label}
+                        {$form.DCCID.label}
                     </label>
                     <div class="col-sm-12 col-md-8">
-                        {$form.VisitQCStatus.html}
+                        {$form.DCCID.html}
                     </div>
                 </div>
-                <div class="form-group col-sm-6">
+                 <div class="form-group col-sm-4">
                     <label class="col-sm-12 col-md-4">
                         {$form.VL.label}
                     </label>
@@ -75,7 +47,43 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-sm-6">
+                <div class="form-group col-sm-4">
+                    <label class="col-sm-12 col-md-4">
+                        {$form.SiteID.label}
+                    </label>
+                    <div class="col-sm-12 col-md-8">
+                        {$form.SiteID.html}
+                    </div>
+                </div>
+                <div class="form-group col-sm-4">
+                    <label class="col-sm-12 col-md-4">
+                        {$form.VisitQCStatus.label}
+                    </label>
+                    <div class="col-sm-12 col-md-8">
+                        {$form.VisitQCStatus.html}
+                    </div>
+                </div>
+                {if $form.ProjectID}
+                <div class="form-group col-sm-4">
+                    <label class="col-sm-12 col-md-4">
+                        {$form.ProjectID.label}
+                    </label>
+                    <div class="col-sm-12 col-md-8">
+                        {$form.ProjectID.html}
+                    </div>
+                </div>
+                {/if}
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label class="col-sm-12 col-md-4">
+                        {$form.Scan_type.label}
+                   </label>
+                    <div class="col-sm-12 col-md-8">
+                        {$form.Scan_type.html}
+                    </div>
+                </div>
+                <div class="form-group col-sm-4">
                     <label class="col-sm-12 col-md-4">
                         {$form.Pending.label}
                     </label>
@@ -83,33 +91,29 @@
                         {$form.Pending.html}
                     </div>
                 </div>
-                <div class="form-group col-md-6">
-                    <div class="col-sm-4 col-sm-offset-4">
-                    		<input type="submit" class="btn btn-sm btn-primary col-xs-12" name="filter" value="Show Data">
-                    </div>
-                    <div class="col-sm-4">
-                    		<input type="button" name="reset" value="Clear Form" class="btn btn-sm btn-primary col-xs-12" onclick="location.href='main.php?test_name=imaging_browser&reset=true'" />
-                    </div>
+                <div class="col-sm-2 col-sm-offset-8">
+                     <input type="submit" class="btn btn-sm btn-primary col-xs-12" name="filter" value="Show Data">
                 </div>
-             </div>
+                <div class="col-sm-2">
+                	<input type="button"
+                           name="reset"
+                           value="Clear Form"
+                           class="btn btn-sm btn-primary col-xs-12"
+                           onclick="location.href='main.php?test_name=imaging_browser&reset=true'" />
+                </div>
+               </div><!--closing row -->
         </form>
     </div>
 </div>
 </div>
 
-<div class="col-xs-12">
-<!-- listing of visits -->
-{if $numTimepoints}
-  {$numTimepoints} subject timepoint(s) selected.<br><br>
-{/if}
-</div>
 </div>
 
 <!--  title table with pagination -->
 <table id="LogEntries" border="0" valign="bottom" width="100%">
 <tr>
     <!-- title -->
-    <td class="controlPanelSection">List of Imaging Datasets found</td>
+    <td class="controlPanelSection">{$numTimepoints} subject timepoint(s) selected.</td>
 
     <!-- display pagination links -->
     <td align="right">{$page_links}</td>
