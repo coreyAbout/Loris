@@ -216,13 +216,13 @@
 <table class="fancytable" width="100%">
     <tr><th colspan="10">Participant Status History</th></tr>
     <tr>
-        <td nowrap="nowrap"><b>Global Status</b></td>
-        <td nowrap="nowrap"><b>Naproxen Eligibility</b></td>
-        <td nowrap="nowrap"><b>Naproxen Eligibility Reason</b></td>
-        <td nowrap="nowrap"><b>Naproxen Status</b></td>
-        <td nowrap="nowrap"><b>Probucol Eligibility</b></td>
-        <td nowrap="nowrap"><b>Probucol Eligibility Reason</b></td>
-        <td nowrap="nowrap"><b>Probucol Status</b></td>
+        <td nowrap="nowrap"><b>Global</b></td>
+        <td nowrap="nowrap"><b>NAP Eligibility</b></td>
+        <td nowrap="nowrap"><b>NAP Excluded Reason</b></td>
+        <td nowrap="nowrap"><b>NAP Status</b></td>
+        <td nowrap="nowrap"><b>PRO Eligibility</b></td>
+        <td nowrap="nowrap"><b>PRO Excluded Reason</b></td>
+        <td nowrap="nowrap"><b>PRO Status</b></td>
         <td nowrap="nowrap"><b>Data Entry Staff</b></td>
         <td nowrap="nowrap"><b>Status Changed Date</b></td>
         <td nowrap="nowrap"><b>Last Data Entry Date</b></td>
