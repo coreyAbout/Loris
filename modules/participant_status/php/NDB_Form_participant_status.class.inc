@@ -441,8 +441,8 @@ class NDB_Form_participant_status extends NDB_Form
         $this->tpl_data['pscid'] = $pscid;
 
         $result = $DB->pselect("SELECT po.Description,
-                  naproxen_eligibility,naproxen_eligibility_reason_specify,naproxen_eligibility_status,
-                  probucol_eligibility,probucol_eligibility_reason_specify,probucol_eligibility_status,
+                  naproxen_eligibility,naproxen_excluded_reason_specify,naproxen_eligibility_status,
+                  probucol_eligibility,probucol_excluded_reason_specify,probucol_eligibility_status,
                   entry_staff, data_changed_date, data_entry_date 
                   FROM participant_status_history p join participant_status_options po on (po.ID = p.participant_status)
                   WHERE CandID=:cid", array('cid'=>$this->identifier));
