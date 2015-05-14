@@ -1,4 +1,3 @@
-<br />
 <form method="post" name="participant_status" id="participant_status">
 <table class="std">
     <tr><th colspan="9">Global Participant Status</th></tr>
@@ -37,12 +36,20 @@
         </td>
     </tr>
     <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td nowrap="nowrap">&nbsp;</td>
+    </tr>
+    <tr>
         <td nowrap="nowrap">{$form.reason_specify_group.label}</td>
         <td nowrap="nowrap">{$form.reason_specify_group.html}
         {if $form.reason_specify_group.error}
             <span class='error'>{$form.reason_specify_group.error}</span>
         {/if}
         </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td nowrap="nowrap">&nbsp;</td>
     </tr>
     <tr>
         <td nowrap="nowrap">{$form.withdrawal_reasons.label}</td>
@@ -59,6 +66,10 @@
             <span class='error'>{$form.withdrawal_reasons_other_specify_group.error}</span>
         {/if}
         </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td nowrap="nowrap">&nbsp;</td>
     </tr>
     <tr>
         <td nowrap="nowrap">{$form.dna_collected_eligibility.label}</td>
@@ -96,12 +107,20 @@
         </td>
     </tr>
     <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td nowrap="nowrap">&nbsp;</td>
+    </tr>
+    <tr>
         <td nowrap="nowrap">{$form.naproxen_eligibility_reason_specify_group.label}</td>
         <td nowrap="nowrap">{$form.naproxen_eligibility_reason_specify_group.html}
         {if $form.naproxen_eligibility_reason_specify_group.error}
             <span class='error'>{$form.naproxen_eligibility_reason_specify_group.error}</span>
         {/if}
         </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td nowrap="nowrap">&nbsp;</td>
     </tr>
     <tr>
         <td nowrap="nowrap">{$form.naproxen_eligibility_status.label}</td>
@@ -118,6 +137,10 @@
             <span class='error'>{$form.naproxen_excluded_reason_specify_group.error}</span>
         {/if}
         </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td nowrap="nowrap">&nbsp;</td>
     </tr>
     <tr>
         <td nowrap="nowrap">{$form.naproxen_withdrawal_reasons.label}</td>
@@ -147,12 +170,20 @@
         </td>
     </tr>
     <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td nowrap="nowrap">&nbsp;</td>
+    </tr>
+    <tr>
         <td nowrap="nowrap">{$form.probucol_eligibility_reason_specify_group.label}</td>
         <td nowrap="nowrap">{$form.probucol_eligibility_reason_specify_group.html}
         {if $form.probucol_eligibility_reason_specify_group.error}
             <span class='error'>{$form.probucol_eligibility_reason_specify_group.error}</span>
         {/if}
         </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td nowrap="nowrap">&nbsp;</td>
     </tr>
     <tr>
         <td nowrap="nowrap">{$form.probucol_eligibility_status.label}</td>
@@ -169,6 +200,10 @@
             <span class='error'>{$form.probucol_excluded_reason_specify_group.error}</span>
         {/if}
         </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td nowrap="nowrap">&nbsp;</td>
     </tr>
     <tr>
         <td nowrap="nowrap">{$form.probucol_withdrawal_reasons.label}</td>
