@@ -232,7 +232,11 @@
         {/if}
         </td>
     </tr>
-
+    <tr>
+        <td nowrap="nowrap">{$form.only_DNA.label}</td>
+        <td nowrap="nowrap">{$form.only_DNA.html}
+        </td>
+    </tr>
 
 
 

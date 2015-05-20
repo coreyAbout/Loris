@@ -169,48 +169,54 @@ class NDB_Form_participant_status extends NDB_Form
             "SELECT COUNT(*) FROM genetics WHERE PSCID = :pscid",
             array("pscid"=>$DNA_PSCID)
         );
-        if ($GeneticsCount > 0) {
-            $success = $DB->update(
-                "genetics",
-                $DNA_values,
-                array("PSCID"=>$DNA_PSCID)
-            );
+
+        // only update genetics if only_DNA is flagged
+        if ($values['only_DNA'] == 'yes') {
+            if ($GeneticsCount > 0) {
+                $success = $DB->update(
+                    "genetics",
+                    $DNA_values,
+                    array("PSCID"=>$DNA_PSCID)
+                );
+            } else {
+                //insert it
+                $DNA_values['PSCID'] = $DNA_PSCID;
+                $success = $DB->insert("genetics", $DNA_values);
+            }
+            if (Utility::isErrorX($success)) {
+                return PEAR::raiseError(
+                    "NDB_Form_participant_status::_process: ".$success->getMessage()
+                );
+            }
         } else {
-            //insert it
-            $DNA_values['PSCID'] = $DNA_PSCID;
-            $success = $DB->insert("genetics", $DNA_values);
-        }
-
-        // save the participant status values
-        //if it exists update it
-        $ParticipantCount = $DB->pselectOne(
-            "SELECT COUNT(*) FROM participant_status WHERE CandID = :cid", 
-            array("cid"=>$values['CandID'])
-        );
-        if ($ParticipantCount > 0) {
-            $success = $DB->update(
-                "participant_status", 
-                $values,
-                array("CandID"=>$values['CandID'])
+            // save the participant status values
+            //if it exists update it
+            $ParticipantCount = $DB->pselectOne(
+                "SELECT COUNT(*) FROM participant_status WHERE CandID = :cid", 
+                array("cid"=>$values['CandID'])
             );
-        } else {
-            //insert it
-            $success = $DB->insert("participant_status", $values);
-        }
-
-        if (Utility::isErrorX($success)) {
-            return PEAR::raiseError(
-                "NDB_Form_participant_status::_process: ".$success->getMessage()
-            );
-        }
-
-	// update participant_status_history
-        $success = $DB->insert("participant_status_history", $values);
-
-        if (Utility::isErrorX($success)) {
-            return PEAR::raiseError(
-                "NDB_Form_participant_status::_process: ".$success->getMessage()
-            );
+            if ($ParticipantCount > 0) {
+                $success = $DB->update(
+                    "participant_status", 
+                    $values,
+                    array("CandID"=>$values['CandID'])
+                );
+            } else {
+                //insert it
+                $success = $DB->insert("participant_status", $values);
+            }
+            if (Utility::isErrorX($success)) {
+                return PEAR::raiseError(
+                    "NDB_Form_participant_status::_process: ".$success->getMessage()
+                );
+            }
+            // update participant_status_history
+            $success = $DB->insert("participant_status_history", $values);
+            if (Utility::isErrorX($success)) {
+                return PEAR::raiseError(
+                    "NDB_Form_participant_status::_process: ".$success->getMessage()
+                );
+            }
         }
 
         $this->tpl_data['success'] = true;
@@ -333,6 +339,12 @@ class NDB_Form_participant_status extends NDB_Form
 		);
 	$this->addBasicDate("data_changed_date", "Date of Status Change:", $dateOptions);
 
+        //temporary variable to flag if only DNA data is being modified
+        $this->addSelect(
+            'only_DNA',
+            "Only modifying DNA data",
+            array(null=> '',"yes"=>"Yes")
+        );
    
         //drop out
         $options = array(
@@ -580,8 +592,8 @@ class NDB_Form_participant_status extends NDB_Form
             $errors['dna_destroy_date_group'] = "Required";
         }
 
-	// date of status change required
-	if ($fields['data_changed_date']['Y'] == "" || $fields['data_changed_date']['M'] == "" || $fields['data_changed_date']['d'] == "") {
+	// date of status change required, unless only modifying DNA data
+	if (($fields['data_changed_date']['Y'] == "" || $fields['data_changed_date']['M'] == "" || $fields['data_changed_date']['d'] == "") && $fields['only_DNA'] != 'yes') {
             $errors['data_changed_date'] = 'Required';
 	}
         return $errors;
