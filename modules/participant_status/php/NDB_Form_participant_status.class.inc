@@ -342,7 +342,7 @@ class NDB_Form_participant_status extends NDB_Form
         //temporary variable to flag if only DNA data is being modified
         $this->addSelect(
             'only_DNA',
-            "Only modifying DNA data",
+            "Only modifying DNA data?",
             array(null=> '',"yes"=>"Yes")
         );
    

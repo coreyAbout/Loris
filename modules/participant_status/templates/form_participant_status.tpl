@@ -233,6 +233,10 @@
         </td>
     </tr>
     <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td nowrap="nowrap">&nbsp;</td>
+    </tr>
+    <tr>
         <td nowrap="nowrap">{$form.only_DNA.label}</td>
         <td nowrap="nowrap">{$form.only_DNA.html}
         </td>
