@@ -542,8 +542,8 @@ class NDB_Form_participant_status extends NDB_Form
             $errors['naproxen_withdrawal_reasons'] = "Required if Naproxen Withdrawn";
         }
 
-        // if Naproxen withdrawn, and reason is required, then the 'other' reason is required as a further explanation 
-        if (($fields['naproxen_eligibility_status'] == 'withdrawn' && !empty($fields['naproxen_withdrawal_reasons'])) && (empty($fields['naproxen_withdrawal_reasons_other_specify']) && empty($fields['naproxen_withdrawal_reasons_other_specify_status']))) {
+        // if Naproxen withdrawn, and reason is required, then the 'other' reason is required as a further explanation if '4. Other' was chosen as the reason
+        if (($fields['naproxen_eligibility_status'] == 'withdrawn' && $fields['naproxen_withdrawal_reasons'] == '4_other') && (empty($fields['naproxen_withdrawal_reasons_other_specify']) && empty($fields['naproxen_withdrawal_reasons_other_specify_status']))) {
             $errors['naproxen_withdrawal_reasons_other_specify_group'] = "Required";
         }
 
@@ -567,8 +567,8 @@ class NDB_Form_participant_status extends NDB_Form
             $errors['probucol_withdrawal_reasons'] = "Required if Probucol Withdrawn";
         }
 
-        // if Probucol withdrawn, and reason is required, then the 'other' reason is required as a further explanation
-        if (($fields['probucol_eligibility_status'] == 'withdrawn' && !empty($fields['probucol_withdrawal_reasons'])) && (empty($fields['probucol_withdrawal_reasons_other_specify']) && empty($fields['probucol_withdrawal_reasons_other_specify_status']))) {
+        // if Probucol withdrawn, and reason is required, then the 'other' reason is required as a further explanation if '4. Other' was chosen as the reason
+        if (($fields['probucol_eligibility_status'] == 'withdrawn' && $fields['probucol_withdrawal_reasons'] == '4_other') && (empty($fields['probucol_withdrawal_reasons_other_specify']) && empty($fields['probucol_withdrawal_reasons_other_specify_status']))) {
             $errors['probucol_withdrawal_reasons_other_specify_group'] = "Required";
         }
 
