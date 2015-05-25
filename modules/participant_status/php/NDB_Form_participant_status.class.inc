@@ -397,7 +397,7 @@ class NDB_Form_participant_status extends NDB_Form
         $DNAYesNo = array("null"=>"","yes"=>"Yes","no"=>"No","not_answered"=>"Not Answered");
         $this->addSelect(
             'dna_collected_eligibility',
-            "If status is Ineligible, was DNA collected at the Eligibility Visit?",
+            "If status is Ineligible or Withdrawn before enrolment visit, was DNA collected at the Eligibility Visit?",
             $DNAYesNo
         );
         $this->addSelect(
@@ -580,6 +580,23 @@ class NDB_Form_participant_status extends NDB_Form
         // if Global Ineligible, must answer if DNA collected at Eligibility Visit
         if ($fields['participant_status'] == 4 && $fields['dna_collected_eligibility'] == 'null') {
             $errors['dna_collected_eligibility'] = "Required if Global Status is Ineligible";
+        }
+
+        // if Global Withdrawn, and no PREEN00(meaning they withdrew before EN), must answer if DNA collected at Eligibility Visit
+        $DB =& Database::singleton();
+        $visit_labels = $DB->pselect(
+            "SELECT visit_label FROM session WHERE CandID = :cid",
+            array('cid'=>$this->identifier)
+        );
+        $tmpflag = true;
+        foreach ($visit_labels as $key => $value) {
+            if ($value['visit_label'] == 'PREEN00' || $value['visit_label'] == 'NAPEN00') {
+                $tmpflag = false;
+            }
+        }
+
+        if ($fields['participant_status'] == 5 && $fields['dna_collected_eligibility'] == 'null' && $tmpflag) {
+            $errors['dna_collected_eligibility'] = "Required if Global Status is Withdrawn before enrolment visit";
         }
 
         // if Global Excluded or Withdrawn, must answer if request to destroy DNA
