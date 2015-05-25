@@ -600,7 +600,7 @@ class NDB_Form_participant_status extends NDB_Form
         }
 
         // if Global Excluded or Withdrawn, must answer if request to destroy DNA
-        if (($fields['participant_status'] == 3 || $fields['participant_status'] == 5) && $fields['dna_request_destroy'] == 'null') {
+        if (($fields['participant_status'] == 3 || $fields['participant_status'] == 5) && $fields['dna_request_destroy'] == 'null' && !$tmpflag) {
             $errors['dna_request_destroy'] = "Required if Global Status is Excluded or Withdrawn";
         }
 
