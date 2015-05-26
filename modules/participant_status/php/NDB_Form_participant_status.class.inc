@@ -150,7 +150,11 @@ class NDB_Form_participant_status extends NDB_Form
 		$values['participant_status'] = 6;
 	}
 
-        $values['dna_destroy_date'] = sprintf("%04d-%02d-%02d", $values['dna_destroy_date']['Y'], $values['dna_destroy_date']['M'], $values['dna_destroy_date']['d']);
+        if ($values['dna_collected_eligibility'] == 'no' || $values['dna_request_destroy'] == 'no') {
+                $values['dna_destroy_date'] = null;
+        } else {
+                $values['dna_destroy_date'] = sprintf("%04d-%02d-%02d", $values['dna_destroy_date']['Y'], $values['dna_destroy_date']['M'], $values['dna_destroy_date']['d']);
+        }
         // save the DNA values
         //if it exists update it
         $DNA_values['dna_collected_eligibility'] = $values['dna_collected_eligibility'];
@@ -189,6 +193,8 @@ class NDB_Form_participant_status extends NDB_Form
                 );
             }
         } else {
+            //unset only_DNA flag
+            unset($values['only_DNA']);
             // save the participant status values
             //if it exists update it
             $ParticipantCount = $DB->pselectOne(
