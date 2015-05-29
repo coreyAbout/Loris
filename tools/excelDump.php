@@ -62,7 +62,8 @@ function MapSubprojectID(&$results) {
 * Start with all the instrument tables
 */
 //Get the names of all instrument tables
-$query = "select * from test_names order by Test_name";
+//excluding tsi because data is not complete, therefore should not be analyzed
+$query = "select * from test_names where Test_name!='tsi' order by Test_name";
 //$query = "select * from test_names where Test_name like 'a%' order by Test_name";  //for rapid testing
 $DB->select($query, $instruments);
 if (PEAR::isError($instruments)) {
