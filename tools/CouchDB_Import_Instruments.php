@@ -101,7 +101,8 @@ class CouchDBInstrumentImporter {
     }
 
     function GetInstruments() {
-        return Utility::getAllInstruments();
+        //excluding tsi because data is not complete, therefore should not be analyzed
+        return Utility::getAllInstrumentsExcept('tsi');
     }
 
     function createRunLog($results) {
