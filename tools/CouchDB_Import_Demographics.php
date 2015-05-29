@@ -239,8 +239,24 @@ class CouchDBDemographicsImporter {
             'Type' => "varchar(255)"
         ),
         'is_destroyed' => array(
-            'Description' => 'is_destroyed',
+            'Description' => 'is destroyed',
             'Type' => "varchar(255)"
+        ),
+        'dna_collected_eligibility' => array(
+            'Description' => 'DNA collected at Eligibility',
+            'Type' => "enum('yes','no','not_answered')"
+        ),
+        'dna_request_destroy' => array(
+            'Description' => 'DNA destruction request',
+            'Type' => "enum('yes','no','not_answered')"
+        ),
+        'dna_destroy_date' => array(
+            'Description' => 'DNA destruction date',
+            'Type' => "date"
+        ),
+        'dna_destroy_date_status' => array(
+            'Description' => 'DNA destruction date status',
+            'Type' => "enum('not_answered')"
         ),
         'scan_done' => array(
             'Description' => 'Scan done',
