@@ -19,3 +19,8 @@ Edit Participant Status
 {else}
 Edit Family Information
 {/if}
+{if $isDataEntryPerson}
+<button class="btn btn-primary" onclick="location.href='main.php?test_name=drug_compliance&candID={$candID}&identifier={$candID}'">Drug Compliance</button>
+{else}
+Edit Drug Compliance
+{/if}
