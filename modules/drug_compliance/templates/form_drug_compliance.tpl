@@ -82,9 +82,9 @@
         <td nowrap="nowrap"><b>Pills Issued</b></td>
         <td nowrap="nowrap"><b>Date Returned</b></td>
         <td nowrap="nowrap"><b>Pills Returned</b></td>
-        <td nowrap="nowrap"><b>Visit Label</b></td>
         <td nowrap="nowrap"><b>Compliance</b></td>
         <td nowrap="nowrap"><b>Behavioral Compliance</b></td>
+        <td nowrap="nowrap"><b>Visit Label</b></td>
         <td nowrap="nowrap"><b>Data Entry Staff</b></td>
     </tr>
 
@@ -109,9 +109,9 @@
         <td nowrap="nowrap"><b>Pills Issued</b></td>
         <td nowrap="nowrap"><b>Date Returned</b></td>
         <td nowrap="nowrap"><b>Pills Returned</b></td>
-        <td nowrap="nowrap"><b>Visit Label</b></td>
         <td nowrap="nowrap"><b>Compliance</b></td>
         <td nowrap="nowrap"><b>Behavioral Compliance</b></td>
+        <td nowrap="nowrap"><b>Visit Label</b></td>
         <td nowrap="nowrap"><b>Data Entry Staff</b></td>
     </tr>
 
