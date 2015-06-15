@@ -379,10 +379,10 @@ class NDB_Form_drug_compliance extends NDB_Form
                 array('candid'=>$this->identifier)
                 );
 
-        $result = $DB->pselect("SELECT drug_issued_date, pills_issued, drug_returned_date, pills_returned, compliance_evaluation, behavioral_compliance_evaluation, visit_label, entry_staff FROM drug_compliance WHERE CandID=:cid AND drug=:drug", array('cid'=>$this->identifier,'drug'=>'naproxen'));
+        $result = $DB->pselect("SELECT drug_issued_date, pills_issued, drug_returned_date, pills_returned, compliance_evaluation, behavioral_compliance_evaluation, visit_label, entry_staff FROM drug_compliance WHERE CandID=:cid AND drug=:drug ORDER BY drug_issued_date asc", array('cid'=>$this->identifier,'drug'=>'naproxen'));
         $this->tpl_data['history_list_naproxen'] = $result;
 
-        $result = $DB->pselect("SELECT drug_issued_date, pills_issued, drug_returned_date, pills_returned, compliance_evaluation, behavioral_compliance_evaluation, visit_label, entry_staff FROM drug_compliance WHERE CandID=:cid AND drug=:drug", array('cid'=>$this->identifier,'drug'=>'probucol'));
+        $result = $DB->pselect("SELECT drug_issued_date, pills_issued, drug_returned_date, pills_returned, compliance_evaluation, behavioral_compliance_evaluation, visit_label, entry_staff FROM drug_compliance WHERE CandID=:cid AND drug=:drug ORDER BY drug_issued_date asc", array('cid'=>$this->identifier,'drug'=>'probucol'));
         $this->tpl_data['history_list_probucol'] = $result;
 
     }
