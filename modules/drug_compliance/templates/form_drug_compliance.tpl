@@ -22,21 +22,46 @@
         </td>
     </tr>
     <tr>
-        <td nowrap="nowrap">{$form.related_participant_status.label}</td>
-        <td nowrap="nowrap">{$form.related_participant_status.html}
-        {if $form.errors.related_participant_status}
-            <span class='error'>{$form.errors.related_participant_status}</span>
+        <td nowrap="nowrap">{$form.drug_issued_date_group.label}</td>
+        <td nowrap="nowrap">{$form.drug_issued_date_group.html}
+        {if $form.drug_issued_date_group.error}
+            <span class='error'>{$form.drug_issued_date_group.error}</span>
         {/if}
         </td>
     </tr>
     <tr>
-        <td nowrap="nowrap">{$form.related_participant_status_specify.label}</td>
-        <td nowrap="nowrap">{$form.related_participant_status_specify.html}
-        {if $form.related_participant_status_specify.error}
-            <span class='error'>{$form.related_participant_status_specify.error}</span>
+        <td nowrap="nowrap">{$form.pills_issued_group.label}</td>
+        <td nowrap="nowrap">{$form.pills_issued_group.html}
+        {if $form.pills_issued_group.error}
+            <span class='error'>{$form.pills_issued_group.error}</span>
         {/if}
         </td>
     </tr>
+    <tr>
+        <td nowrap="nowrap">{$form.drug_returned_date_group.label}</td>
+        <td nowrap="nowrap">{$form.drug_returned_date_group.html}
+        {if $form.drug_returned_date_group.error}
+            <span class='error'>{$form.drug_returned_date_group.error}</span>
+        {/if}
+        </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">{$form.pills_returned_group.label}</td>
+        <td nowrap="nowrap">{$form.pills_returned_group.html}
+        {if $form.pills_returned_group.error}
+            <span class='error'>{$form.pills_returned_group.error}</span>
+        {/if}
+        </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">{$form.visit_label.label}</td>
+        <td nowrap="nowrap">{$form.visit_label.html}
+        {if $form.errors.visit_label}
+            <span class='error'>{$form.errors.visit_label}</span>
+        {/if}
+        </td>
+    </tr>
+
 
         <tr>
         <td nowrap="nowrap">&nbsp;</td>
