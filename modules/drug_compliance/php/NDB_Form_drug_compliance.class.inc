@@ -78,60 +78,18 @@ class NDB_Form_drug_compliance extends NDB_Form
             $values['entry_staff'] = $id;
         }
 
-        //Convert select multiple elements into database storable values
-        if(!empty($this->multipleSelect)){
-            foreach($this->multipleSelect AS $elname){
-                if(isset($values[$elname]) && is_array($values[$elname])){
-                    $values[$elname]=implode("{@}",$values[$elname]);
-                }
-            }
-        }
-
-        $values['related_participant_CandID'] = $DB->pselectOne(
-            'SELECT CandID FROM candidate where PSCID = :related_participant_PSCID',
-            array('related_participant_PSCID'=>$values['related_participant_PSCID'])
-        );
-
-        if ($values['related_participant_status'] == 'sibling' || $values['related_participant_status'] == 'parent' || $values['related_participant_status'] == 'child') {
-            $values['related_participant_status_degree'] = '1st degree relative';
-        } elseif ($values['related_participant_status'] == 'aunt/uncle' || $values['related_participant_status'] == 'niece/nephew' || $values['related_participant_status'] == 'half-sibling') {
-            $values['related_participant_status_degree'] = '2nd degree relative';
-        } elseif ($values['related_participant_status'] == 'first-cousin') {
-            $values['related_participant_status_degree'] = '3rd degree relative';
+        if ($values['drug_issued_date_status'] == 'not_answered' ) {
+            $values['drug_issued_date'] = null;
         } else {
-            $values['related_participant_status_degree'] = 'other';
-        } 
-
-        // save the values
-        //insert it
-        $success = $DB->insert("drug_compliance", $values);
-
-        if (Utility::isErrorX($success)) {
-            return PEAR::raiseError(
-                "NDB_Form_drug_compliance::_process: ".$success->getMessage()
-            );
+            $values['drug_issued_date'] = sprintf("%04d-%02d-%02d", $values['drug_issued_date']['Y'], $values['drug_issued_date']['M'], $values['drug_issued_date']['d']);
+        }
+        if ($values['drug_returned_date_status'] == 'not_answered' ) {
+            $values['drug_returned_date'] = null;
+        } else {
+            $values['drug_returned_date'] = sprintf("%04d-%02d-%02d", $values['drug_returned_date']['Y'], $values['drug_returned_date']['M'], $values['drug_returned_date']['d']);
         }
 
-
-        // automatically populate/save related participant's information
-        if ($values['related_participant_status'] == 'parent') {
-            $values['related_participant_status'] = 'child';
-        } elseif ($values['related_participant_status'] == 'child') {
-            $values['related_participant_status'] = 'parent';
-        } elseif ($values['related_participant_status'] == 'aunt/uncle') {
-            $values['related_participant_status'] = 'niece/nephew';
-        } elseif ($values['related_participant_status'] == 'niece/nephew') {
-            $values['related_participant_status'] == 'aunt/uncle';
-        }
-
-        $tmp = $values['CandID'];
-        $values['CandID'] = $values['related_participant_CandID'];
-        $values['related_participant_CandID'] = $tmp;
-        $values['related_participant_PSCID'] = $DB->pselectOne(
-            'SELECT PSCID FROM candidate where CandID = :related_participant_CandID',
-            array('related_participant_CandID'=>$values['related_participant_CandID'])
-        );
-
+        // save the values by inserting
         $success = $DB->insert("drug_compliance", $values);
 
         if (Utility::isErrorX($success)) {
@@ -181,9 +139,137 @@ class NDB_Form_drug_compliance extends NDB_Form
             $drug
         );
 
+        $config =& NDB_Config::singleton();
+        $dateOptions = array(
+        'language' => 'en',
+        'format'   => 'YMd',
+        'minYear'  => $config->getSetting('startYear'),
+        'maxYear'  => $config->getSetting('endYear'),
+        'addEmptyOption' => true,
+        'emptyOptionValue' => null
+                );
+
+        $group[] = $this->createDate(
+            "drug_issued_date",
+            null,
+            $dateOptions,
+            array(
+             'class' => 'form-control input-sm '."drug_issued_date",
+             'style' => 'max-width:25%; display:inline-block;',
+            )
+        );
+        $group[] = $this->createSelect(
+            "drug_issued_date_status",
+            null,
+            array(
+             null           => "",
+             'not_answered' => "Not Answered",
+            ),
+            array(
+             'class' => 'form-control input-sm not-answered',
+             'style' => 'max-width:25%; display:inline-block;',
+            )
+        );
+        $this->addGroup(
+            $group,
+            "drug_issued_date_group",
+            "Date Issued",
+            "",
+            false
+        );
+        unset($group);
+
+        $group[] = $this->createText(
+            "pills_issued",
+            null,
+            array(
+             'class' => 'form-control input-sm '."pills_issued",
+             'style' => 'max-width:25%; display:inline-block;',
+            )
+        );
+        $group[] = $this->createSelect(
+            "pills_issued_status",
+            null,
+            array(
+             null           => "",
+             'not_answered' => "Not Answered",
+            ),
+            array(
+             'class' => 'form-control input-sm not-answered',
+             'style' => 'max-width:25%; display:inline-block;',
+            )
+        );
+        $this->addGroup(
+            $group,
+            "pills_issued_group",
+            "Number of Pills Issued",
+            "",
+            false
+        );
+        unset($group);
+
+        $group[] = $this->createDate(
+            "drug_returned_date",
+            null,
+            $dateOptions,
+            array(
+             'class' => 'form-control input-sm '."drug_returned_date",
+             'style' => 'max-width:25%; display:inline-block;',
+            )
+        );
+        $group[] = $this->createSelect(
+            "drug_returned_date_status",
+            null,
+            array(
+             null           => "",
+             'not_answered' => "Not Answered",
+            ),
+            array(
+             'class' => 'form-control input-sm not-answered',
+             'style' => 'max-width:25%; display:inline-block;',
+            )
+        );
+        $this->addGroup(
+            $group,
+            "drug_returned_date_group",
+            "Date Returned",
+            "",
+            false
+        );
+        unset($group);
+
+        $group[] = $this->createText(
+            "pills_returned",
+            null,
+            array(
+             'class' => 'form-control input-sm '."pills_returned",
+             'style' => 'max-width:25%; display:inline-block;',
+            )
+        );
+        $group[] = $this->createSelect(
+            "pills_returned_status",
+            null,
+            array(
+             null           => "",
+             'not_answered' => "Not Answered",
+            ),
+            array(
+             'class' => 'form-control input-sm not-answered',
+             'style' => 'max-width:25%; display:inline-block;',
+            )
+        );
+        $this->addGroup(
+            $group,
+            "pills_returned_group",
+            "Number of Pills Returned",
+            "",
+            false
+        );
+        unset($group);
+
         $this->addBasicText(
             'visit_label',
-            'Visit Label, if applicable:'
+            'Visit Label, if applicable'
         );
 
         $this->drug_compliance_details();
@@ -202,10 +288,10 @@ class NDB_Form_drug_compliance extends NDB_Form
                 array('candid'=>$this->identifier)
                 );
 
-        $result = $DB->pselect("SELECT * FROM drug_compliance WHERE CandID=:cid AND drug=:drug", array('cid'=>$this->identifier,'drug'=>'naproxen'));
+        $result = $DB->pselect("SELECT drug_issued_date, pills_issued, drug_returned_date, pills_returned, compliance_evaluation, behavioral_compliance_evaluation, visit_label, entry_staff FROM drug_compliance WHERE CandID=:cid AND drug=:drug", array('cid'=>$this->identifier,'drug'=>'naproxen'));
         $this->tpl_data['history_list_naproxen'] = $result;
 
-        $result = $DB->pselect("SELECT * FROM drug_compliance WHERE CandID=:cid AND drug=:drug", array('cid'=>$this->identifier,'drug'=>'probucol'));
+        $result = $DB->pselect("SELECT drug_issued_date, pills_issued, drug_returned_date, pills_returned, compliance_evaluation, behavioral_compliance_evaluation, visit_label, entry_staff FROM drug_compliance WHERE CandID=:cid AND drug=:drug", array('cid'=>$this->identifier,'drug'=>'probucol'));
         $this->tpl_data['history_list_probucol'] = $result;
 
     }
@@ -224,25 +310,26 @@ class NDB_Form_drug_compliance extends NDB_Form
     {
         $errors=array();
 
-        if ($fields['related_participant_PSCID'] == null) {
-            $errors['related_participant_PSCID'] = 'Required!';
+        if ($fields['drug'] == null) {
+            $errors['drug'] = 'Required!';
         }
-        if ($fields['related_participant_status'] == null) {
-            $errors['related_participant_status'] = 'Required!';
+        if (($fields['drug_issued_date_status'] == null) && ($fields['drug_issued_date']['Y'] == "" || $fields['drug_issued_date']['M'] == "" || $fields['drug_issued_date']['d'] == "")) {
+            $errors['drug_issued_date_group'] = 'Required!';
         }
-
-        $DB =& Database::singleton();
-        $pscid = $DB->pselectOne(
-            'SELECT PSCID FROM candidate where CandID = :Candid',
-            array('Candid'=>$this->identifier)
-        );
-        if ($fields['related_participant_PSCID'] == $pscid) {
-            $errors['related_participant_PSCID'] = "Can't select the same PSCID!";
+        if ($fields['pills_issued'] == null && $fields['pills_issued_status'] == null) {
+            $errors['pills_issued_group'] = 'Required!';
         }
-
-        // if related participant status is 'other', related_participant_status_specify must be populated
-        if ($fields['related_participant_status'] == "other" && $fields['related_participant_status_specify'] == null) {
-            $errors['related_participant_status_specify'] = 'Required if Related Participant Status is "Other"';
+        if ($fields['pills_issued_status'] == null && !is_numeric($fields['pills_issued']) && $fields['pills_issued'] != null) {
+            $errors['pills_issued_group'] = 'Numeric values only!';
+        }
+        if (($fields['drug_returned_date_status'] == null) && ($fields['drug_returned_date']['Y'] == "" || $fields['drug_returned_date']['M'] == "" || $fields['drug_returned_date']['d'] == "")) {
+            $errors['drug_returned_date_group'] = 'Required!';
+        }
+        if ($fields['pills_returned'] == null && $fields['pills_returned_status'] == null) {
+            $errors['pills_returned_group'] = 'Required!';
+        }
+        if ($fields['pills_returned_status'] == null && !is_numeric($fields['pills_returned']) && $fields['pills_returned'] != null) {
+            $errors['pills_returned_group'] = 'Numeric values only!';
         }
 
         return $errors;
