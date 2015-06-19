@@ -150,7 +150,7 @@ class NDB_Form_participant_status extends NDB_Form
 		$values['participant_status'] = 6;
 	}
 
-        if ($values['dna_collected_eligibility'] == 'no' || $values['dna_request_destroy'] == 'no') {
+        if ($values['dna_collected_eligibility'] == 'no' || $values['dna_request_destroy'] == 'no' || $values['dna_destroy_date_status'] == 'not_answered') {
                 $values['dna_destroy_date'] = null;
         } else {
                 $values['dna_destroy_date'] = sprintf("%04d-%02d-%02d", $values['dna_destroy_date']['Y'], $values['dna_destroy_date']['M'], $values['dna_destroy_date']['d']);
