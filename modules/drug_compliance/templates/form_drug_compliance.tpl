@@ -61,7 +61,18 @@
         {/if}
         </td>
     </tr>
-
+    <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        </td>
+    </tr>
+    <tr>
+        <td nowrap="nowrap">{$form.comments_group.label}</td>
+        <td nowrap="nowrap">{$form.comments_group.html}
+        {if $form.comments_group.error}
+            <span class='error'>{$form.comments_group.error}</span>
+        {/if}
+        </td>
+    </tr>
 
         <tr>
         <td nowrap="nowrap">&nbsp;</td>
