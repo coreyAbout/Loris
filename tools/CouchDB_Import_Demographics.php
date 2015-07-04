@@ -319,7 +319,7 @@ class CouchDBDemographicsImporter {
             'Type' => "varchar(255)"
         ),
         'drug_compliance_comments_status' => array(
-            'Description' => '',
+            'Description' => 'Drug Compliance comments status',
             'Type' => "enum('not_answered')"
         ),
         'scan_done' => array(
