@@ -1,144 +1,161 @@
 <br />
 <form method="post" name="drug_compliance" id="drug_compliance">
-<table class="std">
-    <tr><th colspan="9">Drug Compliance</th></tr>
 
-    <tr>
-        <td nowrap="nowrap">{$form.pscid.label}</td>
-        <td nowrap="nowrap">{$pscid}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.entry_staff.label}</td>
-        <td nowrap="nowrap">{$entry_staff}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.drug.label}</td>
-        <td nowrap="nowrap">{$form.drug.html}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Drug Compliance
+    </div>
+    <div class="panel-body">
+        <div class="row">
+                <label class="col-sm-2">{$form.pscid.label}</label>
+                <div class="col-sm-10">
+                    {$pscid}
+                </div>
+        </div>
+        <div class="row">
+                <label class="col-sm-2">{$form.entry_staff.label}</label>
+                <div class="col-sm-10">
+                    {$entry_staff}
+                </div>
+        </div>
+        <div class="row">
+                <label class="col-sm-2">{$form.drug.label}</label>
+                <div class="col-sm-10">
+                    {$form.drug.html}
         {if $form.errors.drug}
             <span class='error'>{$form.errors.drug}</span>
         {/if}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.drug_issued_date_group.label}</td>
-        <td nowrap="nowrap">{$form.drug_issued_date_group.html}
+                </div>
+        </div>
+        <div class="row">
+                <label class="col-sm-2">{$form.drug_issued_date_group.label}</label>
+                <div class="col-sm-10">
+                    {$form.drug_issued_date_group.html}
         {if $form.drug_issued_date_group.error}
             <span class='error'>{$form.drug_issued_date_group.error}</span>
         {/if}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.pills_issued_group.label}</td>
-        <td nowrap="nowrap">{$form.pills_issued_group.html}
+                </div>
+        </div>
+        <div class="row">
+                <label class="col-sm-2">{$form.pills_issued_group.label}</label>
+                <div class="col-sm-10">
+                    {$form.pills_issued_group.html}
         {if $form.pills_issued_group.error}
             <span class='error'>{$form.pills_issued_group.error}</span>
         {/if}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.drug_returned_date_group.label}</td>
-        <td nowrap="nowrap">{$form.drug_returned_date_group.html}
+                </div>
+        </div>
+        <div class="row">
+                <label class="col-sm-2">{$form.drug_returned_date_group.label}</label>
+                <div class="col-sm-10">
+                    {$form.drug_returned_date_group.html}
         {if $form.drug_returned_date_group.error}
             <span class='error'>{$form.drug_returned_date_group.error}</span>
         {/if}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.pills_returned_group.label}</td>
-        <td nowrap="nowrap">{$form.pills_returned_group.html}
+                </div>
+        </div>
+        <div class="row">
+                <label class="col-sm-2">{$form.pills_returned_group.label}</label>
+                <div class="col-sm-10">
+                    {$form.pills_returned_group.html}
         {if $form.pills_returned_group.error}
             <span class='error'>{$form.pills_returned_group.error}</span>
         {/if}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.visit_label.label}</td>
-        <td nowrap="nowrap">{$form.visit_label.html}
+                </div>
+        </div>
+        <div class="row">
+                <label class="col-sm-2">{$form.visit_label.label}</label>
+                <div class="col-sm-10">
+                    {$form.visit_label.html}
         {if $form.errors.visit_label}
             <span class='error'>{$form.errors.visit_label}</span>
         {/if}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">&nbsp;</td>
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.comments_group.label}</td>
-        <td nowrap="nowrap">{$form.comments_group.html}
-        {if $form.comments_group.error}
+                </div>
+        </div>
+<br>
+        <div class="row">
+                <label class="col-sm-2">{$form.comments_group.label}</label>
+                <div class="col-sm-10">
+                    {$form.comments_group.html}
+        {if $form.coments_group.error}
             <span class='error'>{$form.comments_group.error}</span>
         {/if}
-        </td>
-    </tr>
+                </div>
+        </div>
 
-        <tr>
-        <td nowrap="nowrap">&nbsp;</td>
-                <td nowrap="nowrap" colspan="2">
     {if not $success}
-        <input class="button" name="fire_away" value="Save" type="submit" />
+		<input class="btn btn-sm btn-primary col-sm-offset-3" name="fire_away" value="Save" type="submit" />
     {/if}
-        <input class="button" onclick="location.href='main.php?test_name=timepoint_list&candID={$candID}'" value="Return to profile" type="button" />
-        </td>
-        </tr>
+		<input class="btn btn-sm btn-primary" onclick="location.href='main.php?test_name=timepoint_list&candID={$candID}'" value="Return to profile" type="button" />
 
-<tr>
-<td colspan="2">
-<table class="fancytable" width="100%">
-    <tr><th colspan="10">Naproxen Details</th></tr>
-    <tr>
-        <td nowrap="nowrap"><b>Date Issued</b></td>
-        <td nowrap="nowrap"><b>Pills Issued</b></td>
-        <td nowrap="nowrap"><b>Date Returned</b></td>
-        <td nowrap="nowrap"><b>Pills Returned</b></td>
-        <td nowrap="nowrap"><b>Compliance</b></td>
-        <td nowrap="nowrap"><b>Behavioral Compliance</b></td>
-        <td nowrap="nowrap"><b>Visit Label</b></td>
-        <td nowrap="nowrap"><b>Data Entry Staff</b></td>
-    </tr>
+</div>
+<br>
+        <div class="panel-heading">
+            Naproxen Details
+        </div>
+    <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <td><b>Date Issued</b></td>
+                <td><b>Pills Issued</b></td>
+                <td><b>Date Returned</b></td>
+                <td><b>Pills Returned</b></td>
+                <td><b>Compliance</b></td>
+                <td><b>Behavioral Compliance</b></td>
+                <td><b>Visit Label</b></td>
+                <td><b>Data Entry Staff</b></td>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$history_list_naproxen item=row}
+                <tr>
+                    {foreach from=$row item=value key=name}
+                        <td>{$value}</td>
+                    {/foreach}
+                </tr>
+            {/foreach}
+        </tbody>
+    </table>
+    </div>
+<br>
+        <div class="panel-heading">
+            Probucol Details
+        </div>
+    <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <td><b>Date Issued</b></td>
+                <td><b>Pills Issued</b></td>
+                <td><b>Date Returned</b></td>
+                <td><b>Pills Returned</b></td>
+                <td><b>Compliance</b></td>
+                <td><b>Behavioral Compliance</b></td>
+                <td><b>Visit Label</b></td>
+                <td><b>Data Entry Staff</b></td>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$history_list_probucol item=row}
+                <tr>
+                    {foreach from=$row item=value key=name}
+                        <td>{$value}</td>
+                    {/foreach}
+                </tr>
+            {/foreach}
+        </tbody>
+    </table>
+    </div>
 
-    {foreach from=$history_list_naproxen item=row}
-        <tr>
-        {foreach from=$row item=value key=name}
-	    <td>{$value}</td>
-        {/foreach}
-        </tr>
-    {/foreach}
 
-</table>
-</td>
-</tr>
 
-<tr>
-<td colspan="2">
-<table class="fancytable" width="100%">
-    <tr><th colspan="10">Probucol Details</th></tr>
-    <tr>
-        <td nowrap="nowrap"><b>Date Issued</b></td>
-        <td nowrap="nowrap"><b>Pills Issued</b></td>
-        <td nowrap="nowrap"><b>Date Returned</b></td>
-        <td nowrap="nowrap"><b>Pills Returned</b></td>
-        <td nowrap="nowrap"><b>Compliance</b></td>
-        <td nowrap="nowrap"><b>Behavioral Compliance</b></td>
-        <td nowrap="nowrap"><b>Visit Label</b></td>
-        <td nowrap="nowrap"><b>Data Entry Staff</b></td>
-    </tr>
 
-    {foreach from=$history_list_probucol item=row}
-        <tr>
-        {foreach from=$row item=value key=name}
-            <td>{$value}</td>
-        {/foreach}
-        </tr>
-    {/foreach}
 
-</table>
-</td>
-</tr>
 
-</table>
+</div>
+
+
 {$form.hidden}
 </form>
 
