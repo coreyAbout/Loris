@@ -27,6 +27,7 @@
                         {/if}
                 </div>
         </div>
+        <br>
         <div class="row">
                 <label class="col-sm-2">{$form.drug_issued_date_group.label}</label>
                 <div class="col-sm-8">
@@ -36,6 +37,7 @@
                         {/if}
                 </div>
         </div>
+        <br>
         <div class="row">
                 <label class="col-sm-2">{$form.pills_issued_group.label}</label>
                 <div class="col-sm-8">
@@ -45,6 +47,7 @@
                         {/if}
                 </div>
         </div>
+        <br>
         <div class="row">
                 <label class="col-sm-2">{$form.drug_returned_date_group.label}</label>
                 <div class="col-sm-8">
@@ -54,6 +57,7 @@
                         {/if}
                 </div>
         </div>
+        <br>
         <div class="row">
                 <label class="col-sm-2">{$form.pills_returned_group.label}</label>
                 <div class="col-sm-8">
@@ -63,6 +67,7 @@
                         {/if}
                 </div>
         </div>
+        <br>
         <div class="row">
                 <label class="col-sm-2">{$form.visit_label.label}</label>
                 <div class="col-sm-8">
