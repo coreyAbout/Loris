@@ -12,9 +12,6 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.txt GPLv3
  * @link     https://www.github.com/aces/Loris/
  */
-require_once "PEAR.php";
-require_once "HTML/QuickForm.php";
-require_once 'HTML/QuickForm/Renderer/Default.php';
 
 /**
  * Base class that contains a number of wrapper functions for adding
@@ -26,7 +23,7 @@ require_once 'HTML/QuickForm/Renderer/Default.php';
  * @license  http://www.gnu.org/licenses/gpl-3.0.txt GPLv3
  * @link     https://www.github.com/aces/Loris/
  */
-class NDB_Page extends PEAR
+class NDB_Page
 {
     /**
      * The name of the test_name being accessed
@@ -40,6 +37,7 @@ class NDB_Page extends PEAR
 
     /**
      * Reference to the HTML QuickForm
+     * @var LorisForm
      */
     var $form;
 
@@ -70,7 +68,7 @@ class NDB_Page extends PEAR
      */
     function _setupPage($name, $page, $identifier, $commentID, $formname)
     {
-        $this->form       = new HTML_QuickForm($formname);
+        $this->form       = new LorisForm($formname);
         $this->name       = $name;
         $this->page       = $page;
         $this->identifier = $identifier;
@@ -157,7 +155,7 @@ class NDB_Page extends PEAR
 
 
     /**
-     * Adds a text element to the current page with no accompagnying
+     * Adds a text element to the current page with no accompanying
      * not answered option
      *
      * @param string $field   The name of the text element to add
@@ -173,7 +171,7 @@ class NDB_Page extends PEAR
     }
 
     /**
-     * Adds a text area to the current page with no accompagnying not answered
+     * Adds a text area to the current page with no accompanying not answered
      * option.
      *
      * @param string $field          The name of the text area to add
@@ -195,7 +193,7 @@ class NDB_Page extends PEAR
     }
 
     /**
-     * Adds a date field (without an accompagnying not answered option) to the
+     * Adds a date field (without an accompanying not answered option) to the
      * current page.
      *
      * @param string $field   The name of the date field
@@ -424,22 +422,13 @@ class NDB_Page extends PEAR
      */
     function createCheckbox($field, $label, $options=null, $closer='</label>')
     {
-        $group   = array();
-        $group[] = $this->form->createElement('static', null, null, '<label>');
-        $group[] = $this->form->createElement(
-            'advcheckbox',
+        return $this->form->createElement(
+            "advcheckbox",
             $field,
-            null,
-            null,
-            $options
+            $label,
+            $options,
+            array()
         );
-        $group[] = $this->form->createElement(
-            'static',
-            'checkLabel',
-            null,
-            $label.$closer
-        );
-        return $group;
     }
 
     /**
@@ -490,12 +479,11 @@ class NDB_Page extends PEAR
         $this->form->applyFilter('__ALL__', 'trim');
 
         // display the HTML_Quickform object
-        $smarty   = new Smarty_neurodb($this->name);
-        $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
-        $this->form->accept($renderer);
+        $smarty = new Smarty_neurodb($this->name);
+
         $smarty->ModuleName = $this->name;
 
-        $smarty->assign('form', $renderer->toArray());
+        $smarty->assign('form', $this->form->toArray());
         $smarty->assign($this->tpl_data);
         $html = $smarty->fetch("form_$this->template.tpl");
         return $html;

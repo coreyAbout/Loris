@@ -17,16 +17,6 @@
 require_once 'NDB_Menu_Filter.class.inc';
 require_once 'NDB_Config.class.inc';
 
-/**
- * Provides the PHP code for the menu filter for the imaging browser
- *
- *  @category   Behavioural
- *  @package    Main
- *  @subpackage Imaging
- *  @author     Dave MacFarlane <driusan@bic.mni.mcgill.ca>
- *  @license    @GPLv3
- *  @link       https://www.github.com/aces/Loris-Trunk/
- */
 class NDB_Menu_Filter_Imaging_Browser extends NDB_Menu_Filter
 {
     /**
@@ -101,7 +91,7 @@ class NDB_Menu_Filter_Imaging_Browser extends NDB_Menu_Filter
         $PendingFailSubquery = "
             CASE s.MRIQCStatus
                 WHEN 'Fail' THEN
-                    IF(s.MRIQCPending, 'Pending Fail', 'Fail')
+                    IF(s.MRIQCPending='Y', 'Pending Fail', 'Fail')
                 WHEN 'Pass' THEN
                     IF(s.MRIQCPending='Y', 'Pending Pass', 'Pass')
                 ELSE s.MRIQCStatus
@@ -113,7 +103,7 @@ class NDB_Menu_Filter_Imaging_Browser extends NDB_Menu_Filter
             JOIN candidate c ON (c.CandID=s.CandID) 
             JOIN files f ON (f.SessionID=s.ID) 
             LEFT JOIN files_qcstatus fqc ON (fqc.FileID=f.FileID) 
-            JOIN mri_acquisition_dates md ON (md.SessionID=s.ID) 
+            JOIN mri_acquisition_dates md ON (md.SessionID=s.ID)
             WHERE 
             f.PendingStaging=0 AND 
             f.FileType='mnc' AND 
@@ -163,7 +153,8 @@ class NDB_Menu_Filter_Imaging_Browser extends NDB_Menu_Filter
             'c.ProjectID',
             'c.CenterID',
             's.MRIQCStatus',
-            'pending'
+            'pending',
+            'f.AcquisitionProtocolID'
         );
 
         $this->formToFilter = array(
@@ -173,9 +164,10 @@ class NDB_Menu_Filter_Imaging_Browser extends NDB_Menu_Filter
             'ProjectID' => 'c.ProjectID',
             'SiteID' => 'c.CenterID',
             'VisitQCStatus' => 's.MRIQCStatus',
-            'Pending' => 'pending'
+            'Pending' => 'pending',
+            'Scan_type'=>'f.AcquisitionProtocolID'
         );
-        $this->EqualityFilters = array();
+        $this->EqualityFilters = array('f.AcquisitionProtocolID');
         $this->searchKeyword    = array();
     }
 
@@ -221,10 +213,17 @@ class NDB_Menu_Filter_Imaging_Browser extends NDB_Menu_Filter
         $this->addBasicText(
             'DCCID', 'DCCID', array('size' => 10, "maxlength" => 25)
         );
-        $config = NDB_Config::singleton();
-        if ($config->getSetting('useProjects') === 'true') {
-                $this->addSelect('ProjectID', 'Project', $allAr + Utility::getProjectList());
+
+        $config =& NDB_Config::singleton();
+        if ($config->getSetting('useProjects') === "true") {
+            $list_of_projects = $allAr;
+            $projectList = Utility::getProjectList();
+            foreach ($projectList as $key => $value) {
+                $list_of_projects[$key] =$value;
+            }
+            $this->addSelect('ProjectID', 'Project', $list_of_projects);  
         }
+
         $this->addSelect('SiteID', 'Site', $list_of_sites);
         $this->addSelect(
             'VisitQCStatus',
@@ -236,7 +235,21 @@ class NDB_Menu_Filter_Imaging_Browser extends NDB_Menu_Filter
             'Pending',
             'Pending and New',
             array(''=>'All', 'P'=>'Pending', 'N'=>'New', 'PN'=>'Pending or New')
-        ); 
+        );
+
+        //query to get scan types that exist for the project
+        $types_q = $DB->pselect(
+                "SELECT ID, Scan_type FROM mri_scan_type mri
+                 JOIN files f ON (f.AcquisitionProtocolID=mri.ID)",
+                 array()
+        );
+        $scan_types[''] = '';
+        foreach ($types_q as $row) {
+            $type                   = $row['Scan_type'];
+            $scan_types[$row['ID']] = $type;
+        }
+        $this->addSelect('Scan_type', 'Sequence Type', $scan_types);
+
         $outputTypes = $DB->pselect(
             "SELECT DISTINCT OutputType AS outputType 
             FROM files WHERE FileType='mnc' AND OutputType!='native'", array()
@@ -309,7 +322,7 @@ class NDB_Menu_Filter_Imaging_Browser extends NDB_Menu_Filter
     {
         $query = '';
         if ((!empty($val) || $val === '0') && $field != 'order') {
-            if ($field != 'pending') {
+            if ($field != 'pending' && $field !='AcquisitionProtocolID') {
                 if (in_array($field, $this->CheckboxFilters) && $val) {
                     $query .= " AND $field";
                 } elseif (strtolower(substr($field, -8)) == 'centerid'
@@ -323,7 +336,7 @@ class NDB_Menu_Filter_Imaging_Browser extends NDB_Menu_Filter
                 } else {
                     $query .= " AND $field LIKE CONCAT('%', :v_$prepared_key, '%') ";
                 }
-            } else {
+            } else if ($field == 'pending') {
                 switch ($val) {
                 case "P":
                     $query .= " AND s.MRIQCPending='Y'"; 
@@ -337,6 +350,8 @@ class NDB_Menu_Filter_Imaging_Browser extends NDB_Menu_Filter
                         OR s.MRIQCStatus='' OR fqc.QCFirstChangeTime IS NULL)"; 
                     break;
                 }
+            } else if ($field == 'AcquisitionProtocolID') {
+                  $query .= " AND $field = :v_$prepared_key";
             }
         }
         return $query;

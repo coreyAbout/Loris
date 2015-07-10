@@ -292,7 +292,7 @@ if (isset($feedback) && Utility::isErrorX($feedback)) {
             $tpl_data['thread_summary_headers'] = array_keys($success[0]);
             for ($i=0; $i < count($success); $i++) {
                 $SI           =& $success[$i];
-                $SuccessIsSet = function(&$arr, $Index) {
+                $SuccessIsSet = function (&$arr, $Index) {
                     return isset($arr[$Index]) ? $arr[$Index] : '';
                 };
 
@@ -302,7 +302,7 @@ if (isset($feedback) && Utility::isErrorX($feedback)) {
                         'Instrument' => $SuccessIsSet($SI, 'Instrument'),
                         'CommentID'  => $SuccessIsSet($SI, 'CommentID'),
                         'Visit'      => $SuccessIsSet($SI, 'Visit'),
-                        'SessionID'  => $SuccessISSet($SI, 'SessionID'),
+                        'SessionID'  => $SuccessIsSet($SI, 'SessionID'),
                        );
                 $tpl_data['thread_summary_data'][$i] = $row;
             }
