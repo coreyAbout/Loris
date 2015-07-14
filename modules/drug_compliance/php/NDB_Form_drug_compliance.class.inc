@@ -55,6 +55,7 @@ class NDB_Form_drug_compliance extends NDB_Form
     {
         return $defaults;
     }
+
     /**
      * Process the submitted values, called after validation.
      *
@@ -380,7 +381,6 @@ class NDB_Form_drug_compliance extends NDB_Form
 
         $this->form->addFormRule(array(&$this,'_validate'));
     }
-
 
     function drug_compliance_details() {
         
