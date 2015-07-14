@@ -123,6 +123,11 @@ class NDB_Form_participant_status extends NDB_Form
         }
         $DB =& Database::singleton();
 
+        //pscid is not saved
+        if (array_key_exists('pscid', $values)) {
+            unset($values['pscid']);
+        }
+
         $values['CandID'] = $this->identifier;
 
         if (!(is_null($_SESSION['State']))) {
@@ -449,7 +454,6 @@ class NDB_Form_participant_status extends NDB_Form
     function participant_status_history() {
         
         $this->tpl_data['candID'] = $_REQUEST['candID'];
-        $this->addHeader('Paricipant Status History for Candidate');
         $DB =& Database::singleton();
         $pscid = $DB->pselectone(
                 'SELECT PSCID FROM candidate where CandID = :candid',
