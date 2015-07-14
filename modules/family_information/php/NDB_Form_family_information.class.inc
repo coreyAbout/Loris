@@ -68,6 +68,11 @@ class NDB_Form_family_information extends NDB_Form
         }
         $DB =& Database::singleton();
 
+        //pscid is not saved
+        if (array_key_exists('pscid', $values)) {
+            unset($values['pscid']);
+        }
+
         $values['CandID'] = $this->identifier;
 
         if (!(is_null($_SESSION['State']))) {
@@ -210,7 +215,6 @@ class NDB_Form_family_information extends NDB_Form
     function family_information_details() {
         
         $this->tpl_data['candID'] = $_REQUEST['candID'];
-        $this->addHeader('Family Information for Candidate');
         $DB =& Database::singleton();
         $pscid = $DB->pselectOne(
                 'SELECT PSCID FROM candidate where CandID = :candid',
