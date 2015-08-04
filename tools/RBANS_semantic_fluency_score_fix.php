@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * This one time use script was to update the RBANS
+ * semantic fluency score to use an updated scoring
+ */
+
 require_once __DIR__ . "/../vendor/autoload.php";
 set_include_path(get_include_path().":../project/libraries:../php/libraries:");
 require_once __DIR__ . "/../php/libraries/NDB_Client.class.inc";
@@ -30,3 +35,5 @@ foreach ($results as $result) {
     }
     $DB->update('RBANS',array('semantic_fluency_score_raw'=>$raw, 'semantic_fluency_score'=>$adjusted),array('CommentID'=>$result['commentID']));
 }
+
+?>
