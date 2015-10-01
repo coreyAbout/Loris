@@ -103,6 +103,7 @@
         <table class="table">
             <thead>
                 <tr>
+                    <td><b>ID</b></td>
                     <td><b>Date Issued</b></td>
                     <td><b>Pills Issued</b></td>
                     <td><b>Date Returned</b></td>
@@ -115,9 +116,9 @@
             </thead>
             <tbody>
                 {foreach from=$history_list_naproxen item=row}
-                    <tr>
+                    <tr id="{$row.ID}">
                         {foreach from=$row item=value key=name}
-                            <td>{$value}</td>
+                            <td id="{$name}" class="update" contenteditable="true">{$value}</td>
                         {/foreach}
                     </tr>
                 {/foreach}
@@ -132,6 +133,7 @@
         <table class="table">
             <thead>
                 <tr>
+                    <td><b>ID</b></td>
                     <td><b>Date Issued</b></td>
                     <td><b>Pills Issued</b></td>
                     <td><b>Date Returned</b></td>
@@ -144,9 +146,9 @@
             </thead>
             <tbody>
                 {foreach from=$history_list_probucol item=row}
-                    <tr>
+                    <tr id="{$row.ID}">
                         {foreach from=$row item=value key=name}
-                            <td>{$value}</td>
+                            <td id="{$name}" class="update" contenteditable="true">{$value}</td>
                         {/foreach}
                     </tr>
                 {/foreach}
