@@ -57,6 +57,20 @@ class NDB_Form_drug_compliance extends NDB_Form
     }
 
     /**
+     * Calculate Drug Compliance
+     *
+     * @param array $values The values to be used for 
+     *                      calculation.
+     *
+     * @return boolean True on success
+     */
+    static function calculate($values) {
+
+
+
+    }
+
+    /**
      * Process the submitted values, called after validation.
      *
      * @param array $values The values submitted by the user 
