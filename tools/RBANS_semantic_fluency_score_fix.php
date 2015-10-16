@@ -5,6 +5,9 @@
  * semantic fluency score to use an updated scoring
  */
 
+//adding this die() so that it never gets run accidentally for whatever reason
+die();
+
 require_once __DIR__ . "/../vendor/autoload.php";
 set_include_path(get_include_path().":../project/libraries:../php/libraries:");
 require_once __DIR__ . "/../php/libraries/NDB_Client.class.inc";
