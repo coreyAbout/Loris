@@ -35,7 +35,10 @@ if (Utility::isErrorX($user)) {
 }
 
 if ($user->hasPermission('data_entry')) { //if user has data entry permission
-    $DB->update('drug_compliance', array($field=>$value), array('ID'=>$id));
+    //only allow certain fields to be updated
+    if ($field == 'drug_issued_date' || $field == 'pills_issued' || $field == 'drug_returned_date' || $field == 'pills_returned') {
+        $DB->update('drug_compliance', array($field=>$value), array('ID'=>$id));
+    }
 }
 
 ?>
