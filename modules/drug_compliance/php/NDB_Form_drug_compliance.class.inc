@@ -60,30 +60,31 @@ class NDB_Form_drug_compliance extends NDB_Form
      * Algorithm to calculate Drug Compliance
      *
      * @param $candid The specific CandID to calculate for
+     * @param $DCID The specific Drug Compliance ID to calculate for
      *
      * @return none
      */
-    static function calculateSpecific($candid) {
+    static function calculateSpecific($candid, $DCID) {
 
         $DB =& Database::singleton();
         $update = array();
 
-        $pills_returned_status = $DB->pselectOne("SELECT pills_returned_status from drug_compliance where candid=:candidate",array('candidate'=>$candid));
-        $pills_issued_status = $DB->pselectOne("SELECT pills_issued_status from drug_compliance where candid=:candidate",array('candidate'=>$candid));
+        $pills_returned_status = $DB->pselectOne("SELECT pills_returned_status from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
+        $pills_issued_status = $DB->pselectOne("SELECT pills_issued_status from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
         //don't calculate compliance if don't know pills returned or pills issued
             if ($pills_returned_status === "not_answered" || $pills_issued_status === "not_answered") {
                 $update['compliance_evaluation'] = null;
                 $update['behavioral_compliance_evaluation'] = null;
             }
 
-        $drug_issued_date = $DB->pselectOne("SELECT drug_issued_date from drug_compliance where candid=:candidate",array('candidate'=>$candid));
-        $drug_returned_date = $DB->pselectOne("SELECT drug_returned_date from drug_compliance where candid=:candidate",array('candidate'=>$candid));
+        $drug_issued_date = $DB->pselectOne("SELECT drug_issued_date from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
+        $drug_returned_date = $DB->pselectOne("SELECT drug_returned_date from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
         $datetime1 = new DateTime($drug_issued_date);
         $datetime2 = new DateTime($drug_returned_date);
         $interval = $datetime1->diff($datetime2,true);
         $expected = $interval->days * 2; 
-        $pills_issued = $DB->pselectOne("SELECT pills_issued from drug_compliance where candid=:candidate",array('candidate'=>$candid));
-        $pills_returned = $DB->pselectOne("SELECT pills_returned from drug_compliance where candid=:candidate",array('candidate'=>$candid));
+        $pills_issued = $DB->pselectOne("SELECT pills_issued from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
+        $pills_returned = $DB->pselectOne("SELECT pills_returned from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
         $taken = $pills_issued - $pills_returned;
         $update['compliance_evaluation'] = ($taken / $expected) * 100;
         $interruption_from_date = array();
@@ -161,11 +162,11 @@ class NDB_Form_drug_compliance extends NDB_Form
         }
 
         // save the values by inserting
-        $success = $DB->update("drug_compliance", $update, $candid);
+        $success = $DB->update("drug_compliance", $update, array('ID'=>$DCID));
 
         if (Utility::isErrorX($success)) {
             return PEAR::raiseError(
-                "NDB_Form_drug_compliance::calculate: ".$success->getMessage()
+                "NDB_Form_drug_compliance::calculateSpecific: ".$success->getMessage()
             );
         }
 
@@ -178,20 +179,19 @@ class NDB_Form_drug_compliance extends NDB_Form
      *
      * @return none
      */
-    static function calculate($candid = null) {
+    static function calculate($candid = null, $ID = null) {
 
         $DB =& Database::singleton();
 
-        $update = array();
-
         if ($candid == null) {
-            $candids = $DB->pselect("SELECT candid from drug_compliance", array());
+            $candids = $DB->pselect("SELECT ID, candid from drug_compliance", array());
             foreach ($candids as $key => $value) {
                 $currentCandID = $value['candid'];
-                NDB_Form_drug_compliance::calculateSpecific($currentCandID);
+                $currentID = $value['ID'];
+                NDB_Form_drug_compliance::calculateSpecific($currentCandID, $currentID);
             }
         } else {
-            NDB_Form_drug_compliance::calculateSpecific($candid);
+            NDB_Form_drug_compliance::calculateSpecific($candid, $ID);
         }
 
     }
@@ -236,7 +236,11 @@ class NDB_Form_drug_compliance extends NDB_Form
         }
 
         // save the values by inserting
+        $oldIDs = $DB->pselect("SELECT ID from drug_compliance where candid=:cid", array('cid'=>$this->identifier));
         $success = $DB->insert("drug_compliance", $values);
+        $newIDs = $DB->pselect("SELECT ID from drug_compliance where candid=:cid", array('cid'=>$this->identifier));
+        $diff = array_diff_assoc($newIDs, $oldIDs);
+        $newID = $diff[key($diff)]['ID'];
 
         if (Utility::isErrorX($success)) {
             return PEAR::raiseError(
@@ -245,7 +249,7 @@ class NDB_Form_drug_compliance extends NDB_Form
         }
 
         // calculate compliance using saved values
-        NDB_Form_drug_compliance::calculate($this->identifier);
+        NDB_Form_drug_compliance::calculate($this->identifier, $newID);
 
         $this->tpl_data['success'] = true;
         $this->form->freeze();
