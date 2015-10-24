@@ -92,7 +92,6 @@ class NDB_Form_drug_compliance extends NDB_Form
         $sessions = $DB->pselect("SELECT id from session where candid=:candidate", array('candidate'=>$candid));
         foreach ($sessions as $key => $value) {
             $tmpCommentID = $DB->pselectOne("SELECT CommentID from flag where test_name='treatment_interruption' and sessionID={$value['id']}", array());
-            $tmpCommentID = array_filter($tmpCommentID);
             if (!empty($tmpCommentID)) {
                 $treatment_interruption_commentID = $tmpCommentID;
                 break;
