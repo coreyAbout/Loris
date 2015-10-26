@@ -37,7 +37,7 @@ if (Utility::isErrorX($user)) {
 
 if ($user->hasPermission('data_entry')) { //if user has data entry permission
     //only allow certain fields to be updated
-    if ($field == 'drug_issued_date' || $field == 'pills_issued' || $field == 'drug_returned_date' || $field == 'pills_returned') {
+    if ($field == 'drug_issued_date' || $field == 'pills_issued' || $field == 'drug_returned_date' || $field == 'pills_returned' || $field == 'visit_label') {
         $DB->update('drug_compliance', array($field=>$value), array('ID'=>$id));
         $candid = $DB->pselectOne("SELECT candid from drug_compliance where ID=:dcid", array('dcid'=>$id));
         NDB_Form_drug_compliance::calculate($candid, $id);
