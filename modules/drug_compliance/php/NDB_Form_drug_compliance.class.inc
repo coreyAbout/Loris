@@ -86,7 +86,9 @@ class NDB_Form_drug_compliance extends NDB_Form
         $pills_issued = $DB->pselectOne("SELECT pills_issued from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
         $pills_returned = $DB->pselectOne("SELECT pills_returned from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
         $taken = $pills_issued - $pills_returned;
-        $update['compliance_evaluation'] = ($taken / $expected) * 100;
+        if ($expected != NULL && $expected != 0) {
+            $update['compliance_evaluation'] = ($taken / $expected) * 100;
+        }
         $interruption_from_date = array();
         $interruption_to_date = array();
         $sessions = $DB->pselect("SELECT id from session where candid=:candidate", array('candidate'=>$candid));
@@ -154,7 +156,9 @@ class NDB_Form_drug_compliance extends NDB_Form
                     foreach ($interruptions as $key => $value) {
                         $expected = $expected - $value;
                     }
-                    $update['behavioral_compliance_evaluation'] = ($taken / $expected) * 100;
+                    if ($expected != NULL && $expected != 0) { 
+                        $update['behavioral_compliance_evaluation'] = ($taken / $expected) * 100;
+                    }
             } else {
                 $update['behavioral_compliance_evaluation'] = null;
             }
