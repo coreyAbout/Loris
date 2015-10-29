@@ -467,7 +467,7 @@ class NDB_Form_participant_status extends NDB_Form
                   probucol_eligibility,probucol_excluded_reason_specify,probucol_eligibility_status,
                   entry_staff, data_changed_date, data_entry_date 
                   FROM participant_status_history p join participant_status_options po on (po.ID = p.participant_status)
-                  WHERE CandID=:cid", array('cid'=>$this->identifier));
+                  WHERE CandID=:cid ORDER BY data_changed_date ASC", array('cid'=>$this->identifier));
         for($i = 0; $i< sizeof($result); $i++) {
             if($result[$i]['Description']=='Active' && empty($result[$i]['entry_staff']))
             {
