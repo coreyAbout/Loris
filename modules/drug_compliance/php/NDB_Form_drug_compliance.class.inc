@@ -165,7 +165,9 @@ class NDB_Form_drug_compliance extends NDB_Form
         }
 
         // save the values by inserting
-        $success = $DB->update("drug_compliance", $update, array('ID'=>$DCID));
+        if (!empty($update)) {
+            $success = $DB->update("drug_compliance", $update, array('ID'=>$DCID));
+        }
 
         if (Utility::isErrorX($success)) {
             return PEAR::raiseError(
