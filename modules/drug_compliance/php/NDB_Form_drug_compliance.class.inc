@@ -71,50 +71,50 @@ class NDB_Form_drug_compliance extends NDB_Form
 
         $pills_returned_status = $DB->pselectOne("SELECT pills_returned_status from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
         $pills_issued_status = $DB->pselectOne("SELECT pills_issued_status from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
-        //don't calculate compliance if don't know pills returned or pills issued
-            if ($pills_returned_status === "not_answered" || $pills_issued_status === "not_answered") {
-                $update['compliance_evaluation'] = null;
-                $update['behavioral_compliance_evaluation'] = null;
-            }
-
-        $drug_issued_date = $DB->pselectOne("SELECT drug_issued_date from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
-        $drug_returned_date = $DB->pselectOne("SELECT drug_returned_date from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
-        $datetime1 = new DateTime($drug_issued_date);
-        $datetime2 = new DateTime($drug_returned_date);
-        $interval = $datetime1->diff($datetime2,true);
-        $expected = $interval->days * 2; 
         $pills_issued = $DB->pselectOne("SELECT pills_issued from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
         $pills_returned = $DB->pselectOne("SELECT pills_returned from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
-        $taken = $pills_issued - $pills_returned;
-        if ($expected != NULL && $expected != 0) {
-            $update['compliance_evaluation'] = ($taken / $expected) * 100;
-        }
-        $interruption_from_date = array();
-        $interruption_to_date = array();
-        $sessions = $DB->pselect("SELECT id from session where candid=:candidate", array('candidate'=>$candid));
-        foreach ($sessions as $key => $value) {
-            $tmpCommentID = $DB->pselectOne("SELECT CommentID from flag where test_name='treatment_interruption' and sessionID={$value['id']}", array());
-            if (!empty($tmpCommentID)) {
-                $treatment_interruption_commentID = $tmpCommentID;
-                break;
-            }
-        }
-
-        //if no interruptions, compliance = behavioral compliance
-        if (!isset($treatment_interruption_commentID)) {
-            $update['behavioral_compliance_evaluation'] = $update['compliance_evaluation'];
+        //don't calculate compliance if don't know pills returned or pills issued
+        if ($pills_returned_status === "not_answered" || $pills_issued_status === "not_answered" || $pills_issued == NULL || $pills_returned == NULL) {
+            $update['compliance_evaluation'] = null;
+            $update['behavioral_compliance_evaluation'] = null;
         } else {
-            for ($i = 1; $i <= 30; $i++) {
+
+            $drug_issued_date = $DB->pselectOne("SELECT drug_issued_date from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
+            $drug_returned_date = $DB->pselectOne("SELECT drug_returned_date from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
+            $datetime1 = new DateTime($drug_issued_date);
+            $datetime2 = new DateTime($drug_returned_date);
+            $interval = $datetime1->diff($datetime2,true);
+            $expected = $interval->days * 2; 
+            $taken = $pills_issued - $pills_returned;
+            if ($expected != NULL && $expected != 0) {
+                $update['compliance_evaluation'] = ($taken / $expected) * 100;
+            }
+            $interruption_from_date = array();
+            $interruption_to_date = array();
+            $sessions = $DB->pselect("SELECT id from session where candid=:candidate", array('candidate'=>$candid));
+            foreach ($sessions as $key => $value) {
+                $tmpCommentID = $DB->pselectOne("SELECT CommentID from flag where test_name='treatment_interruption' and sessionID={$value['id']}", array());
+                if (!empty($tmpCommentID)) {
+                    $treatment_interruption_commentID = $tmpCommentID;
+                    break;
+                }
+            }
+
+            //if no interruptions, compliance = behavioral compliance
+            if (!isset($treatment_interruption_commentID)) {
+                $update['behavioral_compliance_evaluation'] = $update['compliance_evaluation'];
+            } else {
+                for ($i = 1; $i <= 30; $i++) {
                     $interruption_from_date[] = $DB->pselectOne("SELECT {$i}_interruption_from_date from treatment_interruption where CommentID =:cid", array("cid"=>$treatment_interruption_commentID));
                     $interruption_to_date[] = $DB->pselectOne("SELECT {$i}_interruption_to_date from treatment_interruption where CommentID =:cid", array("cid"=>$treatment_interruption_commentID));
                     $interruption_from_date_status[] = $DB->pselectOne("SELECT {$i}_interruption_to_date_status from treatment_interruption where CommentID =:cid", array("cid"=>$treatment_interruption_commentID));
                     $interruption_to_date_status[] = $DB->pselectOne("SELECT {$i}_interruption_to_date_status from treatment_interruption where CommentID =:cid", array("cid"=>$treatment_interruption_commentID));
                     $treatment_termination[] = $DB->pselectOne("SELECT {$i}_treatment_termination from treatment_interruption where CommentID =:cid", array("cid"=>$treatment_interruption_commentID));
-            }
-            //$visit_date = $DB->pselectOne("SELECT Date_taken from $this->table where CommentID =:cid",array("cid"=>$this->commentID));
+                }
+                //$visit_date = $DB->pselectOne("SELECT Date_taken from $this->table where CommentID =:cid",array("cid"=>$this->commentID));
 
-            $enoughInfoBehavioral = true;
-            foreach ($interruption_from_date as $key => $value) {
+                $enoughInfoBehavioral = true;
+                foreach ($interruption_from_date as $key => $value) {
                     if ($treatment_termination[$key] == 'no' && $interruption_to_date_status[$key] == 'not_answered') {
                             if (strtotime($value) >= strtotime($drug_issued_date) && strtotime($value) <= strtotime($drug_returned_date)) {
                                     $enoughInfoBehavioral = false;
@@ -124,14 +124,14 @@ class NDB_Form_drug_compliance extends NDB_Form
                                     break;
                             }
                     }
-            }
+                }
 
-            $interruptions = array();
-            if ($enoughInfoBehavioral) {
-                foreach ($interruption_from_date as $key => $value) {
-                    if ($treatment_termination[$key] == 'yes' && $interruption_to_date_status[$key] == 'not_answered') {
-                        $interruption_to_date[$key] = $drug_returned_date;
-                    }
+                $interruptions = array();
+                if ($enoughInfoBehavioral) {
+                    foreach ($interruption_from_date as $key => $value) {
+                        if ($treatment_termination[$key] == 'yes' && $interruption_to_date_status[$key] == 'not_answered') {
+                            $interruption_to_date[$key] = $drug_returned_date;
+                        }
                         if (strtotime($value) >= strtotime($drug_issued_date) && strtotime($value) <= strtotime($drug_returned_date)) {
                             $last_date = strtotime($interruption_to_date[$key]) < strtotime($drug_returned_date) ? $interruption_to_date[$key] : $drug_returned_date;
                             $start_date = new DateTime($value);
@@ -156,15 +156,16 @@ class NDB_Form_drug_compliance extends NDB_Form
                     foreach ($interruptions as $key => $value) {
                         $expected = $expected - $value;
                     }
-                    if ($expected != NULL && $expected != 0) { 
+                    if ($expected != NULL && $expected != 0) {
                         $update['behavioral_compliance_evaluation'] = ($taken / $expected) * 100;
                     }
-            } else {
-                $update['behavioral_compliance_evaluation'] = null;
+                } else {
+                    $update['behavioral_compliance_evaluation'] = null;
+                }
             }
         }
 
-        // save the values by inserting
+        // save the values by updating
         if (!empty($update)) {
             $success = $DB->update("drug_compliance", $update, array('ID'=>$DCID));
         }
