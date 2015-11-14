@@ -191,7 +191,11 @@ if (PEAR::isError($scan_types)) {
 //loop through all scan types
 foreach ($scan_types as $scan_type) {
     //Query to pull the data from the DB
-    $Test_name = $scan_type['Scan_type'];
+    $Test_name = $scan_type['Scan_type']; # general query
+    #TODO: make the limit date dynamic so that uses it when given as an argument when running excelDump.php. For now, comment and uncomment following lines.
+#    $limit_date = '';   # to comment if want to restrict to a data freeze date
+#    $limit_date = ' AND mad.AcquisitionDate <= "2015-08-31" ';  # to comment if want all data to be displayed
+
 
     if ((preg_match("/bval/", $Test_name))
          or (preg_match("/Report/", $Test_name))
@@ -204,13 +208,13 @@ foreach ($scan_types as $scan_type) {
         continue;
     } elseif (preg_match("/noRegQCedDTI/i", $Test_name)) {
         $query = file_get_contents("MRI_feedbacks_FinalQCedDWI_query.sql");
-        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" GROUP BY f.File';
+        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" ' . $limit_date . ' GROUP BY f.File';
     } elseif (($Test_name == 'Encoding') or ($Test_name == 'Retrieval')) {
         $query = file_get_contents("MRI_feedbacks_query.sql");
-        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" AND Visit_label NOT LIKE "%EN00%" GROUP BY f.File';
+        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" ' . $limit_date . ' AND Visit_label NOT LIKE "%EN00%" GROUP BY f.File';
     } else {
         $query = file_get_contents("MRI_feedbacks_query.sql");
-        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" GROUP BY f.File';
+        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" ' . $limit_date . ' GROUP BY f.File';
     }
 
     $DB->select($query, $scan_type_table);
