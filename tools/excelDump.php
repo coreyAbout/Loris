@@ -172,7 +172,7 @@ writeExcel($Test_name, $familyinformation, $dataDir);
 */
 $Test_name = "DrugCompliance";
 $query = "select PSCID, drug_compliance.CandID, entry_staff, drug, visit_label, drug_issued_date, drug_issued_date_status, pills_issued, pills_issued_status, drug_returned_date, drug_returned_date_status, pills_returned, pills_returned_status, compliance_evaluation, compliance_evaluation_status, behavioral_compliance_evaluation, behavioral_compliance_evaluation_status, comments, comments_status from drug_compliance join candidate on drug_compliance.CandID=candidate.CandID where PSCID not like '%MTL999%' and PSCID not like 'MTL0000' order by PSCID";
-$DB->select($query, $drugcompliance;
+$DB->select($query, $drugcompliance);
 if (PEAR::isError($drugcompliance)) {
         PEAR::raiseError("Could not generate drug compliance. " . $drugcompliance->getMessage());
 }
