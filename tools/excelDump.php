@@ -14,6 +14,11 @@ require_once "generic_includes.php";
 require_once 'Spreadsheet/Excel/Writer.php';
 require_once "Archive/Tar.php";
 
+if (isset($argv[1])) {
+ $limit_date_instruments = " AND i.Date_taken <= '{$argv[1]}' ";
+ $limit_date = " AND mad.AcquisitionDate <= '{$argv[1]}' ";
+}
+
 //Configuration variables for this script, possibly installation dependent.
 //$dataDir = "dataDump" . date("dMy");
 $dumpName = "dataDump" . date("dMy"); // label for dump
@@ -75,27 +80,26 @@ foreach ($instruments as $instrument) {
         //Query to pull the data from the DB
         $Test_name = $instrument['Test_name'];
         if ($Test_name == 'prefrontal_task') {
-	    $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, 'See validity_of_data field' as Validity, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' order by s.Visit_label, c.PSCID";
+	    $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, 'See validity_of_data field' as Validity, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_instruments . " order by s.Visit_label, c.PSCID";
         } else if ($Test_name == 'radiology_review') {
-            $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, 'Site review:', i.*, 'Final Review:', COALESCE(fr.Review_Done, 0) as Review_Done, fr.Final_Review_Results, fr.Final_Exclusionary, fr.Final_Incidental_Findings, fre.full_name as Final_Examiner_Name, fr.Final_Review_Results2, fre2.full_name as Final_Examiner2_Name, fr.Final_Exclusionary2, COALESCE(fr.Review_Done2, 0) as Review_Done2, fr.Final_Incidental_Findings2, fr.Finalized from candidate c, session s, flag f, $Test_name i left join final_radiological_review fr ON (fr.CommentID=i.CommentID) left outer join examiners e on (i.Examiner = e.examinerID) left join examiners fre ON (fr.Final_Examiner=fre.examinerID) left join examiners fre2 ON (fre2.examinerID=fr.Final_Examiner2) where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' AND Scan_done='Y' order by s.Visit_label, c.PSCID";
+            $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, 'Site review:', i.*, 'Final Review:', COALESCE(fr.Review_Done, 0) as Review_Done, fr.Final_Review_Results, fr.Final_Exclusionary, fr.Final_Incidental_Findings, fre.full_name as Final_Examiner_Name, fr.Final_Review_Results2, fre2.full_name as Final_Examiner2_Name, fr.Final_Exclusionary2, COALESCE(fr.Review_Done2, 0) as Review_Done2, fr.Final_Incidental_Findings2, fr.Finalized from candidate c, session s, flag f, $Test_name i left join final_radiological_review fr ON (fr.CommentID=i.CommentID) left outer join examiners e on (i.Examiner = e.examinerID) left join examiners fre ON (fr.Final_Examiner=fre.examinerID) left join examiners fre2 ON (fre2.examinerID=fr.Final_Examiner2) where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' AND Scan_done='Y' " . $limit_date_instruments . " order by s.Visit_label, c.PSCID";
         } else if ($Test_name == 'genetics') {
             $query = "select * from genetics";
         } else {
             if (is_file("../project/instruments/NDB_BVL_Instrument_$Test_name.class.inc")) {
                 $instrument =& NDB_BVL_Instrument::factory($Test_name, '', false);
                 if ($instrument->ValidityEnabled == true) {
-	            $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' order by s.Visit_label, c.PSCID";
+	            $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_instruments . " order by s.Visit_label, c.PSCID";
                 } else {
-	            $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' order by s.Visit_label, c.PSCID";
+	            $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_instruments . " order by s.Visit_label, c.PSCID";
                 }
             } else {
-	        $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' order by s.Visit_label, c.PSCID";
+	        $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_instruments . " order by s.Visit_label, c.PSCID";
             }
         }
         $DB->select($query, $instrument_table);
         if (PEAR::isError($instrument_table)) {
                 print "Cannot pull instrument table data ".$instrument_table->getMessage()."<br>\n";
-                die();
         }
         MapSubprojectID($instrument_table);
         writeExcel($Test_name, $instrument_table, $dataDir);
@@ -125,7 +129,11 @@ if (count($result) > 0) {
 */
 $Test_name = "candidate_info";
 //this query is a but clunky, but it gets rid of all the crap that would otherwise appear.
+if (!isset($limit_date_instruments)) {
 $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' order by c.PSCID";
+} else {
+$query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' and s.Date_visit <= '{$argv[1]}' order by c.PSCID";
+}
 $DB->select($query, $results);
 if (PEAR::isError($results)) {
 	PEAR::raiseError("Couldn't get candidate info. " . $results->getMessage());
@@ -144,6 +152,17 @@ if (PEAR::isError($dictionary)) {
 	PEAR::raiseError("Could not generate data dictionary. " . $dictionary->getMessage());
 }
 writeExcel($Test_name, $dictionary, $dataDir);
+
+/*
+* Participant Status
+*/
+$Test_name = "ParticipantStatus";
+$query = "select candidate.PSCID, candidate.CandID, data_changed_date, data_entry_date, pso.Description as 'Participant Status Description', reason_specify, reason_specify_status, withdrawal_reasons, withdrawal_reasons_other_specify, withdrawal_reasons_other_specify_status, naproxen_eligibility, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_eligibility_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status from participant_status as psh join candidate on (candidate.CandID=psh.CandID) join participant_status_options as pso on (psh.participant_status=pso.ID) where candidate.PSCID not like 'MTL0000' AND candidate.PSCID not like 'MTL999%' order by candidate.PSCID asc";
+$DB->select($query, $participantstatus);
+if (PEAR::isError($participantstatus)) {
+        PEAR::raiseError("Could not generate participant status. " . $participantstatus->getMessage());
+}
+writeExcel($Test_name, $participantstatus, $dataDir);
 
 /*
 * Participant Status History
@@ -192,10 +211,6 @@ if (PEAR::isError($scan_types)) {
 foreach ($scan_types as $scan_type) {
     //Query to pull the data from the DB
     $Test_name = $scan_type['Scan_type']; # general query
-    #TODO: make the limit date dynamic so that uses it when given as an argument when running excelDump.php. For now, comment and uncomment following lines.
-#    $limit_date = '';   # to comment if want to restrict to a data freeze date
-#    $limit_date = ' AND mad.AcquisitionDate <= "2015-08-31" ';  # to comment if want all data to be displayed
-
 
     if ((preg_match("/bval/", $Test_name))
          or (preg_match("/Report/", $Test_name))
