@@ -131,13 +131,17 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                         }
 
                         if (strpos($key, '6plex_date') !== FALSE) {
-                           if ($thisField[$key] != '') {
+                           if ($thisField[$key] != "\r\n") {
                                 $parsedate = date("Y-m-d",strtotime($thisField[$key]));
                                 $sixplex_date = $parsedate;
                            }  else {
                                 $sixplex_date = NULL;
                            }
                         }
+
+                }
+
+
 
 
 			$config =& NDB_Config::singleton();
@@ -189,7 +193,6 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 
 
 
-		}
 	}
 }
 
