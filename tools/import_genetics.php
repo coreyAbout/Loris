@@ -187,7 +187,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 
 if ($ApoE == '4/4' || $ApoE == '4-4') {
  $apoE_allele_no = 2;
-} elseif ($ApoE == '3-4' || $ApoE == '4-3' || $ApoE == '3/4' || $ApoE == '4/3') {
+} elseif ($ApoE == '3-4' || $ApoE == '4-3' || $ApoE == '3/4' || $ApoE == '4/3' || $ApoE == '4/2' || $ApoE == '2/4') {
  $apoE_allele_no = 1;
 } elseif ($ApoE == '3-3' || $ApoE == '2-3' || $ApoE == '3-2' || $ApoE == '2-2' || $ApoE == '3/3' || $ApoE == '2/3' || $ApoE == '3/2' || $ApoE == '2/2') {
  $apoE_allele_no = 0;
@@ -195,7 +195,7 @@ if ($ApoE == '4/4' || $ApoE == '4-4') {
  $apoE_allele_no = null;
 }
 
-if ($apoE_allele_no == 0) {
+if ($apoE_allele_no === 0 || $ApoE == '2/4' || $ApoE == '4/2') {
  $E4_allele_Bin = 0;
 } elseif ($apoE_allele_no > 0) {
  $E4_allele_Bin = 1;
@@ -213,7 +213,7 @@ if ($BchE_K_variant == 'AA') {
  $K_variant_copie_no = null;
 }
 
-if ($K_variant_copie_no == 0) {
+if ($K_variant_copie_no === 0) {
  $K_variant_bin = 0;
 } elseif ($K_variant_copie_no > 0) {
  $K_variant_bin = 1;
@@ -231,7 +231,7 @@ if ($BDNF == 'AA') {
  $BDNF_allele_no = null;
 }
 
-if ($BDNF_allele_no == 0) {
+if ($BDNF_allele_no === 0) {
  $BDNF_copie_bin = 0;
 } elseif ($BDNF_allele_no > 0) {
  $BDNF_copie_bin = 1;
@@ -277,9 +277,9 @@ if ($PPP2r1A_rs_10406151 == 'TT') {
  $ppp2r1A_allele_no = null;
 }
 
-if ($ppp2r1A_allele_no == 0) {
+if ($ppp2r1A_allele_no === 1 || $ppp2r1A_allele_no === 0) {
  $ppp2r1A_copie_no = 0;
-} elseif ($ppp2r1A_allele_no > 0) {
+} elseif ($ppp2r1A_allele_no == 2) {
  $ppp2r1A_copie_no = 1;
 } else {
  $ppp2r1A_copie_no = null;
@@ -295,7 +295,7 @@ if ($CDK5RAP2_rs10984186 == 'TT') {
  $CDK5RAP2_rs10984186_allele_no = null;
 }
 
-if ($CDK5RAP2_rs10984186_allele_no == 0) {
+if ($CDK5RAP2_rs10984186_allele_no === 0) {
  $CDK5RAP2_rs10984186_allele_bin = 0;
 } elseif ($CDK5RAP2_rs10984186_allele_no > 0) {
  $CDK5RAP2_rs10984186_allele_bin = 1;
