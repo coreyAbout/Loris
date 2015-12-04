@@ -101,9 +101,10 @@ function populateVisitLabel($result, $visit_label)
         $timePoint->getCenterID(),
         $isFirstVisit
     );
-    $actual_battery=$battery->getBattery(
-        $timePoint->getCurrentStage(), 
-        $result['subprojectID'],$visit_label
+    $actual_battery  =$battery->getBattery(
+        $timePoint->getCurrentStage(),
+        $result['subprojectID'],
+        $visit_label
     );
 
     $diff =array_diff($defined_battery, $actual_battery);

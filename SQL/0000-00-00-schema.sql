@@ -246,29 +246,6 @@ INSERT INTO `feedback_bvl_type` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `feedback_bvl_types_site`
---
-
-DROP TABLE IF EXISTS `feedback_bvl_types_site`;
-CREATE TABLE `feedback_bvl_types_site` (
-  `Feedback_type` int(11) unsigned NOT NULL default '0',
-  `CenterID` tinyint(2) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`Feedback_type`,`CenterID`),
-  KEY `FK_feedback_bvl_types_site_2` (`CenterID`),
-  CONSTRAINT `FK_feedback_bvl_types_site_2` FOREIGN KEY (`CenterID`) REFERENCES `psc` (`CenterID`),
-  CONSTRAINT `FK_feedback_bvl_types_site_1` FOREIGN KEY (`Feedback_type`) REFERENCES `feedback_bvl_type` (`Feedback_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `feedback_bvl_types_site`
---
-
-LOCK TABLES `feedback_bvl_types_site` WRITE;
-/*!40000 ALTER TABLE `feedback_bvl_types_site` DISABLE KEYS */;
-/*!40000 ALTER TABLE `feedback_bvl_types_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `feedback_mri_comment_types`
 --
 
@@ -288,10 +265,10 @@ CREATE TABLE `feedback_mri_comment_types` (
 LOCK TABLES `feedback_mri_comment_types` WRITE;
 /*!40000 ALTER TABLE `feedback_mri_comment_types` DISABLE KEYS */;
 INSERT INTO `feedback_mri_comment_types` VALUES 
-    (1,'Geometric intensity','volume','a:2:{s:5:\"field\";s:19:\"Geometric_intensity\";s:6:\"values\";a:5:{i:0;s:0:\"\";i:1;s:4:\"Good\";i:2;s:4:\"Fair\";i:3;s:4:\"Poor\";i:4;s:12:\"Unacceptable\";}}'),
-    (2,'Intensity artifact','volume','a:2:{s:5:\"field\";s:9:\"Intensity_artifact\";s:6:\"values\";a:5:{i:0;s:0:\"\";i:1;s:4:\"Good\";i:2;s:4:\"Fair\";i:3;s:4:\"Poor\";i:4;s:12:\"Unacceptable\";}}'),
-    (3,'Movement artifact','volume','a:2:{s:5:\"field\";s:30:\"Movement_artifacts_within_scan\";s:6:\"values\";a:5:{i:0;s:0:\"\";i:1;s:4:\"None\";i:2;s:6:\"Slight\";i:3;s:4:\"Poor\";i:4;s:12:\"Unacceptable\";}}'),
-    (4,'Packet movement artifact','volume','a:2:{s:5:\"field\";s:34:\"Movement_artifacts_between_packets\";s:6:\"values\";a:5:{i:0;s:0:\"\";i:1;s:4:\"None\";i:2;s:6:\"Slight\";i:3;s:4:\"Poor\";i:4;s:12:\"Unacceptable\";}}'),
+    (1,'Geometric distortion','volume','a:2:{s:5:\"field\";s:20:\"Geometric_distortion\";s:6:\"values\";a:5:{i:0;s:0:\"\";i:1;s:4:\"Good\";i:2;s:4:\"Fair\";i:3;s:4:\"Poor\";i:4;s:12:\"Unacceptable\";}}'),
+    (2,'Intensity artifact','volume','a:2:{s:5:\"field\";s:18:\"Intensity_artifact\";s:6:\"values\";a:5:{i:0;s:0:\"\";i:1;s:4:\"Good\";i:2;s:4:\"Fair\";i:3;s:4:\"Poor\";i:4;s:12:\"Unacceptable\";}}'),
+    (3,'Movement artifact','volume','a:2:{s:5:\"field\";s:30:\"Movement_artifacts_within_scan\";s:6:\"values\";a:5:{i:0;s:0:\"\";i:1;s:4:\"None\";i:2;s:15:\"Slight Movement\";i:3;s:12:\"Poor Quality\";i:4;s:12:\"Unacceptable\";}}'),
+    (4,'Packet movement artifact','volume','a:2:{s:5:\"field\";s:31:\"Movement_artifacts_between_packets\";s:6:\"values\";a:5:{i:0;s:0:\"\";i:1;s:4:\"None\";i:2;s:15:\"Slight Movement\";i:3;s:12:\"Poor Quality\";i:4;s:12:\"Unacceptable\";}}'),
     (5,'Coverage','volume','a:2:{s:5:\"field\";s:8:\"Coverage\";s:6:\"values\";a:5:{i:0;s:0:\"\";i:1;s:4:\"Good\";i:2;s:4:\"Fair\";i:3;s:5:\"Limit\";i:4;s:12:\"Unacceptable\";}}'),	    (6,'Overall','volume',''),
     (7,'Subject','visit',''),	
     (8,'Dominant Direction Artifact (DWI ONLY)','volume','a:2:{s:5:"field";s:14:"Color_Artifact";s:6:"values";a:5:{i:0;s:0:"";i:1;s:4:"Good";i:2;s:4:"Fair";i:3;s:4:"Poor";i:4;s:12:"Unacceptable";}}'),
@@ -370,22 +347,15 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `feedback_mri_comments`;
 CREATE TABLE `feedback_mri_comments` (
   `CommentID` int(11) unsigned NOT NULL auto_increment,
-  `MRIID` int(11) unsigned default NULL,
   `FileID` int(10) unsigned default NULL,
   `SeriesUID` varchar(64) default NULL,
   `EchoTime` double default NULL,
   `SessionID` int(10) unsigned default NULL,
-  `PatientName` varchar(255) default NULL,
-  `CandID` varchar(6) default NULL,
-  `VisitNo` int(2) default NULL,
   `CommentTypeID` int(11) unsigned NOT NULL default '0',
   `PredefinedCommentID` int(11) unsigned default NULL,
   `Comment` text,
   `ChangeTime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`CommentID`),
-  KEY `MRIID` (`MRIID`),
-  KEY `Candidate` (`CandID`,`VisitNo`),
-  KEY `NonCandidate` (`PatientName`),
   KEY `FK_feedback_mri_comments_1` (`CommentTypeID`),
   KEY `FK_feedback_mri_comments_2` (`PredefinedCommentID`),
   KEY `FK_feedback_mri_comments_3` (`FileID`),
@@ -437,7 +407,6 @@ CREATE TABLE `files` (
   `SeriesUID` varchar(64) DEFAULT NULL,
   `EchoTime` double DEFAULT NULL,
   `CoordinateSpace` varchar(255) default NULL,
-  `ClassifyAlgorithm` varchar(255) default NULL,
   `OutputType` varchar(255) NOT NULL default '',
   `AcquisitionProtocolID` int(10) unsigned default NULL,
   `FileType` enum('mnc','obj','xfm','xfmmnc','imp','vertstat','xml','txt','nii','nii.gz') default NULL,
@@ -893,7 +862,7 @@ LOCK TABLES `parameter_type` WRITE;
 /*!40000 ALTER TABLE `parameter_type` DISABLE KEYS */;
 INSERT INTO `parameter_type` VALUES 
 	(1,'Selected','varchar(10)',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0),
-	(2,'Geometric_intensity','text',NULL,NULL,NULL,NULL,'parameter_file',NULL,NULL,0,0),
+	(2,'Geometric_distortion','text',NULL,NULL,NULL,NULL,'parameter_file',NULL,NULL,0,0),
 	(3,'Intensity_artifact','text',NULL,NULL,NULL,NULL,'parameter_file',NULL,NULL,0,0),
 	(4,'Movement_artifacts_within_scan','text',NULL,NULL,NULL,NULL,'parameter_file',NULL,NULL,0,0),
 	(5,'Movement_artifacts_between_packets','text',NULL,NULL,NULL,NULL,'parameter_file',NULL,NULL,0,0),
@@ -1028,7 +997,7 @@ INSERT INTO `permissions` VALUES
     (37,'document_repository_view','View and upload files in Document Repository','2'),
     (38,'document_repository_delete','Delete files in Document Repository','2'),
     (39,'server_processes_manager','View and manage server processes','2'),
-    (40,'mri_upload','MRI Uploader','2');
+    (40,'imaging_uploader','Imaging Uploader','2');
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1240,6 +1209,7 @@ CREATE TABLE `tarchive_series` (
   `PhaseEncoding` varchar(255) default NULL,
   `NumberOfFiles` int(11) NOT NULL default '0',
   `SeriesUID` varchar(255) default NULL,
+  `Modality` ENUM ('MR', 'PT') default NULL,
   PRIMARY KEY  (`TarchiveSeriesID`),
   KEY `TarchiveID` (`TarchiveID`),
   CONSTRAINT `tarchive_series_ibfk_1` FOREIGN KEY (`TarchiveID`) REFERENCES `tarchive` (`TarchiveID`) ON DELETE CASCADE
@@ -1410,8 +1380,8 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (ID,UserID,Real_name,First_name,Last_name,Email,CenterID,Privilege,PSCPI,DBAccess,Active,Password_md5,Password_expiry) 
-VALUES (1,'admin','Admin account','Admin','account','admin@localhost',1,0,'N','','Y','4817577f267cc8bb20c3e58b48a311b9f6','2015-03-30');
+INSERT INTO `users` (ID,UserID,Real_name,First_name,Last_name,Email,CenterID,Privilege,PSCPI,DBAccess,Active,Password_md5,Pending_approval,Password_expiry)
+VALUES (1,'admin','Admin account','Admin','account','admin@localhost',1,0,'N','','Y','4817577f267cc8bb20c3e58b48a311b9f6','N','2016-03-30');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1799,7 +1769,7 @@ INSERT INTO `help` (helpID, parentID, hash, topic, content, created, updated) VA
 (23,22,md5('viewDetails'),'Dicom Archive - View Details','Within a particular candidate’s DICOM archive, specific information about the patient can be found, as well as details about imaging data acquisition. Specifics of the DICOM Series can be found in the table, located near the bottom of the DICOM archive page, and can provide information as to whether there was a protocol violation.Under the specifics of the Series, two links to “Show/Hide files” and “Show/Hide metadata” can be clicked to expand the table and reveal additional information. \r\n\r\nNote the DICOM archive for a particular candidate can also be accessed directly from their corresponding Imaging Browser page.','2014-09-01 00:00:00',NULL),
 (24,-1,md5('imaging_browser'),'Imaging Browser ','By default, all fields in the Selection Filter will appear to be null and no search results will be listed. Users can click “Submit” to view all imaging data. A more detailed search can be executed using selected fields from the Selection Filter. After submitting a search, the Imaging browser will organize the results by time-point and the user will be able to see how many results their search has retrieved. \r\nThe user can organize the results in ascending or descending order by clicking on any of the blue headers of the table. The date of first acquisition for the imaging dataset is indicated under “First Acq Date” column. The date on which the data was last QC’ed can be found under “Last QC”. Any data that was recently inserted will be indicated via the label “NEW” under “New Data”. \r\n\r\nTo view the imaging datasets for a specific candidate\'s timepoint, select a dataset type from under the 3 \"Links\" columns: “native”, “selected”, and “all types”. “Native” will show only raw imaging datasets, “Selected” displays only scans on which QC has flagged as optimal, and “all types” displays all data, including analyzed outputs. By clicking on any of these links, the user will be able to see details for that specific subject’s dataset from a given scanning session. \r\n\r\nNote that the Imaging Browser may also be accessed from the DICOM Archive module.','2014-09-01 00:00:00',NULL),
 (25,24,md5('viewSession'),'Imaging Browser: View Session','At the top of the page is a box with grey headings, listing general information about the candidate, including subject IDs, demographic information, key parameters (e.g. scannerID) and QC status. \r\n\r\nIn the left side panel, QC status flags can be set at the bottom under \"Visit QC\", and detailed QC information can be entered for the entire timepoint dataset via “Visit-level feedback”, under “Visit Controls”. Clicking on “Visit-level feedback” will open a new window with the candidate’s information (e.g.CandID, PSCID, Visit Label and Subproject ID), as well as any additional QC comments and/or existing Mantis bug reports.\r\n\r\nThe files for the selected candidate’s dataset are displayed below the general information box. Horizontal, sagittal and coronal views of each scan volume are grouped together. Each set of images for each file also has a list of scan parameters listed on the right, including protocol, the date at which the image was acquired, the date the images were put on the database, and other details regarding scan acquisition. \r\n\r\nTo the left of the images, there is a panel displaying the QC status of the scan, and if any “caveat emptor” flags exist. If a specific acquisition has been \"selected\" as the optimal scan of its type or modality (e.g. t1) for this dataset, the modality will be displayed as the selected option in the \"Selected\" dropdown box found within the left-hand panel of each scan. Detailed QC information about a specific scan can be entered by clicking “Link to comments”, which will open a separate smaller window with a summary of the candidate’s information and the filename, followed by comments, if any exist, regarding intensity, movement artifacts, coverage and overall feedback on the selected scan. After saving any changes, the user can either close the pop-up window or use the link at the top: “Click here to close this window”.\r\n\r\n<b>Visualization</b>\r\nTo use visualization tools BrainBrowser and the JIV viewer. The user can also access 3D images through the navy blue links “3D+Overlay” and “3D Only” for both the JIV Panel and BrainBrowser in the left sidebar. \r\n\r\nIn the left sidebar, Links are also displayed to direct the user to the MRI parameter form, Radiological Review, DICOM Archive module, and Mantis issue-tracking tool. \r\nAt the top of the left sidebar, the user can click on \"Next\" to move to the next time-point for the candidate of interest.','2014-09-01 00:00:00',NULL),
-(26,-1,md5('mri_upload'), 'Imaging Uploader', 'The Imaging Uploader allows users to upload imaging files, typically for an entire imaging session at a time. Please note that files should be in a compressed format (.tgz, .tar.gz, or .zip) and must be labeled properly in order to be uploaded successfully into the database. \r\n\r\nAfter choosing the file to upload, users must input the CandID, PSCID, and Visit Label for this dataset, and then click the “Upload” button. The newly uploaded file will be displayed in the table below. \r\n\r\nUsers will be able to search for datasets uploaded in the past, by entering the ID or Visit Label and then clicking “Show Data”. Results from the upload logs will be displayed in the table below, which can be sorted by columns “CandID”, “Visit Label”, “Source Location”, “Upload Date” and “Uploaded By”, as well as by number of Minc files inserted, and number of Minc files created.\r\n\r\nNote that the “Tarchive Info” column contains links to the corresponding DICOM header information for a given imaging dataset, via the DICOM Archive module.','2014-09-01 00:00:00',NULL),
+(26,-1,md5('imaging_uploader'), 'Imaging Uploader', 'The Imaging Uploader allows users to upload imaging files, typically for an entire imaging session at a time. Please note that files should be in a compressed format (.tgz, .tar.gz, or .zip) and must be labeled properly in order to be uploaded successfully into the database. \r\n\r\nAfter choosing the file to upload, users must input the CandID, PSCID, and Visit Label for this dataset, and then click the “Upload” button. The newly uploaded file will be displayed in the table below. \r\n\r\nUsers will be able to search for datasets uploaded in the past, by entering the ID or Visit Label and then clicking “Show Data”. Results from the upload logs will be displayed in the table below, which can be sorted by columns “CandID”, “Visit Label”, “Source Location”, “Upload Date” and “Uploaded By”, as well as by number of Minc files inserted, and number of Minc files created.\r\n\r\nNote that the “Tarchive Info” column contains links to the corresponding DICOM header information for a given imaging dataset, via the DICOM Archive module.','2014-09-01 00:00:00',NULL),
 (27,-1,md5('statistics'), 'Database Statistics', 'The Database statistics module calculates and displays statistics related to data acquisition, data processing, and data entry for both behavioural and imaging data collections. A brief description of “Demographic”, “Imaging”, and “Behavioural Statistics” can be found under the “General Description” tab. In addition to these tabs, the user can also view “Reliability Statistics”. These statistics categories will condense into a drop-down menu in a narrow browser view or mobile device, but can be opened using the downward arrow icon and hidden using the upward arrow icon.\r\n\r\n<b>Demographic Statistics</b>\r\nGeneral statistics can be retrieved from each site by using the drop-down select box under the first smaller heading “General Statistics” and clicking on the button “Submit Query”. Under General Statistics, the user will find the heading “Breakdown of Registered Candidates”, where a table outlines gender breakdowns per site, time-point and subproject ID. Data Entry Completion Status can be viewed for each instrument by selecting from the dropdown menu under “Breakdown of Registered Candidates”. Click “Submit Query” to view statistics specific to the selected instrument. \r\n\r\n<b>Behavioural Statistics</b>\r\nThe user will first see a table labeled “Data Entry Statistics”, where each site is listed in blue headers horizontally and includes the headings “Completed”, “Created”, and “% Completion”. “Completed” refers to the total number of instruments that have been marked “Data Entry= Complete” and “Administration= None/Partial/All”. This column has its percentage counterpart under “% Completion”. “Created” refers to the total number of instruments that have been populated requiring data entry. Another feature allows all site information to be reversibly hidden except “% Completion” by a single click on the Site Name (i.e. AAA, DCC etc.). The “Double Data Entry Statistics” table underneath rests on a similar premise as the “Data Entry Statistics” Table, but with regards to double data entry. In both of these tables, the visits are listed in rows with the data sorted by site. Depending on the study and number of sites involved, the user will need to navigate horizontally through the table using the slider or the arrows flanking the table. When using a desktop the user must hover the mouse over the arrows, whereas on a mobile device the user must click on the arrows. The user also has the option of viewing “Per Instrument Stats” at the bottom of each site’s column, by following the “Please Click Here” link. The user can then view which candidates have not completed data entry in each site. \r\n\r\n<b>Reliability Statistics</b>\r\nThe Reliability Statistics module currently sorts each instrument by visit label and shows the number of flagged, completed, and reliable cases, in addition to expressing reliability and completion in terms of percentages. “Total Flagged” cases refer to the number of candidates with levels consistently falling below a given threshold, thus they have been ‘flagged’ for reliability review. The “Total Complete” column contains the number of candidates for whom a reliability review has been completed. The “Total Reliable” column adds to the information in “Total Complete”, but includes only those candidates whose information is now reliable. The Reliability Statistics Table also includes “Percent Complete” and “Percent Reliable” columns. Under the smaller navy heading “Reliability Statistics”, the user can search for specific statistics for their site of interest by using the dropdown menu and clicking the button “Submit Query”.\r\n\r\n<b>Imaging Statistics</b>\r\nThe first table under “Imaging Integrity Statistics for” displays information regarding missing imaging data, as indicated by data entry on the MRI parameter form, and scan insertions based on records in the Imaging Browser and DICOM archive. Specific candidates with missing imaging data can be easily identified through the link “Click here for breakdown per participant” under the “Breakdown of Problems” column.\r\n\r\nThe second table within the Imaging Statistics module allows the user to get a breakdown of statistics for candidates by time-point, based on the scan selected. Depending on the project, the user can choose from T1, T2, T1 & T2, DTI, BOLD, and Spectroscopy scans, and other possible options at the top left of the second table, to show the relative number of candidates with scans marked as “Complete”, “Partial”, or “No Scan”. Under the column “% Complete”, the user can view the percentage of candidates for the scan of interest that have completed scans. The record of scans has the subprojects listed across the top of the table horizontally, with each site encompassing all of its time points listed in rows. A breakdown of the total imaging data is also available at the bottom of the table.','2014-09-01 00:00:00',NULL),
 (28,27,md5('statistics_site'), 'Per Instrument Statistics', 'Completion Statistics for each site are displayed, and are organized by instrument and visit label. The “Completion Count” column displays the number of completed entries per instrument. Each PSCID that appears in the “Incomplete Candidates” list was designed to be a link itself to that particular candidate’s page for the selected instrument.','2014-09-01 00:00:00',NULL),
 (29,27,md5('statistics_mri_site'), 'Imaging Integrity Statistics Breakdown', 'This page contains a table listing various Scan Insertion Issues in the left-most column. In the “Incomplete Entries” column, clicking on the candidate IDs will redirect the user to the appropriate Imaging form or dataset for that candidate.','2014-09-01 00:00:00',NULL),
@@ -1882,6 +1852,17 @@ CREATE TABLE `mri_violations_log` (
   `ValidRange` varchar(255) DEFAULT NULL,
   `ValidRegex` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`LogID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `violations_resolved` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `hash` varchar(255) NOT NULL,
+  `ExtID` bigint(20) NOT NULL,
+  `TypeTable` varchar(255) DEFAULT NULL,
+  `User` varchar(255) DEFAULT NULL,
+  `ChangeDate` datetime DEFAULT NULL,
+  `Resolved` enum('unresolved', 'reran', 'emailed', 'inserted', 'rejected', 'inserted_flag', 'other') DEFAULT 'unresolved',
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `participant_accounts` (
@@ -1978,41 +1959,41 @@ INSERT INTO LorisMenu (Label, OrderNumber) VALUES
      ('Admin', 6);
 
 INSERT INTO LorisMenu (Label, Link, Parent, OrderNumber) VALUES 
-    ('New Profile', 'main.php?test_name=new_profile', 1, 1),
-    ('Access Profile', 'main.php?test_name=candidate_list', 1, 2);
+    ('New Profile', 'main.php?test_name=new_profile', (SELECT ID FROM LorisMenu as L WHERE Label='Candidate'), 1),
+    ('Access Profile', 'main.php?test_name=candidate_list', (SELECT ID FROM LorisMenu as L WHERE Label='Candidate'), 2);
 
 INSERT INTO LorisMenu (Label, Link, Parent, OrderNumber) VALUES 
-    ('Reliability', 'main.php?test_name=reliability', 2, 1),
-    ('Conflict Resolver', 'main.php?test_name=conflict_resolver', 2, 2),
-    ('Examiner', 'main.php?test_name=examiner', 2, 3),
-    ('Training', 'main.php?test_name=training', 2, 4);
+    ('Reliability', 'main.php?test_name=reliability', (SELECT ID FROM LorisMenu as L WHERE Label='Clinical'), 1),
+    ('Conflict Resolver', 'main.php?test_name=conflict_resolver', (SELECT ID FROM LorisMenu as L WHERE Label='Clinical'), 2),
+    ('Examiner', 'main.php?test_name=examiner', (SELECT ID FROM LorisMenu as L WHERE Label='Clinical'), 3),
+    ('Training', 'main.php?test_name=training', (SELECT ID FROM LorisMenu as L WHERE Label='Clinical'), 4);
 
 INSERT INTO LorisMenu (Label, Link, Parent, OrderNumber) VALUES 
-    ('Radiological Reviews', 'main.php?test_name=final_radiological_review', 3, 1),
-    ('DICOM Archive', 'main.php?test_name=dicom_archive', 3, 2),
-    ('Imaging Browser', 'main.php?test_name=imaging_browser', 3, 3),
-    ('MRI Violated Scans', 'main.php?test_name=mri_violations', 3, 4),
-    ('MRI Upload', 'main.php?test_name=mri_upload', 3, 5);
+    ('Radiological Reviews', 'main.php?test_name=final_radiological_review', (SELECT ID FROM LorisMenu as L WHERE Label='Imaging'), 1),
+    ('DICOM Archive', 'main.php?test_name=dicom_archive', (SELECT ID FROM LorisMenu as L WHERE Label='Imaging'), 2),
+    ('Imaging Browser', 'main.php?test_name=imaging_browser', (SELECT ID FROM LorisMenu as L WHERE Label='Imaging'), 3),
+    ('MRI Violated Scans', 'main.php?test_name=mri_violations', (SELECT ID FROM LorisMenu as L WHERE Label='Imaging'), 4),
+    ('Imaging Uploader', 'main.php?test_name=imaging_uploader', (SELECT ID FROM LorisMenu as L WHERE Label='Imaging'), 5);
 
 INSERT INTO LorisMenu (Label, Link, Parent, OrderNumber) VALUES 
-    ('Statistics', 'main.php?test_name=statistics', 4, 1),
-    ('Data Query Tool', '/dqt/', 4, 2);
+    ('Statistics', 'main.php?test_name=statistics', (SELECT ID FROM LorisMenu as L WHERE Label='Reports'), 1),
+    ('Data Query Tool', '/dqt/', (SELECT ID FROM LorisMenu as L WHERE Label='Reports'), 2);
 
 INSERT INTO LorisMenu (Label, Link, Parent, OrderNumber) VALUES
-    ('Data Dictionary', 'main.php?test_name=datadict', 5, 1),
-    ('Document Repository', 'main.php?test_name=document_repository', 5, 2),
-    ('Data Integrity Flag', 'main.php?test_name=data_integrity_flag', 5, 3),
-    ('Data Team Helper', 'main.php?test_name=data_team_helper', 5, 4),
-    ('Instrument Builder', 'main.php?test_name=instrument_builder', 5, 5),
-    ('Genomic Browser', 'main.php?test_name=genomic_browser', 5, 6);
+    ('Data Dictionary', 'main.php?test_name=datadict', (SELECT ID FROM LorisMenu as L WHERE Label='Tools'), 1),
+    ('Document Repository', 'main.php?test_name=document_repository', (SELECT ID FROM LorisMenu as L WHERE Label='Tools'), 2),
+    ('Data Integrity Flag', 'main.php?test_name=data_integrity_flag', (SELECT ID FROM LorisMenu as L WHERE Label='Tools'), 3),
+    ('Data Team Helper', 'main.php?test_name=data_team_helper', (SELECT ID FROM LorisMenu as L WHERE Label='Tools'), 4),
+    ('Instrument Builder', 'main.php?test_name=instrument_builder', (SELECT ID FROM LorisMenu as L WHERE Label='Tools'), 5),
+    ('Genomic Browser', 'main.php?test_name=genomic_browser', (SELECT ID FROM LorisMenu as L WHERE Label='Tools'), 6);
 
 INSERT INTO LorisMenu (Label, Link, Parent, OrderNumber) VALUES 
-    ('User Accounts', 'main.php?test_name=user_accounts', 6, 1),
-    ('Survey Module', 'main.php?test_name=survey_accounts', 6,2),
-    ('Help Editor', 'main.php?test_name=help_editor', 6,3),
-    ('Instrument Manager', 'main.php?test_name=instrument_manager', 6,4),
-    ('Configuration', 'main.php?test_name=configuration', 6, 5),
-    ('Server Processes Manager', 'main.php?test_name=server_processes_manager', 6, 6);
+    ('User Accounts', 'main.php?test_name=user_accounts', (SELECT ID FROM LorisMenu as L WHERE Label='Admin'), 1),
+    ('Survey Module', 'main.php?test_name=survey_accounts', (SELECT ID FROM LorisMenu as L WHERE Label='Admin'), 2),
+    ('Help Editor', 'main.php?test_name=help_editor', (SELECT ID FROM LorisMenu as L WHERE Label='Admin'), 3),
+    ('Instrument Manager', 'main.php?test_name=instrument_manager', (SELECT ID FROM LorisMenu as L WHERE Label='Admin'), 4),
+    ('Configuration', 'main.php?test_name=configuration', (SELECT ID FROM LorisMenu as L WHERE Label='Admin'), 5),
+    ('Server Processes Manager', 'main.php?test_name=server_processes_manager', (SELECT ID FROM LorisMenu as L WHERE Label='Admin'), 6);
 
 CREATE TABLE LorisMenuPermissions (
     MenuID integer unsigned REFERENCES LorisMenu(ID),
@@ -2064,7 +2045,7 @@ INSERT INTO LorisMenuPermissions (MenuID, PermID)
 
 -- MRI Upload
 INSERT INTO LorisMenuPermissions (MenuID, PermID) 
-    SELECT m.ID, p.PermID FROM permissions p CROSS JOIN LorisMenu m WHERE p.code='mri_upload' AND m.Label='MRI Upload';
+    SELECT m.ID, p.PermID FROM permissions p CROSS JOIN LorisMenu m WHERE p.code='imaging_uploader' AND m.Label='Imaging Uploader';
 
 -- Statistics -- Config file currently does not require any permission 
 
@@ -2293,6 +2274,26 @@ INSERT INTO Config (ConfigID, Value) SELECT ID, "no-reply@example.com" FROM Conf
 INSERT INTO Config (ConfigID, Value) SELECT ID, "no-reply@example.com" FROM ConfigSettings WHERE Name="Reply-to";
 INSERT INTO Config (ConfigID, Value) SELECT ID, "Produced by LorisDB" FROM ConfigSettings WHERE Name="X-MimeOLE";
 
+DROP TABLE IF EXISTS `subproject`;
+CREATE TABLE subproject (
+    SubprojectID int(10) unsigned NOT NULL auto_increment,
+    title varchar(255) NOT NULL,
+    useEDC boolean,
+    WindowDifference enum('optimal', 'battery'),
+    RecruitmentTarget int(10) unsigned,
+    PRIMARY KEY (SubprojectID)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='Stores Subprojects used in Loris';
+INSERT INTO subproject (SubprojectID, title, useEDC, WindowDifference) VALUES (1, 'Control', false, 'optimal');
+INSERT INTO subproject (SubprojectID, title, useEDC, WindowDifference) VALUES (2, 'Experimental', false, 'optimal');
+
+DROP TABLE IF EXISTS `Project`;
+CREATE TABLE `Project` (
+    `ProjectID` INT(2) NOT NULL AUTO_INCREMENT,
+    `Name` VARCHAR(255) NULL,
+    `recruitmentTarget` INT(6) Default NULL,
+    PRIMARY KEY (`ProjectID`)
+)ENGINE = InnoDB  DEFAULT CHARSET=utf8;
+
 CREATE TABLE StatisticsTabs(
     ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     ModuleName varchar(255) NOT NULL,
@@ -2378,6 +2379,7 @@ CREATE TABLE `SNP` (
   `FunctionPrediction` enum('exonic','ncRNAexonic','splicing','UTR3','UTR5') DEFAULT NULL,
   `Damaging` enum('D','NA') DEFAULT NULL,
   `GenotypeQuality` int(4) DEFAULT NULL,
+  `ExonicFunction` enum('nonsynonymous','unknown') DEFAULT NULL,
   `PlatformID` bigint(20) DEFAULT NULL,
   `GenomeLocID` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`SNPID`),
@@ -2456,3 +2458,4 @@ CREATE TABLE `server_processes` (
   KEY `FK_task_1` (`userid`),
   CONSTRAINT `FK_task_1` FOREIGN KEY (`userid`) REFERENCES `users` (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

@@ -7,12 +7,13 @@
 // Passes the results from one or more SQL queries to the writeExcel function.
 
 // Future improvements:
-// The SQL to pull the instrument data rely on some nastry text matching (ie. where c.PSCID not like '1%').  Ideally, this junk could be purged directly from the DB, and the SQL made more plain.
+// The SQL to pull the instrument data rely on some nasty text matching (ie. where c.PSCID not like '1%').  Ideally, this junk could be purged directly from the DB, and the SQL made more plain.
 
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once "generic_includes.php";
 require_once 'Spreadsheet/Excel/Writer.php';
 require_once "Archive/Tar.php";
+require_once "CouchDB_MRI_Importer.php";
 
 if (isset($argv[1])) {
  $limit_date_instruments = " AND i.Date_taken <= '{$argv[1]}' ";
@@ -241,9 +242,28 @@ foreach ($scan_types as $scan_type) {
     writeExcel("mri_feedbacks_$Test_name", $scan_type_table, $dataDir);
 }
 
+//MRI data construction
+//Using CouchDBMRIImporter since same data is imported to DQT.
+$Test_name = "MRI_Data";
+$mriData = new CouchDBMRIImporter();
+$scanTypes = $mriData->getScanTypes();
+$candidateData = $mriData->getCandidateData($scanTypes);
+$mriDataDictionary = $mriData->getDataDictionary($scanTypes);
+
+//add all dictionary names as excel column headings
+foreach($mriDataDictionary as $dicKey=>$dicVal)
+{
+    //if column not already present
+    if (!array_key_exists($dicKey, $candidateData[0]))
+    {
+        $candidateData[0][$dicKey] = NULL;
+    }
+}
+
+writeExcel($Test_name, $candidateData, $dataDir);
+
 // disabling .tgz compression format
-/*
-// Clean up
+/*// Clean up
 // tar and gzip the product
 $tarFile = $dumpName . ".tgz"; // produced dump file name and extension
 $tar = new Archive_Tar($tarFile, "gz");

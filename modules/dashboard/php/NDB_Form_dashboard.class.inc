@@ -89,13 +89,14 @@ class NDB_Form_Dashboard extends NDB_Form
         $useProjects = $config->getSetting('useProjects');
         $this->tpl_data['useProjects'] = $useProjects;
         if ($useProjects == "true") {
-            $projects = $config->getSetting('Projects');
-            foreach ($projects['project'] as $project) {
+            $projects = Utility::getProjectList();
+            foreach ($projects as $projectID => $project) {
+                $projectInfo = $config->getProjectSettings($projectID);
                 $this->createProjectProgressBar(
-                    $project['id'],
-                    $project['title'],
-                    $project['recruitmentTarget'],
-                    $this->getTotalRecruitmentByProject($project['id'])
+                    $projectID,
+                    $projectInfo['Name'],
+                    $projectInfo['recruitmentTarget'],
+                    $this->getTotalRecruitmentByProject($projectID)
                 );
             }
         }
@@ -315,6 +316,7 @@ class NDB_Form_Dashboard extends NDB_Form
         $ID, $title, $recruitmentTarget, $totalRecruitment
     ) {
         $this->tpl_data['recruitment'][$ID]['total_recruitment'] = $totalRecruitment;
+        $this->tpl_data['recruitment'][$ID]['title'] = $title;
         $this->tpl_data['recruitment'][$ID]['title'] = $title;
 
         if (!empty($recruitmentTarget)) {
