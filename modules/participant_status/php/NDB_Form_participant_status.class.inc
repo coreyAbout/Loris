@@ -172,7 +172,7 @@ class NDB_Form_participant_status extends NDB_Form
         unset($values['dna_destroy_date_status']);
         $DNA_PSCID = $DB->pselectOne(
             "SELECT PSCID FROM candidate WHERE CandID = :cid",
-            array('cid'=>$values['CandID'])                       
+            array('cid'=>$values['candID'])                       
         );
         $GeneticsCount = $DB->pselectOne(
             "SELECT COUNT(*) FROM genetics WHERE PSCID = :pscid",
@@ -254,7 +254,7 @@ class NDB_Form_participant_status extends NDB_Form
 
         $pscid = $DB->pselectone(
             'SELECT PSCID FROM candidate where CandID = :Candid',
-            array('candid'=>$this->identifier)
+            array('Candid'=>$this->identifier)
         );
         $this->addScoreColumn('pscid', 'PSCID');
         $this->tpl_data['pscid'] = $pscid;
