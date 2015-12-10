@@ -128,7 +128,7 @@ class NDB_Form_participant_status extends NDB_Form
             unset($values['pscid']);
         }
 
-        $values['CandID'] = $this->identifier;
+        $values['candID'] = $this->identifier;
 
         if (!(is_null($_SESSION['State']))) {
             $currentUser =& User::singleton($_SESSION['State']->getUsername());
@@ -204,13 +204,13 @@ class NDB_Form_participant_status extends NDB_Form
             //if it exists update it
             $ParticipantCount = $DB->pselectOne(
                 "SELECT COUNT(*) FROM participant_status WHERE CandID = :cid", 
-                array("cid"=>$values['CandID'])
+                array("cid"=>$values['candID'])
             );
             if ($ParticipantCount > 0) {
                 $success = $DB->update(
                     "participant_status", 
                     $values,
-                    array("CandID"=>$values['CandID'])
+                    array("candID"=>$values['candID'])
                 );
             } else {
                 //insert it
@@ -254,7 +254,7 @@ class NDB_Form_participant_status extends NDB_Form
 
         $pscid = $DB->pselectone(
             'SELECT PSCID FROM candidate where CandID = :Candid',
-            array('Candid'=>$this->identifier)
+            array('candid'=>$this->identifier)
         );
         $this->addScoreColumn('pscid', 'PSCID');
         $this->tpl_data['pscid'] = $pscid;
