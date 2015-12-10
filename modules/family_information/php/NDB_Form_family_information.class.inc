@@ -73,7 +73,7 @@ class NDB_Form_family_information extends NDB_Form
             unset($values['pscid']);
         }
 
-        $values['CandID'] = $this->identifier;
+        $values['candID'] = $this->identifier;
 
         if (!(is_null($_SESSION['State']))) {
             $currentUser =& User::singleton($_SESSION['State']->getUsername());
@@ -91,7 +91,7 @@ class NDB_Form_family_information extends NDB_Form
         }
 
         $values['related_participant_CandID'] = $DB->pselectOne(
-            'SELECT CandID FROM candidate where PSCID = :related_participant_PSCID',
+            'SELECT candID FROM candidate where PSCID = :related_participant_PSCID',
             array('related_participant_PSCID'=>$values['related_participant_PSCID'])
         );
 
@@ -127,8 +127,8 @@ class NDB_Form_family_information extends NDB_Form
             $values['related_participant_status'] == 'aunt/uncle';
         }
 
-        $tmp = $values['CandID'];
-        $values['CandID'] = $values['related_participant_CandID'];
+        $tmp = $values['candID'];
+        $values['candID'] = $values['related_participant_CandID'];
         $values['related_participant_CandID'] = $tmp;
         $values['related_participant_PSCID'] = $DB->pselectOne(
             'SELECT PSCID FROM candidate where CandID = :related_participant_CandID',
