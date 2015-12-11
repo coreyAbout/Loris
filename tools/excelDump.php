@@ -1,6 +1,8 @@
 <?php
 
 // Dumps the database instruments and some accompanying information into Excel formatted files.
+// Takes an optional date argument in the format YYYY-MM-DD to limit the SQL queries
+// eg. php excelDump.php 2015-12-25
 // For some large tables, this script requires *a lot* of memory.  Modify the `cli` php.ini for > 256M
 
 // Operation:
@@ -16,8 +18,11 @@ require_once "Archive/Tar.php";
 require_once "CouchDB_MRI_Importer.php";
 
 if (isset($argv[1])) {
- $limit_date_instruments = " AND i.Date_taken <= '{$argv[1]}' ";
- $limit_date = " AND mad.AcquisitionDate <= '{$argv[1]}' ";
+    $limit_date_instruments = " AND i.Date_taken <= '{$argv[1]}' ";
+    $limit_date = " AND mad.AcquisitionDate <= '{$argv[1]}' ";
+} else {
+    $limit_date_instruments = "";
+    $limit_date = "";
 }
 
 //Configuration variables for this script, possibly installation dependent.
