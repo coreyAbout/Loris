@@ -20,9 +20,11 @@ require_once "CouchDB_MRI_Importer.php";
 if (isset($argv[1])) {
     $limit_date_instruments = " AND i.Date_taken <= '{$argv[1]}' ";
     $limit_date = " AND mad.AcquisitionDate <= '{$argv[1]}' ";
+    $limit_date_candidates = " AND s.Date_visit <= '{$argv[1]}' ";
 } else {
     $limit_date_instruments = "";
     $limit_date = "";
+    $limit_date_candidates = "";
 }
 
 //Configuration variables for this script, possibly installation dependent.
@@ -135,11 +137,7 @@ if (count($result) > 0) {
 */
 $Test_name = "candidate_info";
 //this query is a but clunky, but it gets rid of all the crap that would otherwise appear.
-if (!isset($limit_date_instruments)) {
-$query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' order by c.PSCID";
-} else {
-$query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' and s.Date_visit <= '{$argv[1]}' order by c.PSCID";
-}
+$query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . " order by c.PSCID";
 $DB->select($query, $results);
 if (PEAR::isError($results)) {
 	PEAR::raiseError("Couldn't get candidate info. " . $results->getMessage());
