@@ -155,11 +155,13 @@ class NDB_Form_participant_status extends NDB_Form
 		$values['participant_status'] = 6;
 	}
 
+//manually created the date/not_answered elements / different than LorisForm so no need to parse the date
         if ($values['dna_collected_eligibility'] == 'no' || $values['dna_request_destroy'] == 'no' || $values['dna_destroy_date_status'] == 'not_answered') {
                 $values['dna_destroy_date'] = null;
-        } else {
-                $values['dna_destroy_date'] = sprintf("%04d-%02d-%02d", $values['dna_destroy_date']['Y'], $values['dna_destroy_date']['M'], $values['dna_destroy_date']['d']);
         }
+//        } else {
+//                $values['dna_destroy_date'] = sprintf("%04d-%02d-%02d", $values['dna_destroy_date']['Y'], $values['dna_destroy_date']['M'], $values['dna_destroy_date']['d']);
+//        }
         // save the DNA values
         //if it exists update it
         $DNA_values['dna_collected_eligibility'] = $values['dna_collected_eligibility'];
