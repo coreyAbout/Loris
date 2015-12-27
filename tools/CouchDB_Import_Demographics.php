@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . "/../vendor/autoload.php";
 require_once 'generic_includes.php';
 require_once 'CouchDB.class.inc';
 require_once 'Database.class.inc';
@@ -34,10 +33,6 @@ class CouchDBDemographicsImporter {
         'DoB' => array(
             'Description' => 'Candidate\'s date of birth',
             'Type' => "date"
-        ),
-        'Mother_tongue' => array(
-            'Description' => 'Candidate\'s mother tongue',
-            'Type' => "enum('Arabic','Chinese','Creole','English','Greek','French','Italian','Portuguese','Romanian','Spanish','Other','Unknown')"
         ),
         'Site' => array(
             'Description' => 'Site that this visit took place at',
@@ -96,155 +91,171 @@ class CouchDBDemographicsImporter {
             'Type' => "enum('1_voluntary_withdrawal','2_recommended_withdrawal','3_lost_follow_up','4_other')"
         ),
 	'ApoE' => array(
-	    'Description' => 'ApoE',
+	    'Description' => 'ApoE genotype (E4 = risk)',
 	    'Type' => "varchar(255)"
 	),
-	'ApoE_112' => array(
-	    'Description' => 'ApoE 112',
-	    'Type' => "int(10)"
-	),
-	'ApoE_158' => array(
-	    'Description' => 'ApoE 158',
-	    'Type' => "int(10)"
-	),
 	'apoE_allele_no' => array(
-	    'Description' => 'ApoE allele number',
+	    'Description' => 'Number of ApoE 4 allele (0, 1 or 2)',
 	    'Type' => "int(10)"
 	),
 	'E4_allele_Bin' => array(
-	    'Description' => 'E4 allele binary',
+	    'Description' => 'Presence of ApoE 4 allele (0 = no ApoE 4 allele, 1 = at least one ApoE 4 allele)',
 	    'Type' => "int(1)"
 	),
 	'Technicien_ApoE' => array(
-	    'Description' => 'Technicien ApoE',
+	    'Description' => 'Technicien who ran ApoE analyses',
 	    'Type' => "varchar(255)"
 	),
 	'Method_ApoE' => array(
-	    'Description' => 'Method ApoE',
+	    'Description' => 'Method used to extract ApoE genotypes',
 	    'Type' => "varchar(255)"
 	),
 	'Reference_ApoE' => array(
-	    'Description' => 'Reference ApoE',
+	    'Description' => 'Reference used to extract ApoE genotypes',
 	    'Type' => "date"
 	),
 	'BchE_K_variant' => array(
-	    'Description' => 'BchE K variant',
+	    'Description' => 'BchE K variant (A= K variant = risk)',
 	    'Type' => "varchar(255)"
 	),
 	'K_variant_copie_no' => array(
-	    'Description' => 'K variant copie number',
+	    'Description' => 'Number of BchE K allele (0, 1 or 2)',
 	    'Type' => "int(10)"
 	),
 	'K_variant_bin' => array(
-	    'Description' => 'K variant binary',
+	    'Description' => 'Presence of BchE K allele (0 = no K variant; 1 = at least one K variant)',
 	    'Type' => "int(1)"
 	),
 	'Technicien_BchE' => array(
-	    'Description' => 'Technicien BchE',
+	    'Description' => 'Technicien who ran BchE analyses',
 	    'Type' => "varchar(255)"
 	),
 	'Method_BchE' => array(
-	    'Description' => 'Method BchE',
+	    'Description' => 'Method used to extract BchE variants',
 	    'Type' => "varchar(255)"
 	),
 	'Reference_BchE' => array(
-	    'Description' => 'Reference BchE',
+	    'Description' => 'Reference used to extract BchE variants',
 	    'Type' => "date"
 	),
 	'BDNF' => array(
-	    'Description' => 'BDNF',
+	    'Description' => 'BDNF genotype (A = mutation = risk)',
 	    'Type' => "varchar(255)"
 	),
 	'BDNF_allele_no' => array(
-	    'Description' => 'BDNF allele number',
+	    'Description' => 'Number of BDNF A allele (0, 1 or 2)',
 	    'Type' => "int(10)"
 	),
 	'BDNF_copie_bin' => array(
-	    'Description' => 'BDNF copie binary',
+	    'Description' => 'Presence of BDNF A allele (0 = no BDNF A allele, 1 = at least one BDNF A allele)',
 	    'Type' => "int(1)"
 	),
 	'Technicien_BDNF' => array(
-	    'Description' => 'Technicien BDNF',
+	    'Description' => 'Technicien who ran BDNF analyses',
 	    'Type' => "varchar(255)"
 	),
 	'Method_BDNF' => array(
-	    'Description' => 'Method BDNF',
+	    'Description' => 'Method used to extract BDNF genotypes',
 	    'Type' => "varchar(255)"
 	),
 	'Reference_BDNF' => array(
-	    'Description' => 'Reference BDNF',
+	    'Description' => 'Reference used to extract BDNF genotypes',
 	    'Type' => "date"
 	),
 	'HMGR_Intron_M' => array(
-	    'Description' => 'HMGR intron M',
+	    'Description' => 'HMGR intron M genotype (TT is protective, just one T is not protective)',
 	    'Type' => "varchar(255)"
 	),
 	'Intron_M_allele_no' => array(
-	    'Description' => 'Intron M allele number',
+	    'Description' => 'Number of HMGR Intron M T allele (0, 1 or 2) (2 = protection)',
 	    'Type' => "int(10)"
 	),
+        'Intron_M_protective' => array(
+            'Description' => 'Protective variant if ApoE4 and HMGR = TT (0 = less than 2 T allele, 1  = two T allele)  ',
+            'Type' => "varchar(255)"
+        ),
 	'Technicien_M' => array(
-	    'Description' => 'Technicien',
+	    'Description' => 'Technicien who ran HMGR analyses',
 	    'Type' => "varchar(255)"
 	),
 	'Method_M' => array(
-	    'Description' => 'Method',
+	    'Description' => 'Method used to extract HMGR genotypes',
 	    'Type' => "varchar(255)"
 	),
 	'Reference_M' => array(
-	    'Description' => 'Reference M',
+	    'Description' => 'Reference used to extract HMGR genotypes',
 	    'Type' => "date"
 	),
         'TLR4_rs_4986790' => array(
-            'Description' => 'TLR4 rs 4986790',
+            'Description' => 'TLR4 genotype (G = risk, dose effect of this mutation so should use 0, 1 and 2 for analyses))',
             'Type' => "varchar(255)"
         ),
         'TLR4_allele_no' => array(
-            'Description' => 'TLR4 allele no',
+            'Description' => 'Number of TLR4 G allele (0, 1 or 2)',
             'Type' => "varchar(255)"
         ),
         'Technicien_TLR4' => array(
-            'Description' => 'Technicien TLR4',
+            'Description' => 'Technicien who ran TLR4 analyses',
             'Type' => "varchar(255)"
         ),
         'Method_TLR4' => array(
-            'Description' => 'Method TLR4',
+            'Description' => 'Method used to extract TLR4 genotypes',
             'Type' => "varchar(255)"
         ),
         'Reference_TLR4' => array(
-            'Description' => 'Reference TLR4',
+            'Description' => 'Reference used to extract TLR4 genotypes',
             'Type' => "date"
         ),
         'PPP2r1A_rs_10406151' => array(
-            'Description' => 'PPP2r1A rs 10406151',
+            'Description' => 'PPP2r1Ars10406151 genotype (T = mutation = risk)',
             'Type' => "varchar(255)"
         ),
         'ppp2r1A_allele_no' => array(
-            'Description' => 'ppp2r1A allele no',
+            'Description' => 'Number of PPP2r1A T  allele (0, 1 or 2)',
             'Type' => "varchar(255)"
         ),
         'ppp2r1A_copie_no' => array(
-            'Description' => 'ppp2r1A copie no',
+            'Description' => 'Presence of two copies of PPP2r1A T alleles (0 =no T allele, 1 = at least one T allele)',
             'Type' => "varchar(255)"
         ),
         'Technicien_ppp2r1a' => array(
-            'Description' => 'Technicien ppp2r1a',
+            'Description' => 'Technicien who ran PPP2r1A analyses',
             'Type' => "varchar(255)"
         ),
         'Method_ppp2r1a' => array(
-            'Description' => 'Method ppp2r1a',
+            'Description' => 'Method used to extract PPP2r1A genotypes',
             'Type' => "varchar(255)"
         ),
         'Reference_ppp2r1a' => array(
-            'Description' => 'Reference ppp2r1a',
+            'Description' => 'Reference used to extract PPP2r1A genotypes',
+            'Type' => "date"
+        ),
+        'CDK5RAP2_rs10984186' => array(
+            'Description' => 'Regulator of Tau phosphorylation',
+            'Type' => "varchar(255)"
+        ),
+        'CDK5RAP2_rs10984186_allele_no' => array(
+            'Description' => 'Number of T  allele (0, 1 or 2) ',
+            'Type' => "varchar(255)"
+        ),
+        'CDK5RAP2_rs10984186_allele_bin' => array(
+            'Description' => 'Presence of T allele (0 = no T allele, 1 = at least one T allele) ',
+            'Type' => "varchar(255)"
+        ),
+        'Technicien_CDK5RAP2' => array(
+            'Description' => 'Technicien who ran CDK5RAP2 analyses',
+            'Type' => "varchar(255)"
+        ),
+        'Method_CDK5RAP2' => array(
+            'Description' => 'Method used to extract CDK5RAP2 genotypes',
+            'Type' => "varchar(255)"
+        ),
+        'Reference_CDK5RAP2' => array(
+            'Description' => 'Reference used to extract CDK5RAP2 genotypes',
             'Type' => "date"
         ),
         'comments' => array(
-            'Description' => 'comments',
-            'Type' => "varchar(255)"
-        ),
-        'is_destroyed' => array(
-            'Description' => 'is destroyed',
+            'Description' => 'Comments (wether DNA has been destroyed for example)',
             'Type' => "varchar(255)"
         ),
         'dna_collected_eligibility' => array(
@@ -373,7 +384,7 @@ class CouchDBDemographicsImporter {
 
     function _generateQuery() {
         $config = NDB_Config::singleton();
-        $fieldsInQuery = "SELECT withdrawal_reasons, naproxen_eligibility, naproxen_eligibility_status, naproxen_withdrawal_reasons, probucol_eligibility, probucol_eligibility_status, probucol_withdrawal_reasons, pso.description,ps.reason_specify, ps.withdrawal_reasons_other_specify, scan_done, ApoE, ApoE_112, ApoE_158, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Technicien_M, Method_M, Reference_M, TLR4_rs_4986790, TLR4_allele_no, Technicien_TLR4, Method_TLR4, Reference_TLR4, PPP2r1A_rs_10406151, ppp2r1A_allele_no, ppp2r1A_copie_no, Technicien_ppp2r1a, Method_ppp2r1a, Reference_ppp2r1a, g.comments, is_destroyed, dna_collected_eligibility, dna_request_destroy, dna_destroy_date, dna_destroy_date_status, d.drug as 'drug_compliance_drug', d.visit_label as 'drug_compliance_visit_label', d.drug_issued_date as 'drug_compliance_drug_issued_date', d.drug_issued_date_status as 'drug_compliance_drug_issued_date_status', d.pills_issued as 'drug_compliance_pills_issued', d.pills_issued_status as 'drug_compliance_pills_issued_status', d.drug_returned_date as 'drug_compliance_drug_returned_date', d.drug_returned_date_status as 'drug_compliance_drug_returned_date_status', d.pills_returned as 'drug_compliance_pills_returned', d.pills_returned_status as 'drug_compliance_pills_returned_status', d.compliance_evaluation as 'drug_compliance_compliance_evaluation', d.compliance_evaluation_status as 'drug_compliance_compliance_evaluation_status', d.behavioral_compliance_evaluation as 'drug_compliance_behavioral_compliance_evaluation', d.behavioral_compliance_evaluation_status as 'drug_compliance_behavioral_compliance_evaluation_status', d.comments as 'drug_compliance_comments', d.comments_status as 'drug_compliance_comments_status', c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, c.Mother_tongue, c.DoB, s.Current_stage, s.Visit, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status";
+        $fieldsInQuery = "SELECT withdrawal_reasons, naproxen_eligibility, naproxen_eligibility_status, naproxen_withdrawal_reasons, probucol_eligibility, probucol_eligibility_status, probucol_withdrawal_reasons, pso.description,ps.reason_specify, ps.withdrawal_reasons_other_specify, scan_done, ApoE, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Technicien_M, Method_M, Reference_M, TLR4_rs_4986790, TLR4_allele_no, Technicien_TLR4, Method_TLR4, Reference_TLR4, PPP2r1A_rs_10406151, ppp2r1A_allele_no, ppp2r1A_copie_no, Technicien_ppp2r1a, Method_ppp2r1a, Reference_ppp2r1a, CDK5RAP2_rs10984186, CDK5RAP2_rs10984186_allele_no, CDK5RAP2_rs10984186_allele_bin, Technicien_CDK5RAP2, Method_CDK5RAP2, Reference_CDK5RAP2, g.comments, dna_collected_eligibility, dna_request_destroy, dna_destroy_date, dna_destroy_date_status, d.drug as 'drug_compliance_drug', d.visit_label as 'drug_compliance_visit_label', d.drug_issued_date as 'drug_compliance_drug_issued_date', d.drug_issued_date_status as 'drug_compliance_drug_issued_date_status', d.pills_issued as 'drug_compliance_pills_issued', d.pills_issued_status as 'drug_compliance_pills_issued_status', d.drug_returned_date as 'drug_compliance_drug_returned_date', d.drug_returned_date_status as 'drug_compliance_drug_returned_date_status', d.pills_returned as 'drug_compliance_pills_returned', d.pills_returned_status as 'drug_compliance_pills_returned_status', d.compliance_evaluation as 'drug_compliance_compliance_evaluation', d.compliance_evaluation_status as 'drug_compliance_compliance_evaluation_status', d.behavioral_compliance_evaluation as 'drug_compliance_behavioral_compliance_evaluation', d.behavioral_compliance_evaluation_status as 'drug_compliance_behavioral_compliance_evaluation_status', d.comments as 'drug_compliance_comments', d.comments_status as 'drug_compliance_comments_status', c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, c.DoB, s.Current_stage, s.Visit, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status";
         $tablesToJoin = " FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) LEFT JOIN participant_status ps ON c.CandID=ps.CandID LEFT JOIN participant_status_options as pso ON ps.participant_status=pso.ID LEFT JOIN genetics as g ON g.PSCID=c.PSCID LEFT JOIN drug_compliance as d ON c.CandID=d.CandID";
         // If proband fields are being used, add proband information into the query
         if ($config->getSetting("useProband") === "true") {
