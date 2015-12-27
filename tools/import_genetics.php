@@ -187,7 +187,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 
 if ($ApoE == '4/4' || $ApoE == '4-4') {
  $apoE_allele_no = 2;
-} elseif ($ApoE == '3-4' || $ApoE == '4-3' || $ApoE == '3/4' || $ApoE == '4/3' || $ApoE == '4/2' || $ApoE == '2/4') {
+} elseif ($ApoE == '3-4' || $ApoE == '4-3' || $ApoE == '3/4' || $ApoE == '4/3' || $ApoE == '4/2' || $ApoE == '2/4' || $ApoE == '4-2' || $ApoE == '2-4') {
  $apoE_allele_no = 1;
 } elseif ($ApoE == '3-3' || $ApoE == '2-3' || $ApoE == '3-2' || $ApoE == '2-2' || $ApoE == '3/3' || $ApoE == '2/3' || $ApoE == '3/2' || $ApoE == '2/2') {
  $apoE_allele_no = 0;
@@ -195,7 +195,7 @@ if ($ApoE == '4/4' || $ApoE == '4-4') {
  $apoE_allele_no = null;
 }
 
-if ($apoE_allele_no === 0 || $ApoE == '2/4' || $ApoE == '4/2') {
+if ($apoE_allele_no === 0 || $ApoE == '2/4' || $ApoE == '4/2' || $ApoE == '2-4' || $ApoE == '4-2') {
  $E4_allele_Bin = 0;
 } elseif ($apoE_allele_no > 0) {
  $E4_allele_Bin = 1;
