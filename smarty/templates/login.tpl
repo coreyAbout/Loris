@@ -145,7 +145,7 @@ BrowserDetect.init();
 		  <div class="panel-body">
 		  		<div class="col-xs-12">
 		  			<center>
-		  				<img src="images/LORIS_logo_141007.svg" class="img-responsive" alt="Responsive image" onerror="this.src='images/LORIS_Logo_141007.png'" align="middle" width="85%"> 
+		  				<img src="images/preventadlogo.png" class="img-responsive" alt="Responsive image" onerror="this.src='images/LORIS_Logo_141007.png'" align="middle" width="85%"> 
 		  			</center>
 					<br>
 		  		</div>
