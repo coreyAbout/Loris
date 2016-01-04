@@ -230,15 +230,13 @@ class NDB_Form_drug_compliance extends NDB_Form
             $id = $currentUser->getData("UserID");
             $values['entry_staff'] = $id;
         }
+
+//manually created the date/not_answered elements / different than LorisForm so no need to parse the date
         if ($values['drug_issued_date_status'] == 'not_answered' ) {
             $values['drug_issued_date'] = null;
-        } else {
-            $values['drug_issued_date'] = sprintf("%04d-%02d-%02d", $values['drug_issued_date']['Y'], $values['drug_issued_date']['M'], $values['drug_issued_date']['d']);
         }
         if ($values['drug_returned_date_status'] == 'not_answered' ) {
             $values['drug_returned_date'] = null;
-        } else {
-            $values['drug_returned_date'] = sprintf("%04d-%02d-%02d", $values['drug_returned_date']['Y'], $values['drug_returned_date']['M'], $values['drug_returned_date']['d']);
         }
 
         // save the values by inserting
