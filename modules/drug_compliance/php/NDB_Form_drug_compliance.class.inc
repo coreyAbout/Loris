@@ -223,7 +223,7 @@ class NDB_Form_drug_compliance extends NDB_Form
             unset($values['pscid']);
         }
 
-        $values['CandID'] = $this->identifier;
+        $values['candID'] = $this->identifier;
 
         if (!(is_null($_SESSION['State']))) {
             $currentUser =& User::singleton($_SESSION['State']->getUsername());
@@ -286,8 +286,8 @@ class NDB_Form_drug_compliance extends NDB_Form
         $this->tpl_data['entry_staff'] = $entry_staff;
 
         $pscid = $DB->pselectOne(
-            'SELECT PSCID FROM candidate where CandID = :Candid',
-            array('Candid'=>$this->identifier)
+            'SELECT PSCID FROM candidate where CandID = :candID',
+            array('candID'=>$this->identifier)
         );
         $this->addScoreColumn('pscid', 'PSCID');
         $this->tpl_data['pscid'] = $pscid;
