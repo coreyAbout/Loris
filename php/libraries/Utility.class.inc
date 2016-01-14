@@ -14,9 +14,6 @@
 require_once 'PEAR.php';
 require_once "NDB_Config.class.inc";
 require_once 'NDB_Factory.class.inc';
-
-
-
 /**
  * A class for holding a set of (static) utility/helper functions in a
  * single namespace.
@@ -49,14 +46,55 @@ class Utility extends PEAR
         if (!is_a($data, 'PEAR_Error')) {
             return false;
         }
-
         if (is_null($code)) {
             return true;
         } elseif (is_string($code)) {
             return $data->getMessage() == $code;
         }
-
         return $data->getCode() == $code;
+    }
+
+
+    /**
+     * Builds a query string
+     *
+     * @param  array   Array of parameters to put into query string
+     * @return string
+     * @access public
+     */
+    function unparse_str ($params) {
+        $str = '';
+        foreach ($params as $key => $value) {
+            if(is_array($value)) {
+                foreach($value AS $vkey => $vval) {
+                    $str .= (strlen($str) < 1) ? '' : '&';
+                    $str .= $key . rawurlencode("[$vkey]") . '=' . rawurlencode($vval);
+                }
+            } else {
+                $str .= (strlen($str) < 1) ? '' : '&';
+                $str .= $key . '=' . rawurlencode($value);
+            }
+        }
+        return ($str);
+    }
+
+    /**
+     * Return the number of columns to use before the quat table scripts
+     * overflow into a new table. This information comes from the config.xml.
+     *
+     * @return integer Column threshold from config file
+     * @note   Function should be either removed or moved to NDB_Config
+     * @note   Function comment written by Dave, who can't remember if he's
+     *       the author of this function.
+     *
+     * @cleanup
+     */
+    static function getColumnThresholdCount()
+    {
+        $config =& NDB_Config::singleton();
+        // get the list of Subprojects
+        $column_threshold = $config->getSetting('columnThreshold');
+        return $column_threshold;
     }
 
     /**
@@ -72,8 +110,6 @@ class Utility extends PEAR
         $string = array_reduce($array, array('Utility', 'crunch'));
         return (!empty($string)) ? explode('`', $string) : array();
     }
-
-
     /**
      * Implodes a multi-dimensional array using array_reduce()
      *
@@ -90,6 +126,63 @@ class Utility extends PEAR
         $a = (is_array($x)) ? array_reduce($x, array('Utility', 'crunch')) : $x;
         $b = (is_array($y)) ? array_reduce($y, array('Utility', 'crunch')) : $y;
         return (!empty($a)) ? "$a`$b" : $b;
+    }
+
+
+    function _daysInPrevMonth($month, $year) {
+        if($month == 1) {
+            return Utility::_daysInMonth(12, $year-1);
+        }
+        return Utility::_daysInMonth($month-1, $year);
+    }
+    function _daysInMonth($month, $year, $calcLeapYear = true) {
+        /* Thirty days has September (9), April (4), June (6), and November (11)
+           all the rest have 31 except February, etc etc */
+        $thirty_days = array(4, 6, 9, 11);
+        if($month == 2) {
+            if($calcLeapYear == false) {
+                return 28;
+            }
+            if(Utility::_IsLeapYear($year)) {
+                return 29;
+            }
+            return 28;
+        }
+        if(!in_array($month, $thirty_days)) {
+            return 31;
+        }
+        return 30;
+    }
+    function _IsLeapYear($year) {
+        if($year % 400 == 0)
+            return true;
+        if($year % 100 == 0)
+            return false;
+        if($year % 4 == 0 )
+            return true;
+        return false;
+    }
+    function _ExtraLeapDays($testdate, $dob) {
+        $extra = 0;
+        foreach(range($dob['year'], $testdate['year']) as $year) {
+            if(Utility::_IsLeapYear($year) ) {
+                if($year == $testdate['year']) {
+                    if(($testdate['mon'] > 2) || 
+                            ($testdate['mon'] == 2 && $testdate['day'] == 29))
+                    {
+                        $extra++;
+                    }
+                } elseif($year == $dob['year']) {
+                    if($dob['mon'] <= 2)
+                    {
+                        $extra++;
+                    }
+                } else {
+                    $extra++;
+                }
+            }
+        }
+        return $extra;
     }
 
 
@@ -118,7 +211,6 @@ class Utility extends PEAR
                 'mon'  => $matches[2],
                 'day'  => $matches[3],
                );
-
         if (!preg_match(
             "/([0-9]{4})-?([0-9]{1,2})-?([0-9]{1,2})/",
             $testdate,
@@ -133,7 +225,6 @@ class Utility extends PEAR
                      'mon'  => $matches[2],
                      'day'  => $matches[3],
                     );
-
         if ($testdate['day'] < $dob['day']) {
             $testdate['day'] += 30;
             $testdate['mon']--;
@@ -142,15 +233,41 @@ class Utility extends PEAR
             $testdate['mon'] += 12;
             $testdate['year']--;
         }
-
         $age = array(
                 'year' => $testdate['year'] - $dob['year'],
                 'mon'  => $testdate['mon'] - $dob['mon'],
                 'day'  => $testdate['day'] - $dob['day'],
                );
-
         return $age;
     }
+
+
+    /**
+     * Returns a list of available ethnicities that can be assigned to subjects
+     *
+     * @return array       an associative array("ethnicity" => "ethnicity")
+     * @throws PEAR_Error
+     * @access public
+     * @static
+     */
+    function getEthnicityList()
+    {
+        $DB =& Database::singleton();
+        // get the list of ethnicities
+        $query = "SELECT DISTINCT Race as Ethnicity FROM ethnic WHERE Race <> ''";
+        // execute the query
+        $DB->select($query, $result);
+        if (PEAR::isError($result)) {
+            return PEAR::raiseError("DB Error: ".$result->getMessage());
+        }
+        // fix the array
+        $list = array();
+        foreach ($result as $row) {
+            $list[$row["Ethnicity"]] = $row["Ethnicity"];
+        }
+        return $list;
+    }
+
 
     /**
      * Returns a list of existing ethnicities of all candidates
@@ -164,16 +281,13 @@ class Utility extends PEAR
     function getListOfSubjectEthnicities()
     {
         $DB =& Database::singleton();
-
         // get the list of ethnicities
         $query = "SELECT DISTINCT Ethnicity 
             FROM candidate
             WHERE Ethnicity NOT IN (NULL, '')
             ORDER BY Ethnicity";
         // execute the query
-
         $result = $DB->pselect($query, array());
-
         // fix the array
         $list = array();
         foreach ($result as $row) {
@@ -183,32 +297,33 @@ class Utility extends PEAR
     }
 
     /**
-     * Returns a list of sites in the database
+     * Returns a list of study sites
      *
-     * @param bool $study_site If true only return sites that are
-     *                         study sites according to the psc
-     *                         table
+     * Study site if a site that actively collects study data
      *
-     * @return array an associative array("center ID" => "site name")
+     * @params bool        return only study sites, or not
+     * @throws PEAR_Error
+     * @return array       an associative array("center ID" => "site name")
+     * @access public
+     * @static
      */
-    static function getSiteList($study_site = true)
+    function getSiteList($study_site = true, $DCC = true)
     {
         $DB =& Database::singleton();
-
         // get the list of study sites - to be replaced by the Site object
         $query = "SELECT CenterID, Name FROM psc ";
         if ($study_site) {
-                if (!$DCC)
+            if (!$DCC)
                 $query .= "WHERE Study_site='Y' AND Name != 'DCC'";
         }
         else {
-                if (!DCC)
+            if (!DCC)
                 $query .= "WHERE Name != 'DCC'";
-
         }
-
-        $result = $DB->pselect($query, array());
-
+        $DB->select($query, $result);
+        if(PEAR::isError($result)) {
+            return PEAR::raiseError("DB Error: ".$result->getMessage());
+        }
         // fix the array
         $list = array();
         foreach ($result as $row) {
@@ -216,7 +331,6 @@ class Utility extends PEAR
         }
         return $list;
     }
-
 
     /**
      * Get the list of sites as an associative array
@@ -230,10 +344,9 @@ class Utility extends PEAR
      *         should be interpreted as an associative array since the keys
      *         refer to the centerID, not the array index.
      */
-    function getAssociativeSiteList($study_site = true, $DCC = true)
+    static function getAssociativeSiteList($study_site = true, $DCC = true)
     {
         $DB =& Database::singleton();
-
         // get the list of study sites - to be replaced by the Site object
         $query = "SELECT CenterID, Name FROM psc ";
         if ($study_site) {
@@ -242,9 +355,7 @@ class Utility extends PEAR
         if (!$DCC) {
             $query .= " AND Name != 'DCC'";
         }
-
         $result = $DB->pselect($query, array());
-
         // fix the array
         $list = array();
         foreach ($result as $row) {
@@ -252,6 +363,8 @@ class Utility extends PEAR
         }
         return $list;
     }
+
+
 
     /**
      * Gets a list of visits used by the database as specified from
@@ -262,11 +375,8 @@ class Utility extends PEAR
     static function getVisitList()
     {
         $DB =& Database::singleton();
-
         $query = "SELECT Visit_label from Visit_Windows ORDER BY Visit_label";
-
         $result = $DB->pselect($query, array());
-
         $list = array();
         foreach ($result as $row) {
             $list[$row["Visit_label"]] = ucfirst($row["Visit_label"]);
@@ -274,68 +384,6 @@ class Utility extends PEAR
         return $list;
     }
 
-    /**
-     * Returns a list of study Projects
-     *
-     * @return array an associative array("projectID" => "project title")
-     * @access public
-     */
-    static function getProjectList()
-    {
-        $factory = NDB_Factory::singleton();
-        $DB      = $factory->database();
-        // get the list of projects
-        $projects = $DB->pselect("SELECT * FROM Project", array());
-        $project  = array();
-        foreach ($projects as $row) {
-            $project[$row['ProjectID']] = $row['Name'];
-        }
-        return $project;
-    }
-
-    /**
-     * Returns a list of study Subprojects
-     *
-     * @param integer $projectID The project for which you would like
-     *                           to get the subprojects
-     *
-     * @return array       an associative array("SubprojectID" => "Subproject title")
-     */
-    static function getSubprojectList($projectID = null)
-    {
-        $factory = NDB_Factory::singleton();
-        $DB      = $factory->database();
-        $config  = $factory->config();
-
-        if (!is_null($projectID)) {
-            $subprojects = $DB->pselect(
-                "SELECT * FROM subproject " .
-                "JOIN project_rel USING (SubprojectID) WHERE ProjectID=:pID",
-                array('pID' => $projectID)
-            );
-        } else {
-            $subprojects = $DB->pselect("SELECT * FROM subproject", array());
-        }
-
-        $subprojs = array();
-        foreach ($subprojects as $row) {
-            $subprojs[$row['SubprojectID']] = $row['title'];
-        }
-        return $subprojs;
-    }
-
-    /**
-     * Returns a list of study Subprojects associated with a project
-     *
-     * @param integer $projectID The project for which you would like
-     *                           to get the subprojects
-     *
-     * @return array an associative array("SubprojectID" => "Subproject title")
-     */
-    static function getSubprojectsForProject($projectID = null)
-    {
-        return self::getSubprojectList($projectID);
-    }
 
     /**
      * Returns the test name associated with a given commentID
@@ -351,10 +399,8 @@ class Utility extends PEAR
     static function getTestNameByCommentID($commentID)
     {
         $db =& Database::singleton();
-
         $query    = "SELECT Test_name FROM flag WHERE CommentID=:CID";
         $testName = $db->pselectOne($query, array('CID' => $commentID));
-
         return $testName;
     }
 
@@ -402,24 +448,19 @@ class Utility extends PEAR
         $regex = "";
         foreach ($seqs AS $seq) {
             $unit = "";
-
             switch($seq['@']['type']) {
             case 'alpha':
                 $unit .= '[a-z]';
                 break;
-
             case 'alphanumeric':
                 $unit .= '[0-9a-z]';
                 break;
-
             case 'numeric':
                 $unit .= '[0-9]';
                 break;
-
             case 'static':
                 $unit .= '('.$seq['#'].')';
                 break;
-
             case 'set':
                 if (strpos($seq['#'], '|') !== false) {
                     $unit .= '('.$seq['#'].')';
@@ -427,12 +468,10 @@ class Utility extends PEAR
                     $unit .= '['.$seq['#'].']';
                 }
                 break;
-
             case 'siteAbbrev':
                 $unit .= $siteAbbrev;
                 break;
             } // end switch
-
             $length = "";
             if (isset($seq['@']['length'])) {
                 $length .= $seq['@']['length'];
@@ -441,9 +480,7 @@ class Utility extends PEAR
             } else {
                 $length .= '1';
             }
-
             $length .= ',';
-
             if (isset($seq['@']['length'])) {
                 $length .= $seq['@']['length'];
             } elseif (isset($seq['@']['maxLength'])) {
@@ -453,13 +490,11 @@ class Utility extends PEAR
             ) {
                 $length .= '1';
             }
-
             $regex .= $unit.'{'.$length.'}';
-
         } // end foreach seq
-
         return '/^'.$regex.'$/i';
     }
+
 
     /**
      * Merges two arrays recursively, overwriting values of the first
@@ -499,6 +534,7 @@ class Utility extends PEAR
         return $merged_array;
     }
 
+
     /**
      * Returns a list of bvl instruments
      *
@@ -513,34 +549,29 @@ class Utility extends PEAR
     static function lookupBattery($age, $stage=null)
     {
         $DB =& Database::singleton();
-
         // craft the select query
         $query  = "SELECT t.Test_name FROM test_battery AS b, test_names AS t 
             WHERE t.Test_name=b.Test_name 
             AND b.AgeMinDays<=:CandAge AND b.AgeMaxDays>=:CandAge 
             AND b.Active='Y'";
         $params = array('CandAge' => $age);
-
         if (!is_null($stage)) {
             $query .= " AND b.Stage=:BatStage";
             $params['BatStage'] = $stage;
         }
-
         $query .= " GROUP BY Test_name ORDER BY Test_name";
-
         // get the list of instruments
         $rows  = array();
         $tests = array();
         $rows  = $DB->pselect($query, $params);
-
         // repackage the array
         foreach ($rows AS $row) {
             $tests[] = $row['Test_name'];
         }
-
         // return an array of test names
         return $tests;
     }
+
 
     /**
      * Ensures that $var is a collection of $var elements, not just a
@@ -562,7 +593,6 @@ class Utility extends PEAR
         }
         return $var;
     }
-
     /**
      * Ensures that $var is a collection elements, not just a single element
      * Not the same as toArray, apparently.
@@ -581,6 +611,7 @@ class Utility extends PEAR
         }
         return $var;
     }
+
 
     /**
      * Explodes an encapsulted, delimited string like
@@ -602,7 +633,6 @@ class Utility extends PEAR
         $state        =0;
         $output       =$string;
         $output_index =0;
-
         for ($i=0;$i<strlen($string);$i++) {
             switch ($string[$i]) {
             case $delimiter:
@@ -611,7 +641,6 @@ class Utility extends PEAR
                     $output_index--;
                 }
                 break;
-
             case $seperator:
                 if ($state%2==0) {
                     $output        =substr_replace($output, "{@}", $output_index, 1);
@@ -649,6 +678,19 @@ class Utility extends PEAR
         return $Zoo;
     }
 
+
+    // from php.net comments
+    function in_array_insensitive($item, $array) {
+        $item = &strtoupper($item);
+        foreach($array as $element) {
+            if ($item == strtoupper($element)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * Replace the empty string with null in specified field
      * in an array passed in as an argument. This undoes the
@@ -677,6 +719,8 @@ class Utility extends PEAR
         return $arr;
     }
 
+
+
     /**
      * Now that Loris requires PHP >5.3 places that use this code should be
      * updated to use a closure.
@@ -704,7 +748,6 @@ class Utility extends PEAR
     {
         return $Arr['Test_name'];
     }
-
     /**
      * Now that Loris requires PHP >5.3 places that use this code should be
      * updated to use a closure.
@@ -733,6 +776,7 @@ class Utility extends PEAR
         return $Arr['Full_name'];
     }
 
+
     /**
      * Get a list of instruments installed in Loris.
      *
@@ -753,7 +797,16 @@ class Utility extends PEAR
                 $instruments[$row['Test_name']] =$row['Full_name'];
             }
         }
+        return $instruments;
+    }
 
+
+    function getAllInstrumentsExcept($exception) {
+        $DB =& Database::singleton();
+        $instruments_q = $DB->pselect("SELECT Test_name,Full_name FROM test_names where Test_name!=:exception", array('exception'=>$exception));
+        foreach($instruments_q as $key){
+            $instruments[$key['Test_name']]=$key['Full_name'];
+        }
         return $instruments;
     }
 
@@ -776,10 +829,8 @@ class Utility extends PEAR
         foreach ($instruments_q as $key) {
             $instruments[$key['Test_name']] =$key['Full_name'];
         }
-
         return $instruments;
     }
-
     /**
      * Get a list of all instruments which have scoring implemented.
      * Used in statistics module.
@@ -798,6 +849,7 @@ class Utility extends PEAR
         }
         return $Scored;
     }
+
 
     /**
      * Return the score columns which exist for a given instrument.
@@ -829,24 +881,71 @@ class Utility extends PEAR
     }
 
 
-    /**
-     * Return the number of columns to use before the quat table scripts
-     * overflow into a new table. This information comes from the config.xml.
-     *
-     * @return integer Column threshold from config file
-     * @note   Function should be either removed or moved to NDB_Config
-     * @note   Function comment written by Dave, who can't remember if he's
-     *       the author of this function.
-     *
-     * @cleanup
+    /* This needs to be in Utilities, since it depends on both FYI and 
+     * ADI-R, both need to use it. 
      */
-    static function getColumnThresholdCount()
-    {
-        $config =& NDB_Config::singleton();
-        // get the list of Subprojects
-        $column_threshold = $config->getSetting('columnThreshold');
-        return $column_threshold;
+    function FlattenID($arr) {
+        return $arr['ID'];
     }
+
+
+
+    function GetSupplementalGrantStatus($sessionID) {
+        $timePoint =& TimePoint::singleton($sessionID);
+        if(PEAR::isError($timePoint)) {
+            return PEAR::raiseError("Timepoint Error ".$timePoint->getMessage());
+        }
+        $tpd = $timePoint->getData();
+        if($tpd['Visit_label'] == 'v06' || $tpd['Visit_label'] == 'V06') {
+            return 'Parent Grant';
+        }
+        $CommentStart = $tpd['CandID'] . $tpd['PSC'] . '%';
+        $DB =& Database::singleton();
+        $fyi_risk_score = $DB->pselectOne("SELECT risk_score FROM fyi WHERE CommentID LIKE :CommentStart", 
+                array('CommentStart' => $CommentStart));
+        if(is_null($fyi_risk_score)) {
+            return 'N/A';
+        } else if ($fyi_risk_score < 10) {
+            return 'Supplemental Grant';
+        } else {
+            if($tpd['Visit_label'] == 'v12' || $tpd['Visit_label'] == 'V12') {
+                return 'Parent Grant';
+            } else if($tpd['Visit_label'] == 'v24' || $tpd['Visit_label'] == 'V24') {
+                $adi_r_diagnosis = $DB->pselectOne('SELECT summary_diagnosis FROM adi_r_subject WHERE CommentID LIKE :CommentStart', 
+                        array('CommentStart' => $CommentStart));
+                if($adi_r_diagnosis == 'ASD+') {
+                    return 'Parent Grant';
+                } else if ($adi_r_diagnosis == 'ASD-') {
+                    return 'Supplemental Grant';
+                } else {
+                    return 'N/A';
+                }
+            }
+        }
+        return '';
+    }
+
+
+    /* Set the session_status for the Grant Status field for anything that
+     * Depends on this SessionID. Note that multiple sessions of the same
+     * candidate may be affected by this session, so we just get all
+     * sessions for the candidate, and reset them all.
+     */
+    function SetSupplementalGrantStatus($SessionID) {
+        $DB =& Database::singleton();
+        $IDs = $DB->pselect("SELECT ID FROM session WHERE CandID=(SELECT CandID FROM session WHERE ID=:SessionID)", array(":SessionID"=>$SessionID));
+        print_r($IDs);
+        $IDs_string = join(',', array_map(array('Utility', 'FlattenID'),$IDs));
+        $DB->run("delete from session_status WHERE ID IN ($IDs_string) AND Name='Grant Status'");
+        foreach($IDs as $ID ) {
+            $DB->insert("session_status", array(
+                        'SessionID' => $ID['ID'],
+                        'Name' => "Grant Status", 
+                        'Value' => Utility::GetSupplementalGrantStatus($ID['ID'])));
+        }
+        //$DB->run("delete from session_status WHERE SessionID IN ($IDs_string) AND Name='Grant Status'");
+    }
+    
 
 
     /**
@@ -885,6 +984,8 @@ class Utility extends PEAR
         return false;
     }
 
+
+
     /**
      * Returns the visit labels that a given test_name exists in
      *
@@ -908,7 +1009,6 @@ class Utility extends PEAR
             JOIN psc ON (s.CenterID = psc.CenterID)
             WHERE s.Active = 'Y' AND c.Active= 'Y' 
             AND f.Test_name = :tn AND psc.Centerid!= '1'";
-
         $visitlabels = $db->pselect($query, array('tn' => $test_name));
         return $visitlabels;
     }
@@ -938,6 +1038,88 @@ class Utility extends PEAR
         return $test_name;
     }
 
+
+    /**
+     * Returns a list of study Projects
+     *
+     * @return array an associative array("projectID" => "project title")
+     * @access public
+     */
+    static function getProjectList()
+    {
+        $factory = NDB_Factory::singleton();
+        $DB      = $factory->database();
+        // get the list of projects
+        $projects = $DB->pselect("SELECT * FROM Project", array());
+        $project  = array();
+        foreach ($projects as $row) {
+            $project[$row['ProjectID']] = $row['Name'];
+        }
+        return $project;
+    }
+    
+    /**
+     * Returns a list of study Subprojects
+     *
+     * @param integer $projectID The project for which you would like
+     *                           to get the subprojects
+     *
+     * @return array       an associative array("SubprojectID" => "Subproject title")
+     */
+    static function getSubprojectList($projectID = null)
+    {
+        $factory = NDB_Factory::singleton();
+        $DB      = $factory->database();
+        $config  = $factory->config();
+        if (!is_null($projectID)) {
+            $subprojects = $DB->pselect(
+                "SELECT * FROM subproject " .
+                "JOIN project_rel USING (SubprojectID) WHERE ProjectID=:pID",
+                array('pID' => $projectID)
+            );
+        } else {
+            $subprojects = $DB->pselect("SELECT * FROM subproject", array());
+        }
+        $subprojs = array();
+        foreach ($subprojects as $row) {
+            $subprojs[$row['SubprojectID']] = $row['title'];
+        }
+        return $subprojs;
+    }
+    /**
+     * Returns a list of study Subprojects associated with a project
+     *
+     * @param integer $projectID The project for which you would like
+     *                           to get the subprojects
+     *
+     * @return array an associative array("SubprojectID" => "Subproject title")
+     */
+    static function getSubprojectsForProject($projectID = null)
+    {
+        return self::getSubprojectList($projectID);
+    }
+    
+    /**
+     * Determine whether an array is a numeric (normal) array or an
+     * associative (hashtable) array.
+     *
+     * @param array $arr The array to be checked for numeric keys.
+     *
+     * @return boolean True if the given parameter is an array with
+     *                 numeric keys, false otherwise.
+     */
+    static function numericArray($arr)
+    {
+        if (!is_array($arr)) {
+            return false;
+        }
+        $keys = array_keys($arr);
+        if (count($keys) === 0) {
+            return false;
+        }
+        return isset($arr[0]);
+    }
+
     /**
      * Get all the sourcefrom instruments from parameter_type (which
      * exist in the data_integrity flag table)
@@ -951,7 +1133,6 @@ class Utility extends PEAR
     static function getSourcefrom()
     {
         $DB =& Database::singleton();
-
         $sourcefrom = $DB->pselect(
             "SELECT DISTINCT t.Full_name FROM parameter_type pt
             JOIN data_integrity_flag di ON (pt.Name = di.Name)
@@ -960,7 +1141,6 @@ class Utility extends PEAR
             ORDER BY t.Full_name",
             array()
         );
-
         foreach ($sourcefrom as $table) {
             if (!is_null($table)) {
                 $result[$table['Full_name']] = $table['Full_name'];
@@ -968,7 +1148,6 @@ class Utility extends PEAR
         }
         return $result;
     }
-
     /**
      * Returns all the sourcefrom instruments from parameter_type
      *
@@ -1021,8 +1200,6 @@ class Utility extends PEAR
         }
         return $sourcefields;
     }
-
-
     /**
      * Returns a list of study Visit Labels that are being used by this study.
      *
@@ -1042,7 +1219,6 @@ class Utility extends PEAR
     {
         $factory = NDB_Factory::singleton();
         $db      = $factory->database();
-
         if ($projectID != null) {
             $ExtraProject_Criteria
                 = ' AND (c.ProjectID IS NULL OR c.ProjectID=' . $projectID . ')';
@@ -1065,7 +1241,6 @@ class Utility extends PEAR
         }
         return $visits;
     }
-
     /**
      * Get all the instruments which currently exist for a given visit label
      * in the database.
@@ -1084,7 +1259,6 @@ class Utility extends PEAR
     static function getVisitInstruments($visit_label)
     {
         $DB =& Database::singleton();
-
         if (Utility::ColumnExists('test_battery', 'Test_name_display')) {
             $test_names = $DB->pselect(
                 "SELECT DISTINCT Test_name_display FROM test_battery 
@@ -1104,30 +1278,9 @@ class Utility extends PEAR
                 array('vl' => $visit_label)
             );
         }
-
         return $test_names;
     }
 
-    /**
-     * Determine whether an array is a numeric (normal) array or an
-     * associative (hashtable) array.
-     *
-     * @param array $arr The array to be checked for numeric keys.
-     *
-     * @return boolean True if the given parameter is an array with
-     *                 numeric keys, false otherwise.
-     */
-    static function numericArray($arr)
-    {
-        if (!is_array($arr)) {
-            return false;
-        }
-        $keys = array_keys($arr);
-        if (count($keys) === 0) {
-            return false;
-        }
-        return isset($arr[0]);
-    }
 
     /**
      * This function takes two strings. If one string has a
@@ -1178,6 +1331,7 @@ class Utility extends PEAR
         return $prefixStr;
     }
 
+
     /**
     * Coverts array into CSV string
     *
@@ -1188,16 +1342,13 @@ class Utility extends PEAR
     static function arrayToCSV($array)
     {
         $fp = fopen("php://temp", 'w+');
-
         fputcsv($fp, $array['headers']);
         foreach ($array['data'] as $item) {
             fputcsv($fp, $item);
         }
-
         // Read what we have written.
         rewind($fp);
         $csv_string = stream_get_contents($fp);
-
         fclose($fp);
         return $csv_string;
     }
