@@ -1,6 +1,6 @@
 <?php
 
-// gets all uploaded files from mri_parameter_form
+// checks if files existing in database actually exists on file system
 
 require_once "../vendor/autoload.php";
 
@@ -22,7 +22,7 @@ foreach ($result as $key => $value) {
             $visit_label = $v;
         } elseif ($v != '' && !is_null($v)) {        
             $file = "/var/www/neurodb/htdocs/mri_parameter_directions/" . $candid . "_" . $visit_label . "/" . $v;
-            if (!file_exists(file)) {
+            if (!file_exists($file)) {
                 echo "File: " . $file . " does not exist in the file system.\n";
             }
         }
