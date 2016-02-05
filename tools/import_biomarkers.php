@@ -77,6 +77,8 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                                         $visit = 'NAPLP12';
                                 elseif($thisField[$key] == 'F24')
                                         $visit = 'NAPLP24';
+                                elseif($thisField[$key] == 'F36')
+                                        $visit = 'NAPLP36';
 
 				echo "Visit: " . $visit . "\n";
 			}
@@ -153,8 +155,8 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 
 			$candID = $db->pselectOne("SELECT CandID from candidate where PSCID =:pid", array("pid"=>$PSCID)); 
 			$sessionID = $db->pselectOne("SELECT ID from session where CandID =:cid and Visit_label =:visit", array('cid'=>$candID, 'visit'=>$visit));
-			if (empty($sessionID) && $visit == 'NAPLP00') {
-				$sessionID = $db->pselectOne("SELECT ID from session where CandID =:cid and Visit_label =:visit", array('cid'=>$candID, 'visit'=>'NAPLP01'));
+			if (empty($sessionID)) {
+				echo "Error: Failed to update for CandID " . $candID . " for Visit " . $visit . "\n";
 			}
 			$commentID = $db->pselectOne("SELECT CommentID from flag where sessionID=:sid and test_name = 'LP' and CommentID not like 'DDE%'", array('sid'=>$sessionID));
 			$DDE_commentID = $db->pselectOne("SELECT CommentID from flag where sessionID=:sid and test_name = 'LP' and CommentID like 'DDE%'", array('sid'=>$sessionID));
