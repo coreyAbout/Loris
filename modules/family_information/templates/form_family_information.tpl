@@ -1,77 +1,85 @@
 <br />
 <form method="post" name="family_information" id="family_information">
-<table class="std">
-    <tr><th colspan="9">Family Information</th></tr>
-
-    <tr>
-        <td nowrap="nowrap">{$form.pscid.label}</td>
-        <td nowrap="nowrap">{$pscid}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.entry_staff.label}</td>
-        <td nowrap="nowrap">{$entry_staff}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.related_participant_PSCID.label}</td>
-        <td nowrap="nowrap">{$form.related_participant_PSCID.html}
-        {if $form.errors.related_participant_PSCID}
-            <span class='error'>{$form.errors.related_participant_PSCID}</span>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Family Information
+    </div>
+    <div class="panel-body">
+        <div class="row">
+                <label class="col-sm-2">{$form.pscid.label}</label>
+                <div class="col-sm-8">
+                    {$pscid}
+                </div>
+        </div>
+        <div class="row">
+                <label class="col-sm-2">{$form.entry_staff.label}</label>
+                <div class="col-sm-8">
+                    {$entry_staff}
+                </div>
+        </div>
+        <div class="row">
+                <label class="col-sm-2">{$form.related_participant_PSCID.label}</label>
+                <div class="col-sm-8">
+                    {$form.related_participant_PSCID.html}
+                        {if $form.errors.related_participant_PSCID}
+                            <span class='error'>{$form.errors.related_participant_PSCID}</span>
+                        {/if}
+                </div>
+        </div>
+        <br>
+        <div class="row">
+                <label class="col-sm-2">{$form.related_participant_status.label}</label>
+                <div class="col-sm-8">
+                    {$form.related_participant_status.html}
+                        {if $form.errors.related_participant_status}
+                            <span class='error'>{$form.errors.related_participant_status}</span>
+                        {/if}
+                </div>
+        </div>
+        <br>
+        <div class="row">
+                <label class="col-sm-2">{$form.related_participant_status_specify.label}</label>
+                <div class="col-sm-8">
+                    {$form.related_participant_status_specify.html}
+                        {if $form.errors.related_participant_status_specify}
+                            <span class='error'>{$form.errors.related_participant_status_specify}</span>
+                        {/if}
+                </div>
+        </div>
+        <br>
+        {if not $success}
+            <input class="btn btn-sm btn-primary col-sm-offset-2" name="fire_away" value="Save" type="submit" />
         {/if}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.related_participant_status.label}</td>
-        <td nowrap="nowrap">{$form.related_participant_status.html}
-        {if $form.errors.related_participant_status}
-            <span class='error'>{$form.errors.related_participant_status}</span>
-        {/if}
-        </td>
-    </tr>
-    <tr>
-        <td nowrap="nowrap">{$form.related_participant_status_specify.label}</td>
-        <td nowrap="nowrap">{$form.related_participant_status_specify.html}
-        {if $form.related_participant_status_specify.error}
-            <span class='error'>{$form.related_participant_status_specify.error}</span>
-        {/if}
-        </td>
-    </tr>
+            <input class="btn btn-sm btn-primary" onclick="location.href='main.php?test_name=timepoint_list&candID={$candID}'" value="Return to profile" type="button" />
+    </div>
+    <br>
+        <div class="panel-heading">
+            Family Information Details
+        </div>
+        <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td><b>Related Participant PSCID</b></td>
+                    <td><b>Related Participant CandID</b></td>
+                    <td><b>Related Participant Status Degree</b></td>
+                    <td><b>Related Participant Status</b></td>
+                    <td><b>Related Participant Status (specify)</b></td>
+                    <td><b>Data Entry Staff</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$history_list item=row}
+                    <tr>
+                        {foreach from=$row item=value key=name}
+                            <td>{$value}</td>
+                        {/foreach}
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        </div>
+</div>
 
-        <tr>
-        <td nowrap="nowrap">&nbsp;</td>
-                <td nowrap="nowrap" colspan="2">
-    {if not $success}
-        <input class="button" name="fire_away" value="Save" type="submit" />
-    {/if}
-        <input class="button" onclick="location.href='main.php?test_name=timepoint_list&candID={$candID}'" value="Return to profile" type="button" />
-        </td>
-        </tr>
-
-<td colspan="2">
-<table class="fancytable" width="100%">
-    <tr><th colspan="10">Family Information Details</th></tr>
-    <tr>
-        <td nowrap="nowrap"><b>Related Participant PSCID</b></td>
-        <td nowrap="nowrap"><b>Related Participant CandID</b></td>
-        <td nowrap="nowrap"><b>Related Participant Status Degree</b></td>
-        <td nowrap="nowrap"><b>Related Participant Status</b></td>
-        <td nowrap="nowrap"><b>Related Participant Status (specify)</b></td>
-        <td nowrap="nowrap"><b>Data Entry Staff</b></td>
-    </tr>
-
-    {foreach from=$history_list item=row}
-        <tr>
-        {foreach from=$row item=value key=name}
-	    <td>{$value}</td>
-        {/foreach}
-        </tr>
-    {/foreach}
-
-</table>
-</td>
-
-</table>
 {$form.hidden}
 </form>
-
