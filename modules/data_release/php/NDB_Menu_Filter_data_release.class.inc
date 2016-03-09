@@ -44,6 +44,41 @@ class NDB_Menu_Filter_Data_Release extends NDB_Menu_Filter
                                     'version' => 'version',
                                     'upload_date' => 'upload_date'
                                     );
+
+        $Factory       = NDB_Factory::singleton();
+        $DB            = $Factory->Database();
+
+        $user_ID = $DB->pselectOne(
+            "SELECT ID FROM users WHERE userid='{$user->getUsername()}'",
+            array()
+        );
+        $superuser = $DB->pselectOne(
+            "SELECT true FROM users WHERE ID IN (SELECT userid FROM user_perm_rel WHERE userid='{$user_ID}' AND permid=1)",
+            array()
+        );
+
+        $results = $DB->pselect(
+            "SELECT ID, UserID FROM users",
+            array()
+        );
+        $userids   = array();
+        foreach ($results as $row) {
+            $userids[$row['ID']] =$row['UserID'];
+        }
+
+        $results = $DB->pselect(
+            "SELECT id, file_name FROM data_release",
+            array()
+        );
+        $data_release_ids   = array();
+        foreach ($results as $row) {
+            $data_release_ids[$row['id']] =$row['file_name'];
+        }
+
+        $this->tpl_data['superuser'] = $superuser;
+        $this->tpl_data['userids'] = $userids;
+        $this->tpl_data['data_release_ids'] = $data_release_ids;
+
         return true;
     }
 
