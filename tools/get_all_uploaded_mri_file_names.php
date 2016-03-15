@@ -2,7 +2,7 @@
 
 // checks if files existing in database actually exists on file system
 
-require_once "../vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 require_once "NDB_Client.class.inc";
 $client = new NDB_Client();
