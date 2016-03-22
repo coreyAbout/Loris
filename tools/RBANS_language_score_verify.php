@@ -61,17 +61,16 @@ if ($argv[1] == 'local') {
 
         if ($age_range == "") {
             echo "Row " . $i . "+1 has no age range because candidate age is: " . $candidate_age . "\n";
+        } else {
+            echo "Checking results for Row " . $i . "+1 with version: " . $versions[$i][0] . " age: " . $candidate_age . " range: " . $age_range . " picture: " . $pictures[$i][0] . " semantic: " . $semantics[$i][0] . "\n";
+
+            $lookup_language_score = $DB->pselectOne("select score from language_index_scores_$age_range where picture_naming_ts ='" . $pictures[$i][0] . "' AND semantic_fluency_ts ='". $semantics[$i][0] . "'",null);
+
+            if ($lookup_language_score != $languages[$i][0]) {
+                echo "Row " . $i . "+1 with version: " . $versions[$i][0] . " lookup score: " . $lookup_language_score . " but stored score was " . $languages[$i][0] . "\n";
+                $count = $count + 1;
+            }
         }
-
-        echo "Checking results for Row " . $i . "+1 with version: " . $versions[$i][0] . " age: " . $candidate_age . " range: " . $age_range . " picture: " . $pictures[$i][0] . " semantic: " . $semantics[$i][0] . "\n";
-
-        $lookup_language_score = $DB->pselectOne("select score from language_index_scores_$age_range where picture_naming_ts ='" . $pictures[$i][0] . "' AND semantic_fluency_ts ='". $semantics[$i][0] . "'",null);
-
-        if ($lookup_language_score != $languages[$i][0]) {
-            echo "Row " . $i . "+1 with version: " . $versions[$i][0] . " lookup score: " . $lookup_language_score . " but stored score was " . $languages[$i][0] . "\n";
-            $count = $count + 1;
-        }
-
     }
 
     echo "Total incorrect results: " . $count . "\n";
@@ -97,16 +96,16 @@ if ($argv[1] == 'local') {
  
         if ($age_range == "") {
             echo "CommentID " . $R['CommentID'] . " has no age range because candidate age is: " . $candidate_age . "\n";
-        }
+        } else {
+            $lookup_language_score = $DB->pselectOne("select score from language_index_scores_$age_range where picture_naming_ts ='" . $R['picture_naming_score'] . "' AND semantic_fluency_ts ='". $R['semantic_fluency_score'] . "'",null);
 
-        $lookup_language_score = $DB->pselectOne("select score from language_index_scores_$age_range where picture_naming_ts ='" . $R['picture_naming_score'] . "' AND semantic_fluency_ts ='". $R['semantic_fluency_score'] . "'",null);
-        $stored_language_score = $R['language_index_score'];
+            $stored_language_score = $R['language_index_score'];
 
-        if ($lookup_language_score != $stored_language_score) {
-            echo "CommentID: " . $R['CommentID'] . " lookup score: " . $lookup_language_score . " stored score: " . $stored_language_score . "\n";
-            $count = $count + 1;
-        }
-        
+            if ($lookup_language_score != $stored_language_score) {
+                echo "CommentID: " . $R['CommentID'] . " lookup score: " . $lookup_language_score . " stored score: " . $stored_language_score . "\n";
+                $count = $count + 1;
+            }
+        }    
     }
 
     echo "Total incorrect results: " . $count . "\n";
