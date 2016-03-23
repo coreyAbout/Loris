@@ -66,6 +66,10 @@ if ($argv[1] == 'local') {
         } else {
             echo "Checking results for Row " . $i . "+1 with version: " . $versions[$i][0] . " age: " . $candidate_age . " range: " . $age_range . " picture: " . $pictures[$i][0] . " semantic: " . $semantics[$i][0] . "\n";
 
+            if ($semantics[$i][0] > 36) {
+                $semantics[$i][0] = 36;
+            }
+
             $lookup_language_score = $DB->pselectOne("select score from language_index_scores_$age_range where picture_naming_ts ='" . $pictures[$i][0] . "' AND semantic_fluency_ts ='". $semantics[$i][0] . "'",null);
 
             if ($lookup_language_score != $languages[$i][0]) {
@@ -99,6 +103,10 @@ if ($argv[1] == 'local') {
         if ($age_range == "") {
             echo "CommentID " . $R['CommentID'] . " has no age range because candidate age is: " . $candidate_age . "\n";
         } else {
+            if ($R['semantic_fluency_score'] > 36) {
+                $R['semantic_fluency_score'] = 36;
+            }
+
             $lookup_language_score = $DB->pselectOne("select score from language_index_scores_$age_range where picture_naming_ts ='" . $R['picture_naming_score'] . "' AND semantic_fluency_ts ='". $R['semantic_fluency_score'] . "'",null);
 
             $stored_language_score = $R['language_index_score'];
