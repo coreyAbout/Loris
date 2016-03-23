@@ -10,6 +10,8 @@ $DB =& Database::singleton();
 
 $count = 0;
 
+echo "If it reports no age range, it's probably because the instrument was created during the test battery creation and data entry just hasn't started yet\n\n";
+
 if ($argv[1] == 'local') {
 
     $picture = file('./picture');
@@ -73,7 +75,7 @@ if ($argv[1] == 'local') {
         }
     }
 
-    echo "Total incorrect results: " . $count . "\n";
+    echo "\nTotal incorrect results: " . $count . "\n";
 
 } elseif ($argv[1] == 'database') {
 
@@ -108,7 +110,7 @@ if ($argv[1] == 'local') {
         }    
     }
 
-    echo "Total incorrect results: " . $count . "\n";
+    echo "\nTotal incorrect results: " . $count . "\n";
 
 }
 
