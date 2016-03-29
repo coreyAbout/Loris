@@ -4,7 +4,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 $client = new NDB_Client();
 $client->makeCommandLine();
-$client->initialize(__DIR__ . '../project/config.xml');
+$client->initialize(__DIR__ . '/../project/config.xml');
 
 $DB =& Database::singleton();
 
