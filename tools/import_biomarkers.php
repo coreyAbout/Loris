@@ -95,8 +95,8 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 				$ELISA_ptau = $thisField[$key];
 			}
 
-                        if ($key == 'ELISA_date') {
-                           if ($thisField[$key] != '') {
+                        if (strpos($key, 'ELISA_date') !== FALSE) {
+                           if ($thisField[$key] != '' && $thisField[$key] != "\r\n") {
                                 $parsedate = date("Y-m-d",strtotime($thisField[$key]));
                                 $ELISA_date = $parsedate;
                            }  else {
@@ -133,7 +133,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                         }
 
                         if (strpos($key, '6plex_date') !== FALSE) {
-                           if ($thisField[$key] != "\r\n") {
+                           if ($thisField[$key] != '' && $thisField[$key] != "\r\n") {
                                 $parsedate = date("Y-m-d",strtotime($thisField[$key]));
                                 $sixplex_date = $parsedate;
                            }  else {
