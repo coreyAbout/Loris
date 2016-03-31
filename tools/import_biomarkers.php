@@ -60,7 +60,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 		{
 
 
-			if ($key == 'patient_number') {
+			if ($key == 'SubjectID') {
 				$counter ++;
 				$PSCID = $thisField[$key];
 				echo "-------count: " . $counter ."\n";
