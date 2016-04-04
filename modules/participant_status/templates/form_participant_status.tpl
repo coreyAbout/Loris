@@ -68,8 +68,8 @@
                 <label class="col-sm-2">{$form.dna_collected_eligibility.label}</label>
                 <div class="col-sm-8">
                     {$form.dna_collected_eligibility.html}
-                        {if $form.dna_collected_eligibility.error}
-                            <span class='error'>{$form.dna_collected_eligibility.error}</span>
+                        {if $form.errors.dna_collected_eligibility}
+                            <span class='error'>{$form.errors.dna_collected_eligibility}</span>
                         {/if}
                 </div>
         </div>
