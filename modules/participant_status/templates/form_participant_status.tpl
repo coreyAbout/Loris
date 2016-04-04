@@ -39,8 +39,8 @@
                 <label class="col-sm-2">{$form.reason_specify_group.label}</label>
                 <div class="col-sm-8">
                     {$form.reason_specify_group.html}
-                        {if $form.reason_specify_group.error}
-                            <span class='error'>{$form.reason_specify_group.error}</span>
+                        {if $form.errors.reason_specify_group}
+                            <span class='error'>{$form.errors.reason_specify_group}</span>
                         {/if}
                 </div>
         </div>
@@ -49,8 +49,8 @@
                 <label class="col-sm-2">{$form.withdrawal_reasons.label}</label>
                 <div class="col-sm-8">
                     {$form.withdrawal_reasons.html}
-                        {if $form.withdrawal_reasons.error}
-                            <span class='error'>{$form.withdrawal_reasons.error}</span>
+                        {if $form.errors.withdrawal_reasons}
+                            <span class='error'>{$form.errors.withdrawal_reasons}</span>
                         {/if}
                 </div>
         </div>
@@ -58,8 +58,8 @@
                 <label class="col-sm-2">{$form.withdrawal_reasons_other_specify_group.label}</label>
                 <div class="col-sm-8">
                     {$form.withdrawal_reasons_other_specify_group.html}
-                        {if $form.withdrawal_reasons_other_specify_group.error}
-                            <span class='error'>{$form.withdrawal_reasons_other_specify_group.error}</span>
+                        {if $form.errors.withdrawal_reasons_other_specify_group}
+                            <span class='error'>{$form.errors.withdrawal_reasons_other_specify_group}</span>
                         {/if}
                 </div>
         </div>
@@ -77,8 +77,8 @@
                 <label class="col-sm-2">{$form.dna_request_destroy.label}</label>
                 <div class="col-sm-8">
                     {$form.dna_request_destroy.html}
-                        {if $form.dna_request_destroy.error}
-                            <span class='error'>{$form.dna_request_destroy.error}</span>
+                        {if $form.errors.dna_request_destroy}
+                            <span class='error'>{$form.errors.dna_request_destroy}</span>
                         {/if}
                 </div>
         </div>
@@ -87,8 +87,8 @@
                 <label class="col-sm-2">{$form.dna_destroy_date_group.label}</label>
                 <div class="col-sm-8">
                     {$form.dna_destroy_date_group.html}
-                        {if $form.dna_destroy_date_group.error}
-                            <span class='error'>{$form.dna_destroy_date_group.error}</span>
+                        {if $form.errors.dna_destroy_date_group}
+                            <span class='error'>{$form.errors.dna_destroy_date_group}</span>
                         {/if}
                 </div>
         </div>
@@ -111,8 +111,8 @@
                 <label class="col-sm-2">{$form.naproxen_eligibility_reason_specify_group.label}</label>
                 <div class="col-sm-8">
                     {$form.naproxen_eligibility_reason_specify_group.html}
-                        {if $form.naproxen_eligibility_reason_specify_group.error}
-                            <span class='error'>{$form.naproxen_eligibility_reason_specify_group.error}</span>
+                        {if $form.errors.naproxen_eligibility_reason_specify_group}
+                            <span class='error'>{$form.errors.naproxen_eligibility_reason_specify_group}</span>
                         {/if}
                 </div>
         </div>
@@ -130,8 +130,8 @@
                 <label class="col-sm-2">{$form.naproxen_excluded_reason_specify_group.label}</label>
                 <div class="col-sm-8">
                     {$form.naproxen_excluded_reason_specify_group.html}
-                        {if $form.naproxen_excluded_reason_specify_group.error}
-                            <span class='error'>{$form.naproxen_excluded_reason_specify_group.error}</span>
+                        {if $form.errors.naproxen_excluded_reason_specify_group}
+                            <span class='error'>{$form.errors.naproxen_excluded_reason_specify_group}</span>
                         {/if}
                 </div>
         </div>
@@ -140,8 +140,8 @@
                 <label class="col-sm-2">{$form.naproxen_withdrawal_reasons.label}</label>
                 <div class="col-sm-8">
                     {$form.naproxen_withdrawal_reasons.html}
-                        {if $form.naproxen_withdrawal_reasons.error}
-                            <span class='error'>{$form.naproxen_withdrawal_reasons.error}</span>
+                        {if $form.errors.naproxen_withdrawal_reasons}
+                            <span class='error'>{$form.errors.naproxen_withdrawal_reasons}</span>
                         {/if}
                 </div>
         </div>
@@ -149,8 +149,8 @@
                 <label class="col-sm-2">{$form.naproxen_withdrawal_reasons_other_specify_group.label}</label>
                 <div class="col-sm-8">
                     {$form.naproxen_withdrawal_reasons_other_specify_group.html}
-                        {if $form.naproxen_withdrawal_reasons_other_specify_group.error}
-                            <span class='error'>{$form.naproxen_withdrawal_reasons_other_specify_group.error}</span>
+                        {if $form.errors.naproxen_withdrawal_reasons_other_specify_group}
+                            <span class='error'>{$form.errors.naproxen_withdrawal_reasons_other_specify_group}</span>
                         {/if}
                 </div>
         </div>
@@ -173,8 +173,8 @@
                 <label class="col-sm-2">{$form.probucol_eligibility_reason_specify_group.label}</label>
                 <div class="col-sm-8">
                     {$form.probucol_eligibility_reason_specify_group.html}
-                        {if $form.probucol_eligibility_reason_specify_group.error}
-                            <span class='error'>{$form.probucol_eligibility_reason_specify_group.error}</span>
+                        {if $form.errors.probucol_eligibility_reason_specify_group}
+                            <span class='error'>{$form.errors.probucol_eligibility_reason_specify_group}</span>
                         {/if}
                 </div>
         </div>
@@ -192,8 +192,8 @@
                 <label class="col-sm-2">{$form.probucol_excluded_reason_specify_group.label}</label>
                 <div class="col-sm-8">
                     {$form.probucol_excluded_reason_specify_group.html}
-                        {if $form.probucol_excluded_reason_specify_group.error}
-                            <span class='error'>{$form.probucol_excluded_reason_specify_group.error}</span>
+                        {if $form.errors.probucol_excluded_reason_specify_group}
+                            <span class='error'>{$form.errors.probucol_excluded_reason_specify_group}</span>
                         {/if}
                 </div>
         </div>
@@ -202,8 +202,8 @@
                 <label class="col-sm-2">{$form.probucol_withdrawal_reasons.label}</label>
                 <div class="col-sm-8">
                     {$form.probucol_withdrawal_reasons.html}
-                        {if $form.probucol_withdrawal_reasons.error}
-                            <span class='error'>{$form.probucol_withdrawal_reasons.error}</span>
+                        {if $form.errors.probucol_withdrawal_reasons}
+                            <span class='error'>{$form.errors.probucol_withdrawal_reasons}</span>
                         {/if}
                 </div>
         </div>
@@ -211,8 +211,8 @@
                 <label class="col-sm-2">{$form.probucol_withdrawal_reasons_other_specify_group.label}</label>
                 <div class="col-sm-8">
                     {$form.probucol_withdrawal_reasons_other_specify_group.html}
-                        {if $form.probucol_withdrawal_reasons_other_specify_group.error}
-                            <span class='error'>{$form.probucol_withdrawal_reasons_other_specify_group.error}</span>
+                        {if $form.errors.probucol_withdrawal_reasons_other_specify_group}
+                            <span class='error'>{$form.errors.probucol_withdrawal_reasons_other_specify_group}</span>
                         {/if}
                 </div>
         </div>
