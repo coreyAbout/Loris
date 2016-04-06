@@ -88,17 +88,22 @@ class NDB_Menu_Filter_Data_Release extends NDB_Menu_Filter
         }
 
         $results          = $DB->pselect(
-            "SELECT id, file_name FROM data_release",
+            "SELECT id, file_name, version FROM data_release",
             array()
         );
         $data_release_ids = array();
+        $data_release_versions = array();
         foreach ($results as $row) {
             $data_release_ids[$row['id']] =$row['file_name'];
+            $data_release_versions[$row['version']] =$row['version'];
         }
+
+
 
         $this->tpl_data['superuser']        = $superuser;
         $this->tpl_data['userids']          = $userids;
         $this->tpl_data['data_release_ids'] = $data_release_ids;
+        $this->tpl_data['data_release_versions'] = $data_release_versions;
 
         return true;
     }
