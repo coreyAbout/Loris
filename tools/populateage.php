@@ -51,10 +51,12 @@ $database = $config->getSetting('database');
 
 //}
 $instruments = Utility::getAllInstruments();
-foreach ($instruments as $inst) {
+foreach ($instruments as $inst => $inst_name) {
+  if ($inst != 'genetics' && $inst != 'navigational_task_session_1' && $inst != 'navigational_task_session_2') {
+    print_r($inst);
     // Now works with vineland
     //if($inst == 'vineland' || $inst=="vineland_proband" || $inst=="vineland_subject") continue;
-    $DB->select("SELECT i.CommentID, i.Date_taken FROM $inst i JOIN flag f USING(CommentID) JOIN session s ON (s.ID=f.SessionID) JOIN candidate c USING(CandID) WHERE c.Active='Y' and s.Active='Y' AND i.Candidate_Age IS NULL AND i.Date_taken IS NOT NULL", $CommentIDs);
+    $DB->select("SELECT i.CommentID, i.Date_taken FROM $inst i JOIN flag f USING(CommentID) JOIN session s ON (s.ID=f.SessionID) JOIN candidate c USING(CandID) WHERE c.Active='Y' and s.Active='Y' AND i.Date_taken IS NOT NULL", $CommentIDs);
     print "$inst (" . count($CommentIDs) . ")\n";
     $db->select("SELECT TABLE_NAME FROM information_schema.columns WHERE TABLE_SCHEMA='$database[database]' AND COLUMN_NAME='Date_taken' AND TABLE_NAME='$inst'", $tables);
     if(count($tables) > 0) {
@@ -67,6 +69,7 @@ foreach ($instruments as $inst) {
             $instrument->_saveValues(array('Date_taken' => $dateArray));
         }
     }
+  }
 }
 
 }
