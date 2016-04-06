@@ -9,7 +9,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h3 class="modal-title" id="myModalLabel">Upload File</h3>
             </div>
-            <form name = "uploadForm" id = "uploadForm" method = "POST" enctype="multipart/form-data" action="AjaxHelper.php?Module=data_release&script=FileUpload.php">
+            <form name = "uploadForm" id = "uploadForm" method = "POST" enctype="multipart/form-data" action="{$baseurl}/data_release/ajax/FileUpload.php">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-xs-12 form-group">
@@ -47,7 +47,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h3 class="modal-title" id="myModalLabel">Add Permission</h3>
             </div>
-            <form name = "uploadForm" id = "uploadForm" method = "POST" enctype="multipart/form-data" action="AjaxHelper.php?Module=data_release&script=AddPermission.php">
+            <form name = "uploadForm" id = "uploadForm" method = "POST" enctype="multipart/form-data" action="{$baseurl}/data_release/ajax/AddPermission.php">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-xs-12 form-group">
@@ -93,7 +93,7 @@
     <thead>
         {section name=header loop=$headers}
             <th class="info" nowrap="nowrap">
-                    <a href="main.php?test_name=data_release&filter[order][field]={$headers[header].name}&filter[order][fieldOrder]={$headers[header].fieldOrder}" class = "sortHeaders">
+                    <a href="{$baseurl}/data_release/?filter[order][field]={$headers[header].name}&filter[order][fieldOrder]={$headers[header].fieldOrder}" class = "sortHeaders">
                         {$headers[header].displayName}
                     </a>
             </th>
@@ -101,23 +101,23 @@
     </thead>
 <tbody>
 
-                            {section name=item loop=$items}
-                            <tr>
-                                {section name=piece loop=$items[item]}
-                                    {if $items[item][piece].name != ""}
-                                        <td>
-{if $items[item][piece].name == 'file_name'}
-<a href="AjaxHelper.php?Module=data_release&script=GetFile.php&File={$items[item][piece].value}" target="_blank" download="{$items[item][piece].value}">
-                                                {$items[item][piece].value}
-</a>
-{else}
-                                                {$items[item][piece].value}
-{/if}
-                                        </td>
-                                    {/if}
-                                {/section}
-                            </tr>
-                            {/section}
+{section name=item loop=$items}
+    <tr>
+        {section name=piece loop=$items[item]}
+            {if $items[item][piece].name != ""}
+                <td>
+                    {if $items[item][piece].name == 'file_name'}
+                        <a href="{$baseurl}/data_release/ajax/GetFile.php?File={$items[item][piece].value}" target="_blank" download="{$items[item][piece].value}">
+                        {$items[item][piece].value}
+                        </a>
+                    {else}
+                        {$items[item][piece].value}
+                    {/if}
+                </td>
+            {/if}
+        {/section}
+    </tr>
+{/section}
 
 </tbody>
 </table>
