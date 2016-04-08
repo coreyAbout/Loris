@@ -54,15 +54,6 @@ if ($_POST['action'] == 'upload') {
              'data_release_id' => $ID,
             )
         );
-
-//grant everyone who has at least one file associated with that version, the permission for this new file
-
-//multi select for users and files and versions
-
-
-
-//try multi-checkboxes
-
     }
 
     $factory  = NDB_Factory::singleton();
