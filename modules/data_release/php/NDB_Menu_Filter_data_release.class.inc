@@ -98,12 +98,23 @@ class NDB_Menu_Filter_Data_Release extends NDB_Menu_Filter
             $data_release_versions[$row['version']] =$row['version'];
         }
 
-
+        $results = $DB->pselect(
+            "SELECT DISTINCT users.UserID, version FROM data_release_permissions JOIN users ON (users.ID=data_release_permissions.userid) JOIN data_release ON (data_release_permissions.data_release_id=data_release.id) ORDER BY data_release_permissions.UserID",
+            array()
+        );
+        foreach ($results as $row) {
+            if (!isset($manage_permissions[$row['UserID']])) {
+                $version = array();
+            }
+                $version[] = $row['version'];
+                $manage_permissions[$row['UserID']] = $version;
+        }
 
         $this->tpl_data['superuser']        = $superuser;
         $this->tpl_data['userids']          = $userids;
         $this->tpl_data['data_release_ids'] = $data_release_ids;
         $this->tpl_data['data_release_versions'] = $data_release_versions;
+        $this->tpl_data['manage_permissions'] = $manage_permissions;
 
         return true;
     }
