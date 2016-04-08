@@ -52,7 +52,7 @@ $database = $config->getSetting('database');
 //}
 $instruments = Utility::getAllInstruments();
 foreach ($instruments as $inst => $inst_name) {
-  if ($inst != 'genetics' && $inst != 'navigational_task_session_1' && $inst != 'navigational_task_session_2') {
+  if ($inst != 'genetics') {
     print_r($inst);
     // Now works with vineland
     //if($inst == 'vineland' || $inst=="vineland_proband" || $inst=="vineland_subject") continue;
