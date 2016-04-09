@@ -117,11 +117,22 @@
                             <tbody>
                                 {foreach from = $manage_permissions key=k item=elem}
                                 <tr>
-                                    <td>{$k}</td>
                                     <td>
-                                    {foreach from = $elem key=key item=value}
-                                        <input type='checkbox' name='permissions[]' value='{$value}' id='{$key}'/>{$value}</input>
+                                        {$k}
+                                        <!--<input type="hidden" name="{$k}" value="{$k}" readonly>{$k}</input>-->
+                                    </td>
+                                    <td>
+                                    {foreach from = $data_release_versions item=vv key=kk}
+                                        {foreach from = $elem key=key item=value}
+                                           {if in_array($vv, $elem)}
+                                               <input type='checkbox' name='permissions_{$k}[]' value='{$vv}' checked>{$vv}</input>
+                                           {else}
+                                               <input type='checkbox' name='permissions_{$k}[]' value='{$vv}'>{$vv}</input>
+                                           {/if}
+                                           {break} 
+                                        {/foreach}
                                     {/foreach}
+
                                     </td>
                                 </tr>
                                 {/foreach}
