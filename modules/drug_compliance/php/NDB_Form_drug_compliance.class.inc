@@ -500,6 +500,17 @@ class NDB_Form_drug_compliance extends NDB_Form
             $errors['visit_label'] = 'Required!';
         }
 
+        if ($fields['visit_label'] != 'not_applicable') {
+            $DB =& Database::singleton();
+            $exists = $DB->pselectOne(
+                "SELECT 'X' FROM drug_compliance WHERE visit_label=:vlabel AND candid=:cid",
+                array('vlabel'=>$fields['visit_label'],'cid'=>$this->identifier)
+                );
+            if (!empty($exists)) {
+                $errors['visit_label'] = 'Already exists!';
+            }
+        }
+
         return $errors;
     }
 
