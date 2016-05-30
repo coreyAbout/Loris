@@ -74,7 +74,7 @@ class NDB_Form_drug_compliance extends NDB_Form
         $pills_issued = $DB->pselectOne("SELECT pills_issued from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
         $pills_returned = $DB->pselectOne("SELECT pills_returned from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
         //don't calculate compliance if don't know pills returned or pills issued
-        if ($pills_returned_status === "not_answered" || $pills_issued_status === "not_answered" || $pills_issued == NULL || $pills_returned == NULL) {
+        if ($pills_returned_status === "not_answered" || $pills_issued_status === "not_answered" || $pills_issued == NULL || $pills_returned == NULL || $pills_issued == "" || $pills_returned == "") {
             $update['compliance_evaluation'] = null;
             $update['behavioral_compliance_evaluation'] = null;
         } else {
