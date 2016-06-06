@@ -509,6 +509,9 @@ class NDB_Form_drug_compliance extends NDB_Form
             if (!empty($exists)) {
                 $errors['visit_label'] = 'Already exists!';
             }
+            if (strpos($fields['visit_label'], 'PRE') !== false) {
+                $errors['visit_label'] = 'PRE visit labels are not allowed!';
+            }
         }
 
         return $errors;
