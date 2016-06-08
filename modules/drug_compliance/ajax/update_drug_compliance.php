@@ -37,7 +37,7 @@ if (Utility::isErrorX($user)) {
 
 if ($user->hasPermission('data_entry')) { //if user has data entry permission
     //only allow certain fields to be updated
-    if ($field == 'drug_issued_date' || $field == 'pills_issued' || $field == 'drug_returned_date' || $field == 'pills_returned' || $field == 'visit_label') {
+    if ($field == 'drug_issued_date' || ($field == 'pills_issued' && is_numeric($value)) || $field == 'drug_returned_date' || ($field == 'pills_returned' && is_numeric($value)) || $field == 'visit_label') {
         if (strpos($value, 'PRE') == false) {
             $DB->update('drug_compliance', array($field=>$value), array('ID'=>$id));
             $candid = $DB->pselectOne("SELECT candid from drug_compliance where ID=:dcid", array('dcid'=>$id));
