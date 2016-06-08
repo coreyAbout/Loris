@@ -78,9 +78,21 @@ class CouchDBDemographicsImporter {
             'Description' => 'Naproxen Eligibility Status',
             'Type' => "enum('active','stop_medication_active','withdrawn','excluded','death','completed','stop_medication_completed')"
         ),
+        'naproxen_eligibility_reason_specify' => array(
+            'Description' => 'Naproxen Eligibility Reason',
+            'Type' => "text"
+        ),
+        'naproxen_excluded_reason_specify' => array(
+            'Description' => 'Naproxen Excluded Reason',
+            'Type' => "text"
+        ),
         'naproxen_withdrawal_reasons' => array(
             'Description' => 'Naproxen Withdrawal Reason',
             'Type' => "enum('1_voluntary_withdrawal','2_recommended_withdrawal','3_lost_follow_up','4_other')"
+        ),
+        'naproxen_withdrawal_reasons_other_specify' => array(
+            'Description' => 'Naproxen Withdrawal Reason Other',
+            'Type' => "text"
         ),
         'probucol_eligibility' => array(
             'Description' => 'Probucol Eligibility',
@@ -90,9 +102,21 @@ class CouchDBDemographicsImporter {
             'Description' => 'Probucol Eligibility Status',
             'Type' => "enum('active','stop_medication_active','withdrawn','excluded','death','completed','stop_medication_completed')"
         ),
+        'probucol_eligibility_reason_specify' => array(
+            'Description' => 'Probucol Eligibility Reason',
+            'Type' => "text"
+        ),
+        'probucol_excluded_reason_specify_status' => array(
+            'Description' => 'Probucol Excluded Reason',
+            'Type' => "text"
+        ),
         'probucol_withdrawal_reasons' => array(
             'Description' => 'Probucol Withdrawal Reason',
             'Type' => "enum('1_voluntary_withdrawal','2_recommended_withdrawal','3_lost_follow_up','4_other')"
+        ),
+        'probucol_withdrawal_reasons_other_specify' => array(
+            'Description' => 'Probucol Withdrawal Reason Other',
+            'Type' => "text"
         ),
 	'ApoE' => array(
 	    'Description' => 'ApoE genotype (E4 = risk)',
