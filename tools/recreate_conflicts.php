@@ -12,12 +12,7 @@
  */
 
 require_once __DIR__ . "/../vendor/autoload.php";
-require_once "../php/libraries/NDB_Client.class.inc";
-require_once "../php/libraries/NDB_Config.class.inc";
-require_once "../php/libraries/ConflictDetector.class.inc";
-$client = new NDB_Client();
-$client->makeCommandLine();
-$client->initialize();
+require_once "generic_includes.php";
 
 $config = NDB_Config::singleton();
 $db     = Database::singleton();
