@@ -2,6 +2,7 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once "generic_includes.php";
 
+# will make this look better in the year 2018
 
 date_default_timezone_set('America/Montreal');
 
