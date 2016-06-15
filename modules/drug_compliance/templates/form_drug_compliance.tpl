@@ -87,6 +87,13 @@
                         {/if}
                 </div>
         </div>
+        <br>
+        <div class="row">
+                <label class="col-sm-2">{$form.naproxen_treatment_duration.label}</label>
+                <div class="col-sm-8">
+                    {$naproxen_treatment_duration}
+                </div>
+        </div>
 
         <br>
         {if not $success}
