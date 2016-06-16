@@ -177,56 +177,57 @@ class NDB_Form_drug_compliance extends NDB_Form
         }
 
 
-            $pscid = $DB->pselectOne("SELECT PSCID FROM candidate WHERE candid={$candid}",array());
-            $interval = null;
-            $NAPTIcommID = $DB->pselectOne("SELECT CommentID FROM flag join session on (flag.sessionid=session.id) AND candid=$candid AND test_name='treatment_interruption' AND visit_label='NAPTI00'",array());
+        $pscid = $DB->pselectOne("SELECT PSCID FROM candidate WHERE candid={$candid}",array());
+        $interval = null;
+        $NAPTIcommID = $DB->pselectOne("SELECT CommentID FROM flag join session on (flag.sessionid=session.id) AND candid=$candid AND test_name='treatment_interruption' AND visit_label='NAPTI00'",array());
 
-            // If NAPFU24 exists
-            $NAPFU24completed = $DB->pselectOne("SELECT drug_returned_date from drug_compliance where candid=$candid and visit_label='NAPFU24' and drug_returned_date!='0000-00-00' and drug_returned_date is not null and drug_returned_date!=''",array());
-            if (!empty($NAPFU24completed)) {
-                $startDate = $DB->pselectOne("SELECT drug_issued_date from drug_compliance where candid=$candid and drug_issued_date!='0000-00-00' and drug_issued_date is not null and drug_issued_date!='' order by drug_issued_date asc",array());
-                $lastDate = $NAPFU24completed;
+        // If NAPFU24 exists
+        $NAPFU24completed = $DB->pselectOne("SELECT drug_returned_date from drug_compliance where candid=$candid and visit_label='NAPFU24' and drug_returned_date!='0000-00-00' and drug_returned_date is not null and drug_returned_date!=''",array());
+        if (!empty($NAPFU24completed)) {
+            $startDate = $DB->pselectOne("SELECT drug_issued_date from drug_compliance where candid=$candid and drug_issued_date!='0000-00-00' and drug_issued_date is not null and drug_issued_date!='' order by drug_issued_date asc",array());
+            $lastDate = $NAPFU24completed;
+                if (!empty($lastDate) && !empty($startDate)) {
+                    $datetime1 = new DateTime($startDate);
+                    $datetime2 = new DateTime($lastDate);
+                    $interval = $datetime1->diff($datetime2,true);
+                }
+        } elseif (!empty($NAPTIcommID)) {
+            for ($i = 1; $i <= 30; $i++) {
+                $termination = $DB->pselectOne("SELECT {$i}_treatment_termination from treatment_interruption where CommentID='$NAPTIcommID'",array());
+                if ($termination == 'yes') {
+                    $lastDate = $DB->pselectOne("SELECT {$i}_interruption_from_date from treatment_interruption where CommentID='$NAPTIcommID'",array());
+                    $startDate = $DB->pselectOne("SELECT drug_issued_date from drug_compliance where candid=$candid and drug_issued_date!='0000-00-00' and drug_issued_date is not null and drug_issued_date!='' order by drug_issued_date asc",array());
                     if (!empty($lastDate) && !empty($startDate)) {
                         $datetime1 = new DateTime($startDate);
                         $datetime2 = new DateTime($lastDate);
                         $interval = $datetime1->diff($datetime2,true);
-                    }
-            } elseif (!empty($NAPTIcommID)) {
-                for ($i = 1; $i <= 30; $i++) {
-                    $termination = $DB->pselectOne("SELECT {$i}_treatment_termination from treatment_interruption where CommentID='$NAPTIcommID'",array());
-                    if ($termination == 'yes') {
-                        $lastDate = $DB->pselectOne("SELECT {$i}_interruption_from_date from treatment_interruption where CommentID='$NAPTIcommID'",array());
-                        $startDate = $DB->pselectOne("SELECT drug_issued_date from drug_compliance where candid=$candid and drug_issued_date!='0000-00-00' and drug_issued_date is not null and drug_issued_date!='' order by drug_issued_date asc",array());
-                        if (!empty($lastDate) && !empty($startDate)) {
-                            $datetime1 = new DateTime($startDate);
-                            $datetime2 = new DateTime($lastDate);
-                            $interval = $datetime1->diff($datetime2,true);
-                            break;
-                        }
+                        break;
                     }
                 }
             }
+        }
 
-            $ID = $DB->pselectOne("SELECT ID FROM treatment_duration WHERE Candid=$candid AND Trial='Naproxen'",array());
-            if (is_object($interval) && (!empty($NAPTIcommID) || !empty($NAPFU24completed))) {
-                            // Update treatment_duration
-                                if (!empty($ID)) {
-                                    if (!empty($NAPTIcommID) || !empty($NAPFU24completed)) {
-                                        $update = array('treatment_duration'=>$interval->days);
-                                    } else {
-                                        $update = array('treatment_duration'=>null);
-                                    }
-                                    $success = $DB->update("treatment_duration", $update, array('ID'=>$ID));
-                                } else {
-                                    $insert = array('CandID'=>$candid,'Trial'=>'Naproxen','treatment_duration'=>$interval->days);
-                                    $success = $DB->insert("treatment_duration", $insert);
-                                }
+        $ID = $DB->pselectOne("SELECT ID FROM treatment_duration WHERE Candid=$candid AND Trial='Naproxen'",array());
+        if (is_object($interval) && (!empty($NAPTIcommID) || !empty($NAPFU24completed))) {
+            // Update treatment_duration
+            if (!empty($ID)) {
+                if (!empty($NAPTIcommID) || !empty($NAPFU24completed)) {
+                    $update = array('treatment_duration'=>$interval->days);
+                } else {
+                    $update = array('treatment_duration'=>null);
+                }
+                    $success = $DB->update("treatment_duration", $update, array('ID'=>$ID));
+                } else {
+                    $insert = array('CandID'=>$candid,'Trial'=>'Naproxen','treatment_duration'=>$interval->days);
+                    $success = $DB->insert("treatment_duration", $insert);
+                }
             } else {
-                                if (!empty($ID)) {
-                                    $update = array('treatment_duration'=>null);
-                                    $success = $DB->update("treatment_duration", $update, array('ID'=>$ID));
-                                }
+                if (!empty($ID)) {
+                    $update = array('treatment_duration'=>null);
+                    $success = $DB->update("treatment_duration", $update, array('ID'=>$ID));
+                }
             }
+
     }
 
     /**
