@@ -202,6 +202,17 @@ if (PEAR::isError($drugcompliance)) {
 writeExcel($Test_name, $drugcompliance, $dataDir);
 
 /*
+* Treatment Duration
+*/
+$Test_name = "TreatmentDuration";
+$query = "select PSCID, td.CandID, td.Trial, td.treatment_duration from treatment_duration td join candidate using (CandID) where PSCID not like '%MTL999%' and PSCID not like 'MTL0000' order by PSCID";
+$DB->select($query, $treatmentduration);
+if (PEAR::isError($treatmentduration)) {
+        PEAR::raiseError("Could not generate treatment duration. " . $treatmentduration->getMessage());
+}
+writeExcel($Test_name, $treatmentduration, $dataDir);
+
+/*
 * MRI feedbacks
 */
 //List of all scan types we want MRI feedbacks for
