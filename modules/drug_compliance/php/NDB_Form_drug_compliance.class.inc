@@ -191,6 +191,7 @@ class NDB_Form_drug_compliance extends NDB_Form
                     $datetime2 = new DateTime($lastDate);
                     $interval = $datetime1->diff($datetime2,true);
                 }
+        // If treatment_termination == yes
         } elseif (!empty($NAPTIcommID)) {
             for ($i = 1; $i <= 30; $i++) {
                 $termination = $DB->pselectOne("SELECT {$i}_treatment_termination from treatment_interruption where CommentID='$NAPTIcommID'",array());
@@ -217,16 +218,17 @@ class NDB_Form_drug_compliance extends NDB_Form
                     $update = array('treatment_duration'=>null);
                 }
                     $success = $DB->update("treatment_duration", $update, array('ID'=>$ID));
-                } else {
-                    $insert = array('CandID'=>$candid,'Trial'=>'Naproxen','treatment_duration'=>$interval->days);
-                    $success = $DB->insert("treatment_duration", $insert);
-                }
             } else {
-                if (!empty($ID)) {
-                    $update = array('treatment_duration'=>null);
-                    $success = $DB->update("treatment_duration", $update, array('ID'=>$ID));
-                }
+                $insert = array('CandID'=>$candid,'Trial'=>'Naproxen','treatment_duration'=>$interval->days);
+                $success = $DB->insert("treatment_duration", $insert);
             }
+        // Unable to calculate treatment_duration but exists an entry
+        } else {
+            if (!empty($ID)) {
+                $update = array('treatment_duration'=>null);
+                $success = $DB->update("treatment_duration", $update, array('ID'=>$ID));
+            }
+        }
 
     }
 
