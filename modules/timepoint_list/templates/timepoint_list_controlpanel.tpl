@@ -20,3 +20,9 @@ Family Information
 {else}
 Drug Compliance
 {/if}
+{if $isDataEntryPerson}
+<button class="btn btn-primary" onclick="location.href='main.php?test_name=family_history&candID={$candID}&identifier={$candID}'">Family History</button>
+{else}
+Family History
+{/if}
+
