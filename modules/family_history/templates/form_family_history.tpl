@@ -1,6 +1,3 @@
-<form method="post" name="family_history" id="family_history">
-</form>
-
 <button type="button" name = "firstdegree" class = "btn btn-sm btn-primary" data-toggle="modal" data-target="#FirstDegreeModal">First Degree</button>
 
 <div class="modal fade" id="FirstDegreeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
