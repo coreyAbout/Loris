@@ -338,3 +338,72 @@
 
 <br>
 <br>
+
+        <div class="panel-heading">
+            First Degree Details
+        </div>
+        <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td><b>ID</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$family_history_first_degree_details item=row}
+                    <tr id="{$row.ID}">
+                        {foreach from=$row item=value key=name}
+                            <td id="{$name}">{$value}</td>
+                        {/foreach}
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        </div>
+    <br>
+
+        <div class="panel-heading">
+            AD Other Details
+        </div>
+        <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td><b>ID</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$family_history_ad_other_details item=row}
+                    <tr id="{$row.ID}">
+                        {foreach from=$row item=value key=name}
+                            <td id="{$name}">{$value}</td>
+                        {/foreach}
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        </div>
+    <br>
+
+        <div class="panel-heading">
+            Memory Problem Other Details
+        </div>
+        <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td><b>ID</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$family_history_memory_problem_other_details item=row}
+                    <tr id="{$row.ID}">
+                        {foreach from=$row item=value key=name}
+                            <td id="{$name}">{$value}</td>
+                        {/foreach}
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        </div>
+    <br>
