@@ -338,7 +338,7 @@
 
 <br>
 <br>
-
+<div class="panel panel-primary">
         <div class="panel-heading">
             First Degree Details
         </div>
@@ -347,6 +347,16 @@
             <thead>
                 <tr>
                     <td><b>ID</b></td>
+                    <td><b>CandID</b></td>
+                    <td><b>Family member</b></td>
+                    <td><b>Living age</b></td>
+                    <td><b>Death age</b></td>
+                    <td><b>Death cause</b></td>
+                    <td><b>Death cause status</b></td>
+                    <td><b>AD dementia</b></td>
+                    <td><b>AD dementia age</b></td>
+                    <td><b>Diagnosis history</b></td>
+                    <td><b>Diagnosis history status</b></td>
                 </tr>
             </thead>
             <tbody>
@@ -370,6 +380,18 @@
             <thead>
                 <tr>
                     <td><b>ID</b></td>
+
+                    <td><b>CandID</b></td>
+                    <td><b>Family member</b></td>
+                    <td><b>Living age</b></td>
+                    <td><b>Death age</b></td>
+                    <td><b>Death cause</b></td>
+                    <td><b>Death cause status</b></td>
+                    <td><b>AD dementia</b></td>
+                    <td><b>AD dementia age</b></td>
+                    <td><b>Diagnosis history</b></td>
+                    <td><b>Diagnosis history status</b></td>
+
                 </tr>
             </thead>
             <tbody>
@@ -406,4 +428,5 @@
             </tbody>
         </table>
         </div>
+</div>
     <br>
