@@ -52,7 +52,7 @@
                         <div class="col-xs-12 form-group">
                             <label class="col-xs-4" for="death_cause">Cause of death</label>
                             <div class="col-xs-8">
-                                <input type="text" size = "27" name="deathcause" id="deathcause" class="ui-corner-all form-fields form-control input-sm" />
+                                <input type="text" size = "27" name="death_cause" id="death_cause" class="ui-corner-all form-fields form-control input-sm" />
                             </div>
                         </div>
                         <div class="col-xs-12 form-group">
@@ -204,7 +204,7 @@
                         <div class="col-xs-12 form-group">
                             <label class="col-xs-4" for="death_cause">Cause of death</label>
                             <div class="col-xs-8">
-                                <input type="text" size = "27" name="deathcause" id="deathcause" class="ui-corner-all form-fields form-control input-sm" />
+                                <input type="text" size = "27" name="death_cause" id="death_cause" class="ui-corner-all form-fields form-control input-sm" />
                             </div>
                         </div>
                         <div class="col-xs-12 form-group">
@@ -245,7 +245,12 @@
                         <div class="col-xs-12 form-group">
                             <label class="col-xs-4" for="family_member">Family Member</label>
                             <div class="col-xs-8">
-                                <input type="text" size = "27" name="family_member" id="family_member" class="ui-corner-all form-fields form-control input-sm" />
+                                <select name="family_member" id = "family_member" class = "form-fields form-control input-sm">
+                                <option value=""> </option>
+                                    {foreach from = $family_members item=val key=k}
+                                        <option value={$k}>{$val}</option>
+                                    {/foreach}
+                                </select>
                             </div>
                         </div>
                         <div class="col-xs-12 form-group">
@@ -281,6 +286,8 @@
                             </div>
                         </div>
                         <div class="col-xs-12 form-group">
+                        </div>
+                        <div class="col-xs-12 form-group">
                             <label class="col-xs-4" for="living_age">Age living</label>
                             <div class="col-xs-8">
                                 <select name="living_age" id = "living_age" class = "form-fields form-control input-sm">
@@ -309,7 +316,7 @@
                         <div class="col-xs-12 form-group">
                             <label class="col-xs-4" for="death_cause">Cause of death</label>
                             <div class="col-xs-8">
-                                <input type="text" size = "27" name="deathcause" id="deathcause" class="ui-corner-all form-fields form-control input-sm" />
+                                <input type="text" size = "27" name="death_cause" id="death_cause" class="ui-corner-all form-fields form-control input-sm" />
                             </div>
                         </div>
                         <div class="col-xs-12 form-group">
@@ -380,18 +387,14 @@
             <thead>
                 <tr>
                     <td><b>ID</b></td>
-
                     <td><b>CandID</b></td>
                     <td><b>Family member</b></td>
+                    <td><b>Parental side</b></td>
+                    <td><b>AD dementia age</b></td>
                     <td><b>Living age</b></td>
                     <td><b>Death age</b></td>
                     <td><b>Death cause</b></td>
                     <td><b>Death cause status</b></td>
-                    <td><b>AD dementia</b></td>
-                    <td><b>AD dementia age</b></td>
-                    <td><b>Diagnosis history</b></td>
-                    <td><b>Diagnosis history status</b></td>
-
                 </tr>
             </thead>
             <tbody>
@@ -415,6 +418,15 @@
             <thead>
                 <tr>
                     <td><b>ID</b></td>
+                    <td><b>CandID</b></td>
+                    <td><b>Family member</b></td>
+                    <td><b>Parental side</b></td>
+                    <td><b>Other memory problems</b></td>
+                    <td><b>Other memory problems status</b></td>
+                    <td><b>Living age</b></td>
+                    <td><b>Death age</b></td>
+                    <td><b>Death cause</b></td>
+                    <td><b>Death cause status</b></td>
                 </tr>
             </thead>
             <tbody>
