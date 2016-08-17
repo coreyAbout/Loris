@@ -77,6 +77,10 @@ class NDB_Form_family_history extends NDB_Form
             $success = $DB->insert("family_history_ad_other", $values);
         } elseif ($_POST['action'] == 'memoryproblemothers') {
             $success = $DB->insert("family_history_memory_problem_other", $values);
+        } elseif ($_POST['action'] == 'delete') {
+            if ($values['table'] === 'family_history_first_degree' || $values['table'] === 'family_history_ad_other' || $values['table'] === 'family_history_memory_problem_other') {
+                $success = $DB->delete($values['table'], array('CandID'=>$this->identifier,'ID'=>$values['entry_ID']));
+            }
         }
 
         $this->tpl_data['success'] = true;
@@ -117,6 +121,7 @@ class NDB_Form_family_history extends NDB_Form
         $not_answered = array('not_answered'=>'Not Answered');
         $yes_no = array('Y'=>'Yes','N'=>'No');
         $parental_sides = array('maternal'=>'Maternal','paternal'=>'Paternal','not_applicable'=>'Not Applicable','not_answered'=>'Not Answered');
+        $tables = array('family_history_first_degree'=>'First Degree','family_history_ad_other'=>'AD Other','family_history_memory_problem_other'=>'Memory Problem Other');
 
         $this->tpl_data['family_members'] = $family_members;
         $this->tpl_data['living_ages'] = $ages;
@@ -127,6 +132,7 @@ class NDB_Form_family_history extends NDB_Form
         $this->tpl_data['diagnosis_history_statuss'] = $not_answered;
         $this->tpl_data['parental_sides'] = $parental_sides;
         $this->tpl_data['other_memory_problems_statuss'] = $not_answered;
+        $this->tpl_data['tables'] = $tables;
 
 
     }
