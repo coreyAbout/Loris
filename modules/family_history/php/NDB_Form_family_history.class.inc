@@ -46,7 +46,7 @@ class NDB_Form_family_history extends NDB_Form
         // check that the $candID is passed b/c the profile needs to be opened
         if ($this->identifier != $_REQUEST['candID']) {
             return PEAR::raiseError(
-                "NDB_Form_family_history::_access: " 
+                "NDB_Form_family_history::_access: "
                 . "Candidate Profile Error ($this->identifier)"
             );
         }
@@ -57,7 +57,7 @@ class NDB_Form_family_history extends NDB_Form
     /**
      * Process the submitted values, called after validation.
      *
-     * @param array $values The values submitted by the user 
+     * @param array $values The values submitted by the user
      *                      to the form.
      *
      * @return boolean True on success
@@ -102,17 +102,17 @@ class NDB_Form_family_history extends NDB_Form
         $DB =& Database::singleton();
 
         $this->tpl_data['family_history_first_degree_details'] = $DB->pselect(
-            "SELECT * FROM family_history_first_degree WHERE CandID = :cid", 
+            "SELECT * FROM family_history_first_degree WHERE CandID = :cid",
             array('cid'=>$this->identifier)
         );
 
         $this->tpl_data['family_history_ad_other_details'] = $DB->pselect(
-            "SELECT * FROM family_history_ad_other WHERE CandID = :cid", 
+            "SELECT * FROM family_history_ad_other WHERE CandID = :cid",
             array('cid'=>$this->identifier)
         );
 
         $this->tpl_data['family_history_memory_problem_other_details'] = $DB->pselect(
-            "SELECT * FROM family_history_memory_problem_other WHERE CandID = :cid", 
+            "SELECT * FROM family_history_memory_problem_other WHERE CandID = :cid",
             array('cid'=>$this->identifier)
         );
 
@@ -133,7 +133,6 @@ class NDB_Form_family_history extends NDB_Form
         $this->tpl_data['parental_sides'] = $parental_sides;
         $this->tpl_data['other_memory_problems_statuss'] = $not_answered;
         $this->tpl_data['tables'] = $tables;
-
 
     }
 
