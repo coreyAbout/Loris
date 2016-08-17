@@ -342,9 +342,9 @@
     </div>
 </div>
 
+<br>
+<br>
 
-<br>
-<br>
 <div class="panel panel-primary">
         <div class="panel-heading">
             First Degree Details
@@ -377,8 +377,7 @@
             </tbody>
         </table>
         </div>
-    <br>
-
+        <br>
         <div class="panel-heading">
             AD Other Details
         </div>
@@ -408,8 +407,7 @@
             </tbody>
         </table>
         </div>
-    <br>
-
+        <br>
         <div class="panel-heading">
             Memory Problem Other Details
         </div>
@@ -441,18 +439,16 @@
         </table>
         </div>
 </div>
-    <br>
 
+<br>
 
-
- 
 <div class="panel panel-primary">
         <div class="panel-heading">
             Delete entry
         </div>
-                    <div class="row">
-<br>
-<form name = "DeleteForm" id = "DeleteForm" method = "POST" enctype="multipart/form-data" action="">
+        <div class="row">
+        <br>
+        <form name = "DeleteForm" id = "DeleteForm" method = "POST" enctype="multipart/form-data" action="">
                         <div class="col-xs-12 form-group">
                             <label class="col-xs-4" for="table">Table</label>
                             <div class="col-xs-8">
@@ -474,9 +470,9 @@
                         <input type="hidden" name = "action" id = "action" value = "delete">
                         <div class="col-xs-12 form-group">
                             <div class="col-xs-8">
-                    <button class="btn btn-primary" id = "DeleteButton" role="button" aria-disabled="false">Delete</button>
-    </div>
-    </div>
-</div>
-</form>
+                                <button class="btn btn-primary" id = "DeleteButton" role="button" aria-disabled="false">Delete</button>
+                            </div>
+                        </div>
+        </div>
+        </form>
 </div>
