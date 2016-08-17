@@ -442,3 +442,41 @@
         </div>
 </div>
     <br>
+
+
+
+ 
+<div class="panel panel-primary">
+        <div class="panel-heading">
+            Delete entry
+        </div>
+                    <div class="row">
+<br>
+<form name = "DeleteForm" id = "DeleteForm" method = "POST" enctype="multipart/form-data" action="">
+                        <div class="col-xs-12 form-group">
+                            <label class="col-xs-4" for="table">Table</label>
+                            <div class="col-xs-8">
+                                <select name="table" id = "table" class = "form-fields form-control input-sm">
+                                <option value=""> </option>
+                                    {foreach from = $tables item=val key=k}
+                                        <option value={$k}>{$val}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 form-group">
+                            <label class="col-xs-4" for="entry_ID">Entry ID</label>
+                            <div class="col-xs-8">
+                                <input type="text" size = "27" name="entry_ID" id="entry_ID" class="ui-corner-all form-fields form-control input-sm" />
+                            </div>
+                        </div>
+                        <input type="hidden" name = "action" id = "action" value = "delete">
+                        <div class="col-xs-12 form-group">
+                            <div class="col-xs-8">
+                    <button class="btn btn-primary" id = "DeleteButton" role="button" aria-disabled="false">Delete</button>
+    </div>
+    </div>
+</div>
+</form>
+</div>
