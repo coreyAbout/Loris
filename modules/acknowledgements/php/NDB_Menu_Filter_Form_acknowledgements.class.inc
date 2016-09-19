@@ -66,7 +66,15 @@ class NDB_Menu_Filter_Form_Acknowledgements extends NDB_Menu_Filter_Form
         }
         $values = $results;
 
-        $values['affiliations'] = implode(",", $values['affiliations']);
+        $count = 1;
+        foreach ($values['affiliations'] as &$value) {
+            $value = $count . ")" . $value;
+            $count++;
+        }
+        unset($value);
+        $values['affiliations'] = implode(" ", $values['affiliations']);
+
+
         $values['degrees']      = implode(",", $values['degrees']);
         $values['roles']        = implode(",", $values['roles']);
 
