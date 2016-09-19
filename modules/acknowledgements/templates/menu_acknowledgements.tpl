@@ -112,8 +112,25 @@
                                 <td nowrap="nowrap">
                                     <div class="col-sm-12 col-md-12">
                                         <select name="addaffiliations[]" multiple>
-                                            <option value="douglas">Douglas</option>
-                                            <option value="mcgill">McGill</option>
+                                            <option value="STOP-AD CENTRE, Centre for Studies on Prevention of Alzheimer's disease, Montreal, Qc, Canada">STOP-AD CENTRE, Centre for Studies on Prevention of Alzheimer's disease, Montreal, Qc, Canada</option>
+                                            <option value="Douglas Mental Health University Institute Research Centre, affiliated with McGill University, Montreal, Qc, Canada">Douglas Mental Health University Institute Research Centre, affiliated with McGill University, Montreal, Qc, Canada</option>
+                                            <option value="McGill University, Montreal, Qc, Canada">McGill University, Montreal, Qc, Canada</option>
+                                            <option value="Montreal Neurological Institute and hospital, Montreal, Qc, Canada">Montreal Neurological Institute and hospital, Montreal, Qc, Canada</option>
+                                            <option value="McGill University Research Centre for Studies in Aging, Montreal, Qc, Canada">McGill University Research Centre for Studies in Aging, Montreal, Qc, Canada</option>
+                                            <option value="Centre de recherche de l'Institut Universitaire de Gériatrie de Montreal, Qc, Canada">Centre de recherche de l'Institut Universitaire de Gériatrie de Montreal, Qc, Canada</option>
+                                            <option value="Université de Montréal, Montreal, Qc, Canada">Université de Montréal, Montreal, Qc, Canada</option>
+                                            <option value="University of Southern California's Alzheimer's Therapeutic Research Institute, San Diego, CA, USA">University of Southern California's Alzheimer's Therapeutic Research Institute, San Diego, CA, USA</option>
+                                            <option value="Massachussets Alzheimer's Disease Research Center, Harvard Medical School, Boston, MA, USA">Massachussets Alzheimer's Disease Research Center, Harvard Medical School, Boston, MA, USA</option>
+                                            <option value="John Hopkins University, Baltimore, MD, USA">John Hopkins University, Baltimore, MD, USA</option>
+                                            <option value="Khachaturian & Associates Inc, Potomac, MD, USA">Khachaturian & Associates Inc, Potomac, MD, USA</option>
+                                            <option value="Mayo Clinic, Rochester, MN, USA">Mayo Clinic, Rochester, MN, USA</option>
+                                            <option value="Center for Alzheimer's Research and Treatment Harvard Medical School, Boston, MA, USA">Center for Alzheimer's Research and Treatment Harvard Medical School, Boston, MA, USA</option>
+                                            <option value="Wake Forest School of medicine, Winston-Salem, NC, USA">Wake Forest School of medicine, Winston-Salem, NC, USA</option>
+                                            <option value="Washington University, Seattle, WA, USA">Washington University, Seattle, WA, USA</option>
+                                            <option value="Washington University School of Medecine in St-Louis, MO, USA">Washington University School of Medecine in St-Louis, MO, USA</option>
+                                            <option value="Wisconsin Alzheimer's Institute, UW School of Medicine and Public Health, Milwaukee, WI, USA">Wisconsin Alzheimer's Institute, UW School of Medicine and Public Health, Milwaukee, WI, USA</option>
+                                            <option value="Banner Alzheimer Institute, Phoenix, AZ, USA">Banner Alzheimer Institute, Phoenix, AZ, USA</option>
+                                            <option value="University California, San Diego, School of medicine, La Jolla, CA, USA">University California, San Diego, School of medicine, La Jolla, CA, USA</option>
                                         </select>
                                     </div>
                                 </td>
