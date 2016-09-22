@@ -106,7 +106,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                         if ($value == 'Better or no change' || $value == 'Meilleure ou identique') {
                                 $value = 'better_no_change';
                         }
-                        if ($value == 'Occasionnally worse' || $value == "Questionnable/moins bonne à l'occasion") {
+                        if ($value == 'Occasionnally worse' || $value == 'Occasionally worse' || $value == "Questionnable/moins bonne à l'occasion") {
                                 $value = 'occassionally_worse';
                         }
                         if ($value == 'Consistently a little worse' || $value == 'Toujours un peu moins bonne') {
