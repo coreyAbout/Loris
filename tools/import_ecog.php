@@ -116,7 +116,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                         if ($value == 'Consistently much worse' || $value == 'Toujours vraiment moins bonne') {
                                 $value = 'consistently_much_worse';
                         }
-                        if ($value == "I don't know" || $value == 'Je ne sais pas') {
+                        if ($value == "I don\\'t know" || $value == 'Je ne sais pas') {
                                 $value = 'dont_know';
                         }
 
