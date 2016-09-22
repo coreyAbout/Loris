@@ -31,7 +31,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 
 	else
 	{
-$insert_data = array();
+                $insert_data = array();
 
 		$fieldNum = 0;
 		$data = explode(",", $fixedLines[$i]);
@@ -119,11 +119,6 @@ $insert_data = array();
                                 $value = 'dont_know';
                         }
 
-
-
-
-                        
-
                         $insert_data[$key] = $value;
 
 		}//closing inner most foreach
@@ -135,30 +130,22 @@ $insert_data = array();
 			return false;
 		}
 
-print_r($insert_data);
-//if ($counter == 3)
-//die();
+                //insert session table
+                $candID = $db->pselectOne("SELECT CandID FROM candidate WHERE PSCID=:pscid", array("pscid"=>$PSCID));
+                $SubprojectID = $db->pselectOne("SELECT SubprojectID FROM session WHERE CandID=$candID AND Date_visit<=':date' ORDER BY ID desc", array('date'=>$insert_data['Date_taken']));
+                $query = "SELECT c.PSCID, c.CenterID, IFNULL(max(s.VisitNo)+1, 1) AS nextVisitNo FROM candidate AS c LEFT OUTER JOIN session AS s USING (CandID) WHERE c.CandID=:CaID AND (s.Active='Y' OR s.Active is null) GROUP BY c.CandID";
+                $row = $db->pselectRow($query, array('CaID' => $candID));
+                if ($SubprojectID == 1) {
+                    $VisitLabel = 'PREEC00';
+                } elseif ($SubprojectID == 2) {
+                    $VisitLabel = 'NAPEC00';
+                } elseif ($SubprojectID == 3) {
+                    $VisitLabel = 'POIEC00';
+                }
 
-//insert session table
-$candID = $db->pselectOne("SELECT CandID FROM candidate WHERE PSCID=:pscid", array("pscid"=>$PSCID));
-$SubprojectID = $db->pselectOne("SELECT SubprojectID FROM session WHERE CandID=$candID AND Date_visit<=':date' ORDER BY ID desc", array('date'=>$insert_data['Date_taken']));
-        $query = "SELECT c.PSCID, c.CenterID,
-                         IFNULL(max(s.VisitNo)+1, 1) AS nextVisitNo
-                    FROM candidate AS c
-                        LEFT OUTER JOIN session AS s USING (CandID)
-                    WHERE c.CandID=:CaID AND (s.Active='Y' OR s.Active is null)
-                    GROUP BY c.CandID";
-        $row   = $db->pselectRow($query, array('CaID' => $candID));
-if ($SubprojectID == 1) {
-    $VisitLabel = 'PREEC00';
-} elseif ($SubprojectID == 2) {
-    $VisitLabel = 'NAPEC00';
-} elseif ($SubprojectID == 3) {
-    $VisitLabel = 'POIEC00';
-}
-        $today = date("Y-m-d");
+                $today = date("Y-m-d");
 
-        $sessionData = array(
+                $sessionData = array(
                        'CandID'          => $candID,
                        'SubprojectID'    => $SubprojectID,
                        'VisitNo'         => $row['nextVisitNo'],
@@ -173,63 +160,50 @@ if ($SubprojectID == 1) {
                        'Date_registered' => $today,
                        'Date_active'     => $today,
                        'Date_visit'      => $insert_data['Date_taken'],
-                      );
-print_r($sessionData);
-$success = $db->insert('session', $sessionData);
+                );
 
-//die();
+                print_r($sessionData);
+                $success = $db->insert('session', $sessionData);
 
-//insert flag table & test names table
-$newSID = $db->pselectOne("SELECT ID FROM session WHERE CandID=:cid ORDER BY ID DESC", array("cid"=>$candID));
-$testName = $table;
-$testID = $db->pselectOne(
-            "SELECT ID FROM test_names WHERE Test_name=:TN",
-            array('TN' => $testName)
-           );
-$commentID = $candID
-            . $PSCID
-            . $newSID
-            . $SubprojectID
-            . $testID
-            . time();
+                //insert flag table & test names table
+                $newSID = $db->pselectOne("SELECT ID FROM session WHERE CandID=:cid ORDER BY ID DESC", array("cid"=>$candID));
+                $testName = $table;
+                $testID = $db->pselectOne("SELECT ID FROM test_names WHERE Test_name=:TN", array('TN' => $testName));
+                $commentID = $candID . $PSCID . $newSID . $SubprojectID . $testID . time();
 
-//print($commentID);
+                // insert into the test table
+                $success = $db->insert($testName, array('CommentID' => $commentID));
+                // insert into the flag table
+                $success = $db->insert(
+                            'flag',
+                            array(
+                             'SessionID' => $newSID,
+                             'Test_name' => $testName,
+                             'CommentID' => $commentID,
+                             'UserID'    => 'justin',
+                             'Testdate'  => null,
+                            )
+                           );
+                // generate the double data entry commentid
+                $ddeCommentID = 'DDE_'.$commentID;
+                // insert the dde into the test table
+                $success = $db->insert($testName, array('CommentID' => $ddeCommentID));
+                // insert the dde into the flag table
+                $success = $db->insert(
+                            'flag',
+                            array(
+                             'SessionID' => $newSID,
+                             'Test_name' => $testName,
+                             'CommentID' => $ddeCommentID,
+                             'UserID'    => 'justin',
+                             'Testdate'  => null,
+                            )
+                           );
 
+                $insert_data['Data_entry_completion_status'] = 'Complete';
 
-        // insert into the test table
-        $success = $db->insert($testName, array('CommentID' => $commentID));
-        // insert into the flag table
-        $success = $db->insert(
-            'flag',
-            array(
-             'SessionID' => $newSID,
-             'Test_name' => $testName,
-             'CommentID' => $commentID,
-             'UserID'    => 'justin',
-             'Testdate'  => null,
-            )
-        );
-        // generate the double data entry commentid
-        $ddeCommentID = 'DDE_'.$commentID;
-        // insert the dde into the test table
-         $success = $db->insert($testName, array('CommentID' => $ddeCommentID));
-        // insert the dde into the flag table
-        $success = $db->insert(
-            'flag',
-            array(
-             'SessionID' => $newSID,
-             'Test_name' => $testName,
-             'CommentID' => $ddeCommentID,
-             'UserID'    => 'justin',
-             'Testdate'  => null,
-            )
-        );
-
-$insert_data['Data_entry_completion_status'] = 'Complete';
-
-
-$examinerID = $db->pselectOne("SELECT examinerID FROM examiners WHERE full_name=:fname", array('fname'=>$insert_data['Examiner']));
-$insert_data['Examiner'] = $examinerID;
+                $examinerID = $db->pselectOne("SELECT examinerID FROM examiners WHERE full_name=:fname", array('fname'=>$insert_data['Examiner']));
+                $insert_data['Examiner'] = $examinerID;
 
                 $dob = $db->pselectOne("SELECT DoB FROM candidate WHERE PSCID=$PSCID", array());
                 $age = Utility::calculateAge($dob, $insert_data['Date_taken']);
@@ -238,14 +212,14 @@ $insert_data['Examiner'] = $examinerID;
                 $agemonths = (round($agemonths*10) / 10.0);
                 $insert_data['Candidate_Age'] = $agemonths;
 
-if ($insert_data['test_language'] == 'French') {
-    $insert_data['test_language'] = 'french';
-} elseif ($insert_data['test_language'] == 'English') {
-    $insert_data['test_language'] = 'english';
-}
+                if ($insert_data['test_language'] == 'French') {
+                    $insert_data['test_language'] = 'french';
+                } elseif ($insert_data['test_language'] == 'English') {
+                    $insert_data['test_language'] = 'english';
+                }
 
-//update ecog table
-$likecommentID = '%' . $commentID . '%';
+                //update ecog table
+                $likecommentID = '%' . $commentID . '%';
 		if ($db->pselectOne("SELECT count(*) FROM ecog WHERE CommentID LIKE '{$likecommentID}'", array()) == 2) {
 			$success = $db->update($table, $insert_data, array("CommentID"=>$commentID));
 			if (Utility::isErrorX($success)) {
