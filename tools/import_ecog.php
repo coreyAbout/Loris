@@ -55,6 +55,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 
                         $key = str_replace("\r\n", "", $key);
                         $value = str_replace("\r\n", "", $value);
+                        $value = trim($value);
 
 			if ($key == 'PSCID') {
                                 $counter ++;
