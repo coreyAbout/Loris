@@ -163,7 +163,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                 );
 
                 print_r($sessionData);
-//                $success = $db->insert('session', $sessionData);
+                $success = $db->insert('session', $sessionData);
 
                 //insert flag table & test names table
                 $newSID = $db->pselectOne("SELECT ID FROM session WHERE CandID=:cid ORDER BY ID DESC", array("cid"=>$candID));
@@ -172,9 +172,9 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                 $commentID = $candID . $PSCID . $newSID . $SubprojectID . $testID . time();
 
                 // insert into the test table
-//                $success = $db->insert($testName, array('CommentID' => $commentID));
+                $success = $db->insert($testName, array('CommentID' => $commentID));
                 // insert into the flag table
-/*                $success = $db->insert(
+                $success = $db->insert(
                             'flag',
                             array(
                              'SessionID' => $newSID,
@@ -184,13 +184,13 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                              'Testdate'  => null,
                             )
                            );
-*/
+
                 // generate the double data entry commentid
                 $ddeCommentID = 'DDE_'.$commentID;
                 // insert the dde into the test table
-//                $success = $db->insert($testName, array('CommentID' => $ddeCommentID));
+                $success = $db->insert($testName, array('CommentID' => $ddeCommentID));
                 // insert the dde into the flag table
-/*                $success = $db->insert(
+                $success = $db->insert(
                             'flag',
                             array(
                              'SessionID' => $newSID,
@@ -200,7 +200,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                              'Testdate'  => null,
                             )
                            );
-*/
+
 
                 $insert_data['Data_entry_completion_status'] = 'Complete';
 
@@ -225,16 +225,18 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                 }
 
                 unset($insert_data['PSCID']);
-print_r($insert_data);
+
+                print_r($insert_data);
+
                 //update ecog table
                 $likecommentID = '%' . $commentID . '%';
 		if ($db->pselectOne("SELECT count(*) FROM ecog WHERE CommentID LIKE '{$likecommentID}'", array()) == 2) {
-//			$success = $db->update($table, $insert_data, array("CommentID"=>$commentID));
+			$success = $db->update($table, $insert_data, array("CommentID"=>$commentID));
 			if (Utility::isErrorX($success)) {
 				fwrite(STDERR, "Failed to update ecog table, DB Error: " . $success->getMessage()."\n");
 				return false;
 			}
-//                        $success = $db->update($table, $insert_data, array("CommentID"=>$ddeCommentID));
+                        $success = $db->update($table, $insert_data, array("CommentID"=>$ddeCommentID));
                         if (Utility::isErrorX($success)) {
                                 fwrite(STDERR, "Failed to update ecog table DDE, DB Error: " . $success->getMessage()."\n");
                                 return false;
