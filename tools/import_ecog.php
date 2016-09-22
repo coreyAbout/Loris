@@ -82,7 +82,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                         if ($value == 'Yes and I am worried about it (SCI)' || $value == 'Oui et ça me préoccupe (SCI)') {
                                 $value = 'yes_worried';
                         }
-                        if ($value == 'The history/antecedent of Alzheimer in your family' || $value == "vous avez un antécédent familial de maladie d'Alzheimer") {
+                        if ($value == "The history/antecedent of Alzheimer\\'s in your family" || $value == "vous avez un antécédent familial de maladie d'Alzheimer") {
                                 $value = 'alzheimer_family';
                         }
                         if ($value == 'You think the changes in your memory are abnormal' || $value == 'vous éprouvez un changement au niveau de la mémoire que vous considéré comme anormal') {
