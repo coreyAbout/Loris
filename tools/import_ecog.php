@@ -69,7 +69,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                         if ($value == 'No' || $value == 'Non') {
                                 $value = 'no';
                         }
-                        if ($value == 'Not Answered') {
+                        if ($value == 'Not Answered' || $value == 'Not answered') {
                                 $value = 'not_answered';
                         }
                         if ($value == '') {
