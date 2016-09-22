@@ -182,6 +182,8 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                              'CommentID' => $commentID,
                              'UserID'    => 'justin',
                              'Testdate'  => null,
+                             'Administration' => 'All',
+                             'Data_entry' => 'Complete',
                             )
                            );
 
@@ -198,6 +200,8 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                              'CommentID' => $ddeCommentID,
                              'UserID'    => 'justin',
                              'Testdate'  => null,
+                             'Administration' => 'All',
+                             'Data_entry' => 'Complete',
                             )
                            );
 
