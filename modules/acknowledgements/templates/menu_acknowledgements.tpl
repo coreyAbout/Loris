@@ -137,12 +137,20 @@
                                 <td nowrap="nowrap">
                                     <div class="col-sm-12 col-md-12">
                                         <select name="adddegrees[]" multiple>
-                                            <option value="bachelors">Bachelors</option>
-                                            <option value="masters">Masters</option>
-                                            <option value="phd">PhD</option>
-                                            <option value="postdoc">Postdoctoral</option>
-                                            <option value="md">MD</option>
-                                            <option value="registered_nurse">Registered Nurse</option>
+                                            <option value="BSc">BSc</option>
+                                            <option value="BA">BA</option>
+                                            <option value="MSc">MSc</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MMSc">MMSc</option>
+                                            <option value="MEng">MEng</option>
+                                            <option value="MPH">MPH</option>
+                                            <option value="PharmD">PharmD</option>
+                                            <option value="PhD">PhD</option>
+                                            <option value="MD">MD</option>
+                                            <option value="CM">CM</option>
+                                            <option value="LPN">LPN</option>
+                                            <option value="RN">RN</option>
+                                            <option value="MIT">MIT</option>
                                         </select>
                                     </div>
                                 </td>
