@@ -157,21 +157,21 @@
                                 <td nowrap="nowrap">
                                     <div class="col-sm-12 col-md-12">
                                         <select name="addroles[]" multiple>
-                                            <option value="investigators">Investigators</option>
-                                            <option value="project_administration">Project Administration</option>
-                                            <option value="database_management">Database Management</option>
-                                            <option value="interview_data_collection">Interview Data Collection</option>
-                                            <option value="data_analyses">Data Analyses</option>
-                                            <option value="image_acquisition">Image Acquisition (MRI/PET/MEG)</option>
-                                            <option value="data_entry">Data Entry</option>
-                                            <option value="clinical_evaluation">Clinical Evaluation</option>
-                                            <option value="cognitive_evaluation">Cognitive Evaluation</option>
-                                            <option value="database_programming">Database Programming</option>
-                                            <option value="imaging_processing_and_evaluation">Imaging Processing and Evaluation (MRI/PET/MEG)</option>
-                                            <option value="genetic_analysis_and_biochemical_assays">Genetic Analysis and Biochemical Assays</option>
-                                            <option value="randomization_and_pharmacy_allocation">Randomization and Pharmacy Allocation</option>
-                                            <option value="consultants">Consultants</option>
-                                            <option value="lp_csf_collection">LP/CSF collection</option>
+                                            <option value="Investigators">Investigators</option>
+                                            <option value="Project Administration">Project Administration</option>
+                                            <option value="Database Management">Database Management</option>
+                                            <option value="Interview Data Collection">Interview Data Collection</option>
+                                            <option value="Data Analyses">Data Analyses</option>
+                                            <option value="Image Acquisition (MRI/PET/MEG)">Image Acquisition (MRI/PET/MEG)</option>
+                                            <option value="Data Entry">Data Entry</option>
+                                            <option value="Clinical Evaluation">Clinical Evaluation</option>
+                                            <option value="Cognitive Evaluation">Cognitive Evaluation</option>
+                                            <option value="Database Programming">Database Programming</option>
+                                            <option value="Imaging Processing and Evaluation (MRI/PET/MEG)">Imaging Processing and Evaluation (MRI/PET/MEG)</option>
+                                            <option value="Genetic Analysis and Biochemical Assays">Genetic Analysis and Biochemical Assays</option>
+                                            <option value="Randomization and Pharmacy Allocation">Randomization and Pharmacy Allocation</option>
+                                            <option value="Consultants">Consultants</option>
+                                            <option value="LP/CSF collection">LP/CSF collection</option>
                                         </select>
                                     </div>
                                 </td>
