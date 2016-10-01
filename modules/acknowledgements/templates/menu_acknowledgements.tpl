@@ -162,11 +162,12 @@
                                             <option value="database_management">Database Management</option>
                                             <option value="interview_data_collection">Interview Data Collection</option>
                                             <option value="data_analyses">Data Analyses</option>
-                                            <option value="mri_acquisition">MRI Acquisition</option>
+                                            <option value="image_acquisition">Image Acquisition (MRI/PET/MEG)</option>
                                             <option value="data_entry">Data Entry</option>
                                             <option value="clinical_evaluation">Clinical Evaluation</option>
+                                            <option value="cognitive_evaluation">Cognitive Evaluation</option>
                                             <option value="database_programming">Database Programming</option>
-                                            <option value="imaging_processing_and_evaluation">Imaging Processing and Evaluation</option>
+                                            <option value="imaging_processing_and_evaluation">Imaging Processing and Evaluation (MRI/PET/MEG)</option>
                                             <option value="genetic_analysis_and_biochemical_assays">Genetic Analysis and Biochemical Assays</option>
                                             <option value="randomization_and_pharmacy_allocation">Randomization and Pharmacy Allocation</option>
                                             <option value="consultants">Consultants</option>
