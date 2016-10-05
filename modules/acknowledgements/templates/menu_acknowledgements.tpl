@@ -10,18 +10,18 @@
             <div class="row">
                 <div class="form-group col-sm-4">
                     <label class="col-sm-12 col-md-4">
-                        {$form.full_name.label}
+                        {$form.first_name.label}
                     </label>
                     <div class="col-sm-12 col-md-8">
-                        {$form.full_name.html}
+                        {$form.first_name.html}
                     </div>
                 </div>
                 <div class="form-group col-sm-4">
                     <label class="col-sm-12 col-md-4">
-                        {$form.citation_name.label}
+                        {$form.last_name.label}
                     </label>
                     <div class="col-sm-12 col-md-8">
-                        {$form.citation_name.html}
+                        {$form.last_name.html}
                     </div>
                 </div>
                 <div class="form-group col-sm-4">
@@ -101,13 +101,13 @@
                         <tbody>
                             <tr>
                                 <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">{$form.addordering.html}</div>
+                                    <div class="col-sm-12 col-md-12">{$form.addfirst_name.html}</div>
                                 </td>
                                 <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">{$form.addfull_name.html}</div>
+                                    <div class="col-sm-12 col-md-12">{$form.addinitials.html}</div>
                                 </td>
                                 <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">{$form.addcitation_name.html}</div>
+                                    <div class="col-sm-12 col-md-12">{$form.addlast_name.html}</div>
                                 </td>
                                 <td nowrap="nowrap">
                                     <div class="col-sm-12 col-md-12">
