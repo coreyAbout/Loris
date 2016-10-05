@@ -21,9 +21,6 @@ $client->initialize();
 $config = NDB_Config::singleton();
 $db     = Database::singleton();
 
-$factory = NDB_Factory::singleton();
-$baseurl = $factory->settings()->getBaseURL();
-
 $css = $config->getSetting('css');
 
 $publication_date = $_GET["date"];
