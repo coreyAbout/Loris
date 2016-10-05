@@ -81,7 +81,7 @@
                 </tr>
             </table>
                 <form method="post" action="/acknowledgements/" name="acknowledgements" id="acknowledgements">
-                    <table class="table table-hover table-primary table-bordered table-unresolved-conflicts dynamictable" border="0">
+                    <table class="table table-hover table-primary table-bordered table-acknowledgements dynamictable" border="0">
                         <thead>
 
                             {foreach from=$form.errors item=error}
@@ -100,17 +100,17 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">{$form.addfirst_name.html}</div>
+                                <td>
+                                    <div>{$form.addfirst_name.html}</div>
                                 </td>
-                                <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">{$form.addinitials.html}</div>
+                                <td>
+                                    <div>{$form.addinitials.html}</div>
                                 </td>
-                                <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">{$form.addlast_name.html}</div>
+                                <td>
+                                    <div>{$form.addlast_name.html}</div>
                                 </td>
-                                <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">
+                                <td>
+                                    <div>
                                         <select name="addaffiliations[]" multiple>
                                             <option value="STOP-AD CENTRE, Centre for Studies on Prevention of Alzheimer's disease, Montreal, Qc, Canada">STOP-AD CENTRE, Centre for Studies on Prevention of Alzheimer's disease, Montreal, Qc, Canada</option>
                                             <option value="Douglas Mental Health University Institute Research Centre, affiliated with McGill University, Montreal, Qc, Canada">Douglas Mental Health University Institute Research Centre, affiliated with McGill University, Montreal, Qc, Canada</option>
@@ -134,8 +134,8 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">
+                                <td>
+                                    <div>
                                         <select name="adddegrees[]" multiple>
                                             <option value="BSc">BSc</option>
                                             <option value="BA">BA</option>
@@ -154,8 +154,8 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">
+                                <td>
+                                    <div>
                                         <select name="addroles[]" multiple>
                                             <option value="Investigators">Investigators</option>
                                             <option value="Project Administration">Project Administration</option>
@@ -175,14 +175,14 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">{$form.addstart_date.html}</div>
+                                <td>
+                                    <div>{$form.addstart_date.html}</div>
                                 </td>
-                                <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">{$form.addend_date.html}</div>
+                                <td>
+                                    <div>{$form.addend_date.html}</div>
                                 </td>
-                                <td nowrap="nowrap">
-                                    <div class="col-sm-12 col-md-12">{$form.addpresent.html}</div>
+                                <td>
+                                    <div>{$form.addpresent.html}</div>
                                 </td>
                             </tr>
 
