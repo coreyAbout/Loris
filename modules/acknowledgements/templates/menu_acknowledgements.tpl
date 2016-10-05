@@ -101,13 +101,13 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div>{$form.addfirst_name.html}</div>
+                                    <div style="width:100px">{$form.addfirst_name.html}</div>
                                 </td>
                                 <td>
-                                    <div>{$form.addinitials.html}</div>
+                                    <div style="width:55px">{$form.addinitials.html}</div>
                                 </td>
                                 <td>
-                                    <div>{$form.addlast_name.html}</div>
+                                    <div style="width:100px">{$form.addlast_name.html}</div>
                                 </td>
                                 <td>
                                     <div>
