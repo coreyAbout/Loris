@@ -36,7 +36,7 @@
             <br class="visible-xs">
             <div id="advanced-buttons">
                             <div class="col-sm-4 col-md-3 col-xs-12 col-md-offset-6">
-                                <input type="submit" name="filter" value="Show Data" id="showdata_advanced_options" class="btn btn-sm btn-primary col-xs-12" />
+                                <input type="submit" name="filter" value="Show Data" class="btn btn-sm btn-primary col-xs-12" />
                             </div>
 
                             <div class="visible-xs col-xs-12"> </div>
