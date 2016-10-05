@@ -29,8 +29,9 @@ $css = $config->getSetting('css');
 $publication_date = $_GET["date"];
 
 $columns = array(
-            full_name     => 'Full Name',
-            citation_name => 'Citation Name',
+            first_name     => 'First Name',
+            initials     => 'Initials',
+            last_name => 'Last Name',
             affiliations  => 'Affiliations',
             degrees       => 'Degrees',
             roles         => 'Roles',
