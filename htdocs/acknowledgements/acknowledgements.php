@@ -41,8 +41,7 @@ $results = $db->pselect(
     "SELECT " . $keysAsString .
     " FROM acknowledgements
     WHERE start_date <= :publication_date
-    AND (DATEDIFF(end_date,start_date) > 90 OR end_date='0000-00-00' OR end_date IS NULL)
-    ORDER BY ordering ASC",
+    AND (DATEDIFF(end_date,start_date) > 90 OR end_date='0000-00-00' OR end_date IS NULL)",
     array('publication_date' => $publication_date)
 );
 
