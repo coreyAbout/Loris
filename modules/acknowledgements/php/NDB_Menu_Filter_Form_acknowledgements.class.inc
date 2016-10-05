@@ -74,7 +74,6 @@ class NDB_Menu_Filter_Form_Acknowledgements extends NDB_Menu_Filter_Form
         unset($value);
         $values['affiliations'] = implode(" ", $values['affiliations']);
 
-
         $values['degrees']      = implode(",", $values['degrees']);
         $values['roles']        = implode(",", $values['roles']);
 
@@ -114,9 +113,9 @@ class NDB_Menu_Filter_Form_Acknowledgements extends NDB_Menu_Filter_Form
         $config = NDB_Config::singleton();
 
         $this->columns      = array(
-                               'ordering',
-                               'full_name',
-                               'citation_name',
+                               'first_name',
+                               'initials',
+                               'last_name',
                                'affiliations',
                                'degrees',
                                'roles',
@@ -125,19 +124,17 @@ class NDB_Menu_Filter_Form_Acknowledgements extends NDB_Menu_Filter_Form
                                'present',
                               );
         $this->query        = " FROM acknowledgements WHERE 1=1";
-        $this->group_by     = '';
-        $this->order_by     = "ordering ASC";
         $this->validFilters = array(
-                               'full_name',
-                               'citation_name',
+                               'first_name',
+                               'last_name',
                                'start_date',
                                'end_date',
                                'present',
                               );
         $this->headers      = array(
-                               'ordering',
-                               'full_name',
-                               'citation_name',
+                               'first_name',
+                               'initials',
+                               'last_name',
                                'affiliations',
                                'degrees',
                                'roles',
@@ -146,11 +143,11 @@ class NDB_Menu_Filter_Form_Acknowledgements extends NDB_Menu_Filter_Form
                                'present',
                               );
         $this->formToFilter = array(
-                               'full_name'     => 'full_name',
-                               'citation_name' => 'citation_name',
-                               'start_date'    => 'start_date',
-                               'end_date'      => 'end_date',
-                               'present'       => 'present',
+                               'first_name' => 'first_name',
+                               'last_name'  => 'last_name',
+                               'start_date' => 'start_date',
+                               'end_date'   => 'end_date',
+                               'present'    => 'present',
                               );
 
         $this->tpl_data['citation_policy'] = $config->getSetting('citation_policy');
@@ -173,9 +170,8 @@ class NDB_Menu_Filter_Form_Acknowledgements extends NDB_Menu_Filter_Form
                    );
 
         // add filter elements
-        $this->addBasicText('ordering', 'Ordering:');
-        $this->addBasicText('full_name', 'Full Name:');
-        $this->addBasicText('citation_name', 'Citation Name:');
+        $this->addBasicText('first_name', 'First Name:');
+        $this->addBasicText('last_name', 'Last Name:');
         $config      =& NDB_Config::singleton();
         $startYear   = $config->getSetting('startYear');
         $endYear     = $config->getSetting('endYear');
@@ -191,9 +187,9 @@ class NDB_Menu_Filter_Form_Acknowledgements extends NDB_Menu_Filter_Form
         $this->addSelect('present', 'Present?', $present);
 
         // add form elements
-        $this->addBasicText('addordering', 'Ordering:');
-        $this->addBasicText('addfull_name', 'Full Name:');
-        $this->addBasicText('addcitation_name', 'Citation Name:');
+        $this->addBasicText('addfirst_name', 'First Name:');
+        $this->addBasicText('addinitials', 'Initials:');
+        $this->addBasicText('addlast_name', 'Last Name:');
         $config      =& NDB_Config::singleton();
         $startYear   = $config->getSetting('startYear');
         $endYear     = $config->getSetting('endYear');
