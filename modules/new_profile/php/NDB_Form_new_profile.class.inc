@@ -78,8 +78,8 @@ class NDB_Form_new_profile extends NDB_Form
                              'language'        => 'en',
                              'format'          => 'YMd',
                              'addEmptyOption'  => true,
-                             'minYear'         => $startYear - $ageMax,
-                             'maxYear'         => $endYear - $ageMin
+                             'minYear'         => $startYear - $ageMax - 30,
+                             'maxYear'         => $endYear - $ageMin + 30
                              );
 
         // add date of birth
