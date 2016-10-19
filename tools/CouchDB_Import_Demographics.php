@@ -489,6 +489,169 @@ class CouchDBDemographicsImporter {
                 unset($demographics['ProjectID']);
             }
 
+            // family history
+            $exists = $this->SQLDB->pselectOne("SELECT ID FROM family_history_ad_other WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+            if (!empty($exists)) {
+                $entries = 1;
+                $family_history_ad_other_fields = $this->SQLDB->pselect("SELECT * FROM family_history_ad_other WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+                foreach ($family_history_ad_other_fields as $row) {
+                    $this->Dictionary["ADOther_CandID_" . $entries] = array(
+                           'Description' => "Family History AD Other CandID " . $entries,
+                           'Type'        => "int(6)",
+                    );
+                    $this->Dictionary["ADOther_family_member_" . $entries] = array(
+                           'Description' => "Family History AD Other Family Member " . $entries,
+                           'Type'        => "enum('aunt','uncle','niece','nephew','half-sibling','first-cousin','grandfather','grandmother','other')",
+                    );
+                    $this->Dictionary["ADOther_parental_side_" . $entries] = array(
+                           'Description' => "Family History AD Other Parental Side " . $entries,
+                           'Type'        => "enum('maternal','paternal','not_applicable','not_answered')",
+                    );
+                    $this->Dictionary["ADOther_ad_dementia_age_" . $entries] = array(
+                           'Description' => "Family History AD Other AD Dementia Age " . $entries,
+                           'Type'        => "enum('20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','101','102','103','104','105','106','107','108','109','110','111','112','113','114','115','116','117','118','119','120','not_applicable','not_answered')",
+                    );
+                    $this->Dictionary["ADOther_living_age_" . $entries] = array(
+                           'Description' => "Family History AD Other Living Age " . $entries,
+                           'Type'        => "enum('20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','101','102','103','104','105','106','107','108','109','110','111','112','113','114','115','116','117','118','119','120','not_applicable','not_answered')",
+                    );
+                    $this->Dictionary["ADOther_death_age_" . $entries] = array(
+                           'Description' => "Family History AD Other Death Age " . $entries,
+                           'Type'        => "enum('20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','101','102','103','104','105','106','107','108','109','110','111','112','113','114','115','116','117','118','119','120','not_applicable','not_answered')",
+                    );
+                    $this->Dictionary["ADOther_death_cause_" . $entries] = array(
+                           'Description' => "Family History AD Other Death Cause " . $entries,
+                           'Type'        => "text",
+                    );
+                    $this->Dictionary["ADOther_death_cause_status_" . $entries] = array(
+                           'Description' => "Family History AD Other Death Cause Status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $demographics["ADOther_CandID_" . $entries] = $row['CandID'];
+                    $demographics["ADOther_family_member_" . $entries] = $row['family_member'];
+                    $demographics["ADOther_parental_side_" . $entries] = $row['parental_side'];
+                    $demographics["ADOther_ad_dementia_age_" . $entries] = $row['ad_dementia_age'];
+                    $demographics["ADOther_living_age_" . $entries] = $row['living_age'];
+                    $demographics["ADOther_death_age_" . $entries] = $row['death_age'];
+                    $demographics["ADOther_death_cause_" . $entries] = $row['death_cause'];
+                    $demographics["ADOther_death_cause_status_" . $entries] = $row['death_cause_status'];
+                    $entries++;
+                }
+            }
+
+            $exists = $this->SQLDB->pselectOne("SELECT ID FROM family_history_first_degree WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+            if (!empty($exists)) {
+                $entries = 1;
+                $family_history_first_degree_fields = $this->SQLDB->pselect("SELECT * FROM family_history_first_degree WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+                foreach ($family_history_first_degree_fields as $row) {
+                    $this->Dictionary["FirstDegree_CandID_" . $entries] = array(
+                           'Description' => "Family History First Degree CandID " . $entries,
+                           'Type'        => "int(6)",
+                    );
+                    $this->Dictionary["FirstDegree_family_member_" . $entries] = array(
+                           'Description' => "Family History First Degree Family Member " . $entries,
+                           'Type'        => "enum('mother','father','brother','sister','son','daughter')",
+                    );
+                    $this->Dictionary["FirstDegree_living_age_" . $entries] = array(
+                           'Description' => "Family History First Degree Living Age " . $entries,
+                           'Type'        => "enum('20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','101','102','103','104','105','106','107','108','109','110','111','112','113','114','115','116','117','118','119','120','not_applicable','not_answered')",
+                    );
+                    $this->Dictionary["FirstDegree_death_age_" . $entries] = array(
+                           'Description' => "Family History First Degree Death Age " . $entries,
+                           'Type'        => "enum('20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','101','102','103','104','105','106','107','108','109','110','111','112','113','114','115','116','117','118','119','120','not_applicable','not_answered')",
+                    );
+                    $this->Dictionary["FirstDegree_death_cause_" . $entries] = array(
+                           'Description' => "Family History First Degree Death Cause " . $entries,
+                           'Type'        => "text",
+                    );
+                    $this->Dictionary["FirstDegree_death_cause_status_" . $entries] = array(
+                           'Description' => "Family History First Degree Death Cause Status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $this->Dictionary["FirstDegree_ad_dementia_" . $entries] = array(
+                           'Description' => "Family History First Degree AD Dementia " . $entries,
+                           'Type'        => "enum('Y','N','not_answered')",
+                    );
+                    $this->Dictionary["FirstDegree_ad_dementia_age_" . $entries] = array(
+                           'Description' => "Family History First Degree AD Dementia Age " . $entries,
+                           'Type'        => "enum('20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','101','102','103','104','105','106','107','108','109','110','111','112','113','114','115','116','117','118','119','120','not_applicable','not_answered')",
+                    );
+                    $this->Dictionary["FirstDegree_diagnosis_history_" . $entries] = array(
+                           'Description' => "Family History First Degree Diagnosis History " . $entries,
+                           'Type'        => "text",
+                    );
+                    $this->Dictionary["FirstDegree_diagnosis_history_status_" . $entries] = array(
+                           'Description' => "Family History First Degree Diagnosis History Status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $demographics["FirstDegree_CandID_" . $entries] = $row['CandID'];
+                    $demographics["FirstDegree_family_member_" . $entries] = $row['family_member'];
+                    $demographics["FirstDegree_living_age_" . $entries] = $row['living_age'];
+                    $demographics["FirstDegree_death_age_" . $entries] = $row['death_age'];
+                    $demographics["FirstDegree_death_cause_" . $entries] = $row['death_cause'];
+                    $demographics["FirstDegree_death_cause_status_" . $entries] = $row['death_cause_status'];
+                    $demographics["FirstDegree_ad_dementia_" . $entries] = $row['ad_dementia'];
+                    $demographics["FirstDegree_ad_dementia_age_" . $entries] = $row['ad_dementia_age'];
+                    $demographics["FirstDegree_diagnosis_history_" . $entries] = $row['diagnosis_history'];
+                    $demographics["FirstDegree_diagnosis_history_status_" . $entries] = $row['diagnosis_history_status'];
+                    $entries++;
+                }
+            }
+
+            $exists = $this->SQLDB->pselectOne("SELECT ID FROM family_history_memory_problem_other WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+            if (!empty($exists)) {
+                $entries = 1;
+                $family_history_memory_problem_other_fields = $this->SQLDB->pselect("SELECT * FROM family_history_memory_problem_other WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+                foreach ($family_history_memory_problem_other_fields as $row) {
+                    $this->Dictionary["MemoryProblemOther_CandID_" . $entries] = array(
+                           'Description' => "Family History Memory Problem Other CandID " . $entries,
+                           'Type'        => "int(6)",
+                    );
+                    $this->Dictionary["MemoryProblemOther_family_member_" . $entries] = array(
+                           'Description' => "Family History Memory Problem Other Family Member " . $entries,
+                           'Type'        => "enum('grandmother','grandfather','aunt','uncle','niece','nephew','half-sibling','first-cousin','other')",
+                    );
+                    $this->Dictionary["MemoryProblemOther_parental_side_" . $entries] = array(
+                           'Description' => "Family History Memory Problem Other Parental Side " . $entries,
+                           'Type'        => "enum('maternal','paternal','not_applicable','not_answered')",
+                    );
+                    $this->Dictionary["MemoryProblemOther_other_memory_problems_" . $entries] = array(
+                           'Description' => "Family History Memory Problem Other Other Memory Problems " . $entries,
+                           'Type'        => "text",
+                    );
+                    $this->Dictionary["MemoryProblemOther_other_memory_problems_status_" . $entries] = array(
+                           'Description' => "Family History Memory Problem Other Other Memory Problems Status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $this->Dictionary["MemoryProblemOther_living_age_" . $entries] = array(
+                           'Description' => "Family History Memory Problem Other Living Age " . $entries,
+                           'Type'        => "enum('20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','101','102','103','104','105','106','107','108','109','110','111','112','113','114','115','116','117','118','119','120','not_applicable','not_answered')",
+                    );
+                    $this->Dictionary["MemoryProblemOther_death_age_" . $entries] = array(
+                           'Description' => "Family History Memory Problem Other Death Age " . $entries,
+                           'Type'        => "enum('20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','101','102','103','104','105','106','107','108','109','110','111','112','113','114','115','116','117','118','119','120','not_applicable','not_answered')",
+                    );
+                    $this->Dictionary["MemoryProblemOther_death_cause_" . $entries] = array(
+                           'Description' => "Family History Memory Problem Other Death Cause " . $entries,
+                           'Type'        => "text",
+                    );
+                    $this->Dictionary["MemoryProblemOther_death_cause_status_" . $entries] = array(
+                           'Description' => "Family History Memory Problem Other Death Cause Status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $demographics["MemoryProblemOther_CandID_" . $entries] = $row['CandID'];
+                    $demographics["MemoryProblemOther_family_member_" . $entries] = $row['family_member'];
+                    $demographics["MemoryProblemOther_parental_side_" . $entries] = $row['parental_side'];
+                    $demographics["MemoryProblemOther_other_memory_problems_" . $entries] = $row['other_memory_problems'];
+                    $demographics["MemoryProblemOther_other_memory_problems_status_" . $entries] = $row['other_memory_problems_status'];
+                    $demographics["MemoryProblemOther_living_age_" . $entries] = $row['living_age'];
+                    $demographics["MemoryProblemOther_death_age_" . $entries] = $row['death_age'];
+                    $demographics["MemoryProblemOther_death_cause_" . $entries] = $row['death_cause'];
+                    $demographics["MemoryProblemOther_death_cause_status_" . $entries] = $row['death_cause_status'];
+                    $entries++;
+                }
+            }
+
             // family_information
             $exists = $this->SQLDB->pselectOne("SELECT ID FROM family_information WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
             if (!empty($exists)) {
