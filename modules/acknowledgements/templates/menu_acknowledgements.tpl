@@ -131,6 +131,7 @@
                                             <option value="Wisconsin Alzheimer's Institute, UW School of Medicine and Public Health, Milwaukee, WI, USA">Wisconsin Alzheimer's Institute, UW School of Medicine and Public Health, Milwaukee, WI, USA</option>
                                             <option value="Banner Alzheimer Institute, Phoenix, AZ, USA">Banner Alzheimer Institute, Phoenix, AZ, USA</option>
                                             <option value="University California, San Diego, School of medicine, La Jolla, CA, USA">University California, San Diego, School of medicine, La Jolla, CA, USA</option>
+                                            <option value="VU University Amsterdam, Amsterdam, Netherlands">VU University Amsterdam, Amsterdam, Netherlands</option>
                                         </select>
                                     </div>
                                 </td>
@@ -151,6 +152,7 @@
                                             <option value="LPN">LPN</option>
                                             <option value="RN">RN</option>
                                             <option value="MIT">MIT</option>
+                                            <option value="RRT">RRT</option>
                                         </select>
                                     </div>
                                 </td>
