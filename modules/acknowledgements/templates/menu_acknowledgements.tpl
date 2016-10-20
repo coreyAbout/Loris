@@ -131,7 +131,7 @@
                                             <option value="Wisconsin Alzheimer's Institute, UW School of Medicine and Public Health, Milwaukee, WI, USA">Wisconsin Alzheimer's Institute, UW School of Medicine and Public Health, Milwaukee, WI, USA</option>
                                             <option value="Banner Alzheimer Institute, Phoenix, AZ, USA">Banner Alzheimer Institute, Phoenix, AZ, USA</option>
                                             <option value="University California, San Diego, School of medicine, La Jolla, CA, USA">University California, San Diego, School of medicine, La Jolla, CA, USA</option>
-                                            <option value="VU University Amsterdam, Amsterdam, Netherlands">VU University Amsterdam, Amsterdam, Netherlands</option>
+                                            <option value="Alzheimer Center, VU University Amsterdam, Amsterdam, Netherlands">Alzheimer Center, VU University Amsterdam, Amsterdam, Netherlands</option>
                                         </select>
                                     </div>
                                 </td>
