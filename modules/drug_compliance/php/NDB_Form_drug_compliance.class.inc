@@ -170,7 +170,7 @@ class NDB_Form_drug_compliance extends NDB_Form
             $success = $DB->update("drug_compliance", $update, array('ID'=>$DCID));
         }
 
-        if (Utility::isErrorX($success)) {
+        if (isset($success) && Utility::isErrorX($success)) {
             return PEAR::raiseError(
                 "NDB_Form_drug_compliance::calculateSpecific: ".$success->getMessage()
             );
