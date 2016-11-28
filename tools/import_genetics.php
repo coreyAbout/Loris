@@ -51,6 +51,12 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 				$PSCID = $thisField[$key];
 				echo "-------PSCID: " . $PSCID . "\n";
 			}
+                        elseif ($key == 'Study') {
+                        $Study = $thisField[$key];
+                        }
+                        elseif ($key == 'gDNA_ng_ul') {
+                        $gDNA_ng_ul = $thisField[$key];
+                        }
 			elseif ($key == 'ApoE') {
 			$ApoE = $thisField[$key];
 			}
@@ -313,6 +319,8 @@ if ($CDK5RAP2_rs10984186_allele_no === 0) {
 
 		$mappings1 = array(
 				"PSCID"=>$PSCID,
+                                "Study"=>$Study,
+                                "gDNA_ng_ul"=>$gDNA_ng_ul,
 				"ApoE"=>$ApoE,
 				"apoE_allele_no"=>$apoE_allele_no,
 				"E4_allele_Bin"=>$E4_allele_Bin,
