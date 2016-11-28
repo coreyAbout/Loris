@@ -267,6 +267,14 @@ if ($TLR4_rs_4986790 == 'GG') {
  $TLR4_allele_no = null;
 }
 
+if ($TLR4_allele_no === 1 || $TLR4_allele_no === 0) {
+ $TLR4_copie_no = 0;
+} elseif ($TLR4_allele_no == 2) {
+ $TLR4_copie_no = 1;
+} else {
+ $TLR4_copie_no = null;
+}
+
 if ($PPP2r1A_rs_10406151 == 'TT') {
  $ppp2r1A_allele_no = 2;
 } elseif ($PPP2r1A_rs_10406151 == 'TC' || $PPP2r1A_rs_10406151 == 'CT') {
@@ -331,6 +339,7 @@ if ($CDK5RAP2_rs10984186_allele_no === 0) {
 				"Reference_M"=>$Reference_M,
 				"TLR4_rs_4986790"=>$TLR4_rs_4986790,
 				"TLR4_allele_no"=>$TLR4_allele_no,
+                                "TLR4_copie_no"=>$TLR4_copie_no,
 				"Technicien_TLR4"=>$Technicien_TLR4,
 				"Method_TLR4"=>$Method_TLR4,
 				"Reference_TLR4"=>$Reference_TLR4,
