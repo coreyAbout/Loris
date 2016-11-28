@@ -107,7 +107,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                         if ($key == 'NFL') {
                                 $ELISA_NFL = $thisField[$key];
                         }
-
+/*
                         if ($key == 'ApoAI') {
                                 $sixplex_ApoAI = $thisField[$key];
                         }
@@ -127,11 +127,11 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                         if ($key == 'ApoCIII') {
                                 $sixplex_ApoCIII = $thisField[$key];
                         }
-
+*/
                         if ($key == 'ApoE') {
                                 $sixplex_ApoE = $thisField[$key];
                         }
-
+/*
                         if (strpos($key, '6plex_date') !== FALSE) {
                            if ($thisField[$key] != '' && $thisField[$key] != "\r\n") {
                                 $parsedate = date("Y-m-d",strtotime($thisField[$key]));
@@ -140,7 +140,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                                 $sixplex_date = NULL;
                            }
                         }
-
+*/
                 }
 
 
@@ -162,7 +162,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 			$DDE_commentID = $db->pselectOne("SELECT CommentID from flag where sessionID=:sid and test_name = 'LP' and CommentID like 'DDE%'", array('sid'=>$sessionID));
 			print "CommentID: " . $commentID ."\n";
 
-			$insertData = array('ELISA_tau'=>$ELISA_tau, 'ELISA_b_amyloid'=>$ELISA_b_amyloid, 'ELISA_ptau'=>$ELISA_ptau, 'ELISA_date'=>$ELISA_date, 'ELISA_NFL'=>$ELISA_NFL, '6plex_ApoAI'=>$sixplex_ApoAI, '6plex_ApoAII'=>$sixplex_ApoAII, '6plex_ApoB'=>$sixplex_ApoB, '6plex_ApoCII'=>$sixplex_ApoCII, '6plex_ApoCIII'=>$sixplex_ApoCIII, '6plex_ApoE'=>$sixplex_ApoE, '6plex_date'=>$sixplex_date);
+			$insertData = array('ELISA_tau'=>$ELISA_tau, 'ELISA_b_amyloid'=>$ELISA_b_amyloid, 'ELISA_ptau'=>$ELISA_ptau, 'ELISA_date'=>$ELISA_date, 'ELISA_NFL'=>$ELISA_NFL, /*'6plex_ApoAI'=>$sixplex_ApoAI, '6plex_ApoAII'=>$sixplex_ApoAII, '6plex_ApoB'=>$sixplex_ApoB, '6plex_ApoCII'=>$sixplex_ApoCII, '6plex_ApoCIII'=>$sixplex_ApoCIII,*/ '6plex_ApoE'=>$sixplex_ApoE, /*'6plex_date'=>$sixplex_date*/);
 			$where = array('CommentID'=>$commentID);
 			$where2 = array('CommentID'=>$DDE_commentID);
 
