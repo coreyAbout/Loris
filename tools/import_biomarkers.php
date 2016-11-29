@@ -290,10 +290,6 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                                 $synuclein = $thisField[$key];
                         }
 
-                        if ($key == 'date_synuclein') {
-                                $date_synuclein = $thisField[$key];
-                        }
-
                         if (strpos($key, 'date_synuclein') !== FALSE) {
                            if ($thisField[$key] != '' && $thisField[$key] != "\r\n") {
                                 $parsedate = date("Y-m-d",strtotime($thisField[$key]));
