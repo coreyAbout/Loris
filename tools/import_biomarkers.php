@@ -298,6 +298,11 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 
 			$candID = $db->pselectOne("SELECT CandID from candidate where PSCID =:pid", array("pid"=>$PSCID)); 
 			$sessionID = $db->pselectOne("SELECT ID from session where CandID =:cid and Visit_label =:visit", array('cid'=>$candID, 'visit'=>$visit));
+                        if (empty($sessionID)) {
+                                $visit = str_replace("NAP", "PRE", $visit);
+                                $sessionID = $db->pselectOne("SELECT ID from session where CandID =:cid and Visit_label =:visit", array('cid'=>$candID, 'visit'=>$visit));
+                        }
+
 			if (empty($sessionID)) {
 				echo "Error: Failed to update for CandID " . $candID . " for Visit " . $visit . "\n";
 			}
