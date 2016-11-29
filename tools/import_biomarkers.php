@@ -261,7 +261,12 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                         }
 
                         if ($key == '29-plex_date') {
-                                $twentynine_plex_date = $thisField[$key];
+                           if ($thisField[$key] != '') {
+                                $parsedate = date("Y-m-d",strtotime($thisField[$key]));
+                                $twentynine_plex_date = $parsedate;
+                           }  else {
+                                $twentynine_plex_date = NULL;
+                           }
                         }
 
                         if ($key == 'Abeta34') {
@@ -269,7 +274,12 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                         }
 
                         if ($key == 'Abeta34_date') {
-                                $Abeta34_date = $thisField[$key];
+                           if ($thisField[$key] != '') {
+                                $parsedate = date("Y-m-d",strtotime($thisField[$key]));
+                                $Abeta34_date = $parsedate;
+                           }  else {
+                                $Abeta34_date = NULL;
+                           }
                         }
 
                         if ($key == 'Abeta40') {
@@ -282,6 +292,15 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 
                         if ($key == 'date_synuclein') {
                                 $date_synuclein = $thisField[$key];
+                        }
+
+                        if (strpos($key, 'date_synuclein') !== FALSE) {
+                           if ($thisField[$key] != '' && $thisField[$key] != "\r\n") {
+                                $parsedate = date("Y-m-d",strtotime($thisField[$key]));
+                                $date_synuclein = $parsedate;
+                           }  else {
+                                $date_synuclein = NULL;
+                           }
                         }
 
                 }
