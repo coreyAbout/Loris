@@ -177,7 +177,7 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                            }
                         }
                         else {
-                        $comments = $thisField[$key];
+                        $comments = trim($thisField[$key]);
                         }
 
 		}//closing last foreach
