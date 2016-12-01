@@ -23,7 +23,7 @@ $db     = Database::singleton();
 
 $css = $config->getSetting('css');
 
-$publication_date = $_GET["date"];
+$publication_date = str_replace("]","",str_replace("[","",$_GET["date"]));
 
 $columns = array(
             first_name     => 'First Name',
