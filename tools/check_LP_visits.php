@@ -1,5 +1,8 @@
 <?php
 
+// Script to check list of LP visits to make sure they
+// exist in the database before running import script
+
 require_once "generic_includes.php";
 $config =& NDB_Config::singleton();
 $db =& Database::singleton();
