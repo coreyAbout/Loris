@@ -1,8 +1,10 @@
+<link rel="stylesheet" type="text/css" href="{$baseURL}/GetCSS.php?Module=brainbrowser&file=volume-viewer-demo.css">
+
 {literal}
     <script id="overlay-ui-template" type="x-volume-ui-template">
         <div class="row">
             <div class="overlay-viewer-display" id="panel-size"></div>
-            <div class="form-group col-sm-3">
+            <div class="form-group col-sm-3 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
 
@@ -59,7 +61,7 @@
     <script id="volume-ui-template4d" type="x-volume-ui-template">
         <div class="row">
         <div class="volume-viewer-display"></div>
-            <div class="form-group col-sm-3">
+            <div class="form-group col-sm-3 col-xs-12">
                 <div class="panel panel-default" id="subpanel-filename-{{VOLID}}">
                     <div class="panel-heading" id="mri-panel-filename-{{VOLID}}">
 
@@ -176,6 +178,11 @@
                 <label for="sync-volumes" id="sync-volumes" class="clickable btn btn-sm btn-primary">Sync Volumes</label>
             </span>
 
+            <span id="reset-wrapper" class="clickable">
+                <input type="button" class="button ui-helper-hidden-accessible" id="reset-view">
+                <label for="reset-view" id="reset-view" class="clickable btn btn-sm btn-primary">Reset View</label>
+            </span>
+
             <div class="btn-group">
                 <select id="panel-size" class="form-control panel-size clickable">
                     <option value="256" SELECTED>Choose Panel Size</option>
@@ -201,8 +208,3 @@
 
     <div id="loading" style="display: block; color: #064785; font-size: 40px; font-weight: bold; text-align: center; margin: auto;">LOADING...</div>
 {/literal}
-<script type="text/javascript" src="GetJS.php?Module=brainbrowser&file=jquery.mousewheel.min.js"></script>
-<script type="text/javascript" src="GetJS.php?Module=brainbrowser&file=three.min.js"></script>
-<script type="text/javascript" src="GetJS.php?Module=brainbrowser&file=brainbrowser.volume-viewer.min.js"></script>
-<script type="text/javascript" src="GetJS.php?Module=brainbrowser&file=brainbrowser.config.js"></script>
-<script type="text/javascript" src="GetJS.php?Module=brainbrowser&file=brainbrowser.loris.js"></script>

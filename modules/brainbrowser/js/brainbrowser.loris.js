@@ -46,12 +46,14 @@ $(function() {
     // Should cursors in all panels be synchronized?
     $("#sync-volumes").change(function() {
       var synced = $(this).is(":checked");
-      if (synced) {
-        viewer.resetDisplays();
-        viewer.redrawVolumes();
-      }
 
       viewer.synced = synced;
+    });
+
+    // Reset button
+    $("#reset-view").click(function() {
+      viewer.resetDisplays();
+      viewer.redrawVolumes();
     });
 
     // This will create an image of all the display panels
@@ -520,7 +522,7 @@ $(function() {
 
       $.ajax({
           data: 'minc_id=' + minc_ids_arr[vol_id],
-          url: 'AjaxHelper.php?Module=brainbrowser&script=getMincName.php',
+          url: loris.BaseURL + '/brainbrowser/ajax/getMincName.php',
           method: 'GET',
           success: function(data) {
             $("#filename-"+vol_id).html(data);
@@ -731,8 +733,8 @@ $(function() {
 
         minc_volumes.push({
             type: 'minc',
-	    header_url: "AjaxHelper.php?Module=brainbrowser&script=minc.php&minc_id=" + minc_ids_arr[i] + "&minc_headers=true",
-	    raw_data_url: "AjaxHelper.php?Module=brainbrowser&script=minc.php&minc_id=" + minc_ids_arr[i] + "&raw_data=true",
+	    header_url: loris.BaseURL + "/brainbrowser/ajax/minc.php?minc_id=" + minc_ids_arr[i] + "&minc_headers=true",
+	    raw_data_url: loris.BaseURL + "/brainbrowser/ajax/minc.php?minc_id=" + minc_ids_arr[i] + "&raw_data=true",
             template: {
                 element_id: "volume-ui-template4d",
                 viewer_insert_class: "volume-viewer-display"

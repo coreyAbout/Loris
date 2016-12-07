@@ -14,10 +14,9 @@
 
 $DB =& Database::singleton();
 
-//$factory  = NDB_Factory::singleton();
-//$settings = $factory->settings();
-
-//$baseURL = $settings->getBaseURL();
+$factory  = NDB_Factory::singleton();
+$settings = $factory->settings();
+$baseURL = $settings->getBaseURL();
 
 if ($_POST['action'] == 'addpermission') {
     if (!empty($_POST['data_release_id']) && empty($_POST['data_release_version'])) {
@@ -67,7 +66,24 @@ if ($_POST['action'] == 'addpermission') {
             }
         }
     }
-//    header("Location: {$baseURL}/data_release/?addpermissionSuccess=true");    
+    header("Location: {$baseURL}/data_release/?addpermissionSuccess=true");    
+if ($_POST['action'] == 'addpermission') {
+    $userid          = $_POST['userid'];
+    $data_release_id = $_POST['data_release_id'];
+    $success         = $DB->insert(
+        'data_release_permissions',
+        array(
+         'userid'          => $userid,
+         'data_release_id' => $data_release_id,
+        )
+    );
+
+    $factory  = NDB_Factory::singleton();
+    $settings = $factory->settings();
+
+    $baseURL = $settings->getBaseURL();
+
+    header("Location: {$baseURL}/data_release/?addpermissionSuccess=true");
 } else {
     header("HTTP/1.1 400 Bad Request");
     echo "There was an error adding permissions";
