@@ -81,35 +81,6 @@ UPDATE LorisMenuPermissions SET PermID = (SELECT permID FROM permissions WHERE c
   AND MenuId = (SELECT ID FROM LorisMenu WHERE Label = 'Conflict Resolver');
 INSERT INTO ConfigSettings (Name, Description, Visible, AllowMultiple, DataType, Parent, Label, OrderNumber) SELECT 'StudyDescription', 'Description of the Study', 1, 0, 'textarea', ID , 'Study Description', 2 FROM ConfigSettings WHERE Name="gui";
 INSERT INTO Config (ConfigID, Value) SELECT ID, "<h3>Example Study Description</h3>\r\n <p>This is a sample description for this study, because it is a new LORIS install that has not yet customized this text.</p>\r\n <p>A LORIS administrator can customize this text in the configuration module, under the configuration option labeled \"Study Description\"</p>\r\n <h3>Useful Links</h3>\r\n <ul>\r\n <li><a href=\"https://github.com/aces/Loris\" >LORIS GitHub Repository</a></li>\r\n <li><a href=\"https://github.com/aces/Loris/wiki/Setup\" >LORIS Setup Guide</a></li>\r\n <li><a href=\"https://www.youtube.com/watch?v=2Syd_BUbl5A\" >A video of a loris on YouTube</a></li>\r\n </ul>" FROM ConfigSettings WHERE Name="StudyDescription";
-DROP TABLE IF EXISTS `acknowledgements`;
-CREATE TABLE `acknowledgements` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ordering` varchar(255) DEFAULT NULL,
-  `full_name` varchar(255) DEFAULT NULL,
-  `citation_name` varchar(255) DEFAULT NULL,
-  `title` enum('') DEFAULT NULL,
-  `affiliations` varchar(255) DEFAULT NULL,
-  `degrees` varchar(255) DEFAULT NULL,
-  `roles` varchar(255) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
-  `present` enum('Yes', 'No') DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO LorisMenu (Label, Link, Parent, OrderNumber) VALUES ('Acknowledgements','/acknowledgements/', (SELECT ID FROM LorisMenu as L WHERE Label='Tools'), 8);
-
-INSERT INTO permissions (code,description,categoryID) VALUES ('acknowledgements_view','View Acknowledgements',2);
-INSERT INTO permissions (code,description,categoryID) VALUES ('acknowledgements_edit','Edit Acknowledgements',2);
-
-INSERT INTO LorisMenuPermissions (MenuID, PermID) 
-    SELECT m.ID, p.PermID FROM permissions p CROSS JOIN LorisMenu m WHERE p.code='acknowledgements_view' AND m.Label='Acknowledgements';
-INSERT INTO LorisMenuPermissions (MenuID, PermID) 
-    SELECT m.ID, p.PermID FROM permissions p CROSS JOIN LorisMenu m WHERE p.code='acknowledgements_edit' AND m.Label='Acknowledgements';
-
-INSERT INTO ConfigSettings (Name, Description, Visible, AllowMultiple, DataType, Parent, Label, OrderNumber) SELECT 'citation_policy', 'Citation Policy for Acknowledgements module', 1, 0, 'textarea', ID, 'Citation Policy', 22 FROM ConfigSettings WHERE Name="study";
-
-INSERT INTO Config (ConfigID, Value) SELECT ID, "Modify this to your project's citation policy" FROM ConfigSettings WHERE Name="citation_policy";
 
 DELETE FROM Config WHERE ConfigID=(SELECT ID FROM ConfigSettings WHERE Name='showTiming');
 
@@ -248,27 +219,7 @@ UPDATE help SET updated='2016-02-12 00:00:00' WHERE hash=md5('training');
 UPDATE help SET updated='2016-02-12 00:00:00' WHERE hash=md5('server processes manager');
 UPDATE help SET updated='2016-02-12 00:00:00' WHERE hash=md5('survey_accounts');
 UPDATE help SET updated='2016-02-12 00:00:00' WHERE hash=md5('instrument_list');
-INSERT INTO LorisMenu (Label, Link, Parent, OrderNumber) VALUES ('Data Release', '/data_release/', (SELECT ID FROM LorisMenu as L WHERE Label='Tools'), 7);
 
-DROP TABLE IF EXISTS `data_release`;
-CREATE TABLE `data_release` (
- `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
- `file_name` varchar(255),
- `version` varchar(255),
- `upload_date` date,
- PRIMARY KEY (`id`)
-);
-
-DROP TABLE IF EXISTS `data_release_permissions`;
-CREATE TABLE `data_release_permissions` (
- `userid` int(10) unsigned NOT NULL,
- `data_release_id` int(10) unsigned NOT NULL,
- PRIMARY KEY (`userid`, `data_release_id`),
- KEY `FK_userid` (`userid`),
- KEY `FK_data_release_id` (`data_release_id`),
- CONSTRAINT `FK_userid` FOREIGN KEY (`userid`) REFERENCES `users` (`ID`),
- CONSTRAINT `FK_data_release_id` FOREIGN KEY (`data_release_id`) REFERENCES `data_release` (`id`)
-);
 UPDATE Config AS c, ConfigSettings AS cs SET c.value="/data/incoming/" WHERE c.ConfigID=cs.ID AND c.Value="/PATH/TO/MRI-Upload/" AND cs.Name="MRIUploadIncomingPath";
 -- ALTER files_qcstatus table to add a Selected column
 ALTER TABLE files_qcstatus ADD COLUMN Selected VARCHAR(255);
