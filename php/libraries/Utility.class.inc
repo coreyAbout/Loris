@@ -289,7 +289,6 @@ class Utility
      * Study site if a site that actively collects study data
      *
      * @params bool        return only study sites, or not
-     * @throws PEAR_Error
      * @return array       an associative array("center ID" => "site name")
      * @access public
      * @static
@@ -308,9 +307,6 @@ class Utility
                 $query .= "WHERE Name != 'DCC'";
         }
         $DB->select($query, $result);
-        if(PEAR::isError($result)) {
-            return PEAR::raiseError("DB Error: ".$result->getMessage());
-        }
         // fix the array
         $list = array();
         foreach ($result as $row) {
