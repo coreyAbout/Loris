@@ -126,6 +126,8 @@ class NDB_Menu_Filter_Candidate_List extends NDB_Menu_Filter
             LEFT JOIN participant_status ps ON (ps.CandID=c.CandID)
             LEFT JOIN participant_status_options pso
                 ON (ps.participant_status=pso.ID)
+            LEFT JOIN Project p ON (c.ProjectID=p.ProjectID)
+            LEFT JOIN subproject sp ON (s.SubprojectID=sp.SubprojectID)
             WHERE c.Active = 'Y'";
 
         $user =& User::singleton();
