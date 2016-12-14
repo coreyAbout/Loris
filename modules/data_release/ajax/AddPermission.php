@@ -56,8 +56,8 @@ if ($_POST['action'] == 'addpermission') {
 } elseif ($_POST['action'] == 'managepermissions') {
     foreach ($_POST as $key => $value) {
         if (strpos($key, 'permissions') !== false) {
-            $user = str_replace("permissions_", "", $key);
-            $userid = $DB->pselectOne("SELECT ID FROM users WHERE UserID=:userid", array('userid' => $user));
+            $user = str_replace("_" , "%", str_replace("permissions_", "", $key));
+            $userid = $DB->pselectOne("SELECT ID FROM users WHERE UserID LIKE :userid", array('userid' => $user));
             foreach ($value as $k => $v) {
                 $data_release_ids = $DB->pselect("SELECT id FROM data_release WHERE version=:version", array('version' => $v));
                 foreach ($data_release_ids as $data_release_id) {
