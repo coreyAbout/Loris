@@ -46,20 +46,13 @@ class NDB_Form_next_stage extends NDB_Form
 
         // create a new battery object && new battery
         $battery = new NDB_BVL_Battery;
-        $candidate =& Candidate::singleton($timePoint->getCandID() );
-
-        $firstVisit = false;
-        $vLabel = $candidate->getFirstVisit();//get first visit for candidate
-        if($vLabel ==  $timePoint->getVisitLabel()){
-            $firstVisit = true; //if current visit label is same as visit label returned must be first visit
-        }
 
          // select a specific time point (sessionID) for the battery
         $battery->selectBattery($timePoint->getData('SessionID'));
 
         // add instruments to the time point (lower case stage)
         $battery->createBattery($timePoint->getSubprojectID(), $newStage, $timePoint->getVisitLabel(),
-                                $timePoint->getCenterID(), $firstVisit);
+                                $timePoint->getCenterID());
 
         //------------------------------------------------------------
 
