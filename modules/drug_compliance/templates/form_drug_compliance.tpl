@@ -79,6 +79,16 @@
         </div>
         <br>
         <div class="row">
+                <label class="col-sm-2">{$form.dosage.label}</label>
+                <div class="col-sm-8">
+                    {$form.dosage.html}
+                        {if $form.errors.dosage}
+                            <span class='error'>{$form.errors.dosage}</span>
+                        {/if}
+                </div>
+        </div>
+        <br>
+        <div class="row">
                 <label class="col-sm-2">{$form.comments_group.label}</label>
                 <div class="col-sm-8">
                     {$form.comments_group.html}
@@ -92,6 +102,13 @@
                 <label class="col-sm-2">{$form.naproxen_treatment_duration.label}</label>
                 <div class="col-sm-8">
                     {$naproxen_treatment_duration}
+                </div>
+        </div>
+        <br>
+        <div class="row">
+                <label class="col-sm-2">{$form.probucol_phase_1_trial_a_treatment_duration.label}</label>
+                <div class="col-sm-8">
+                    {$probucol_phase_1_trial_a_treatment_duration}
                 </div>
         </div>
 
@@ -118,6 +135,7 @@
                     <td><b>Compliance</b></td>
                     <td><b>Behavioral Compliance</b></td>
                     <td><b>Visit Label</b></td>
+                    <td><b>Dosage</b></td>
                     <td><b>Data Entry Staff</b></td>
                 </tr>
             </thead>
@@ -148,6 +166,7 @@
                     <td><b>Compliance</b></td>
                     <td><b>Behavioral Compliance</b></td>
                     <td><b>Visit Label</b></td>
+                    <td><b>Dosage</b></td>
                     <td><b>Data Entry Staff</b></td>
                 </tr>
             </thead>
