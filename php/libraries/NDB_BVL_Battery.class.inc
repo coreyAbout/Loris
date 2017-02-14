@@ -265,12 +265,45 @@ class NDB_BVL_Battery
         $error = $this->_assertBatterySelected();
 
         // craft the select query
-        $query   = "SELECT f.Test_name FROM flag f JOIN session s
+        $query = "SELECT f.Test_name FROM ";
+        if(!is_null($stage)) $query .= "test_battery AS b, ";
+        $query .= " flag f JOIN session s
             ON (s.ID=f.SessionID)
             JOIN candidate c ON (c.CandID=s.CandID)
             WHERE f.SessionID=:SID AND s.Active='Y' AND c.Active='Y'
                AND f.CommentID NOT LIKE 'DDE%'";
         $qparams = array('SID' => $this->sessionID);
+
+	$timepoint = '';
+	if (strlen($visit_label) > 2 && substr_compare($visit_label, 'lego_phantom', 0, 12) != 0 && substr_compare($visit_label, 'living_phantom', 0, 14) != 0) {
+		$timepoint = substr($visit_label, 5, 2);
+		$visit_label = substr($visit_label, 3, 2);
+	}
+        //'scanner' phantom
+        if (substr_compare($visit_label, 'lego_phantom', 0, 12) == 0 || substr_compare($visit_label, 'living_phantom', 0, 14) == 0) {
+                $timepoint = '';
+                $visit_label = 'phantom';
+        }
+        if(!is_null($stage)) {
+            if(!is_null($visit_label)) {
+                $query .= " AND b.Visit_label = '$visit_label'";
+            } else {
+                $query .= " OR b.Visit_label IS NULL";
+            }
+        }
+	if(($timepoint == '06' || $timepoint == '18') && $visit_label != 'TL') {
+        	$query .= " AND b.Timepoint = 'other'";
+	}
+        if(($timepoint == '01' || $timepoint == '02' || $timepoint == '03') && ($visit_label == 'WA' || $visit_label == 'MA')) {
+                $query .= " AND b.Timepoint = '$timepoint'";
+        }
+        if(!is_null($stage) && !is_null($stage)) {
+            $query .= " AND t.Test_name=b.Test_name AND b.Stage='$stage'";
+            if(!is_null($SubprojectID)) {
+                $query .= " AND (b.SubprojectID IS NULL OR b.SubprojectID='$SubprojectID')";
+            }
+        }
+
         $rows    = $DB->pselect($query, $qparams);
 
         // repackage the array
