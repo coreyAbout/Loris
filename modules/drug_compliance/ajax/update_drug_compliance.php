@@ -31,13 +31,10 @@ if (get_magic_quotes_gpc()) {
 
 // create user object
 $user =& User::singleton();
-if (Utility::isErrorX($user)) {
-    return PEAR::raiseError("User Error: ".$user->getMessage());
-}
 
 if ($user->hasPermission('data_entry')) { //if user has data entry permission
     //only allow certain fields to be updated
-    if ($field == 'drug_issued_date' || ($field == 'pills_issued' && is_numeric($value)) || $field == 'drug_returned_date' || ($field == 'pills_returned' && is_numeric($value)) || $field == 'visit_label') {
+    if ($field == 'drug_issued_date' || ($field == 'pills_issued' && is_numeric($value)) || $field == 'drug_returned_date' || ($field == 'pills_returned' && is_numeric($value)) || $field == 'visit_label' || $field == 'dosage') {
         if (strpos($value, 'PRE') == false) {
             $DB->update('drug_compliance', array($field=>$value), array('ID'=>$id));
             $candid = $DB->pselectOne("SELECT candid from drug_compliance where ID=:dcid", array('dcid'=>$id));
