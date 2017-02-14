@@ -31,9 +31,6 @@ class NDB_Form_drug_compliance extends NDB_Form
     {
         // create user object
         $user =& User::singleton();
-        if (Utility::isErrorX($user)) {
-            return PEAR::raiseError("User Error: ".$user->getMessage());
-        }
 
         // check that the $candID is passed b/c the profile needs to be opened
         if ($this->identifier != $_REQUEST['candID']) {
@@ -162,7 +159,6 @@ if ($drug == "probucol") {
 $value = $value * 2;
 }
                         $expected = $expected - $value;
-
                     }
                     if ($expected != NULL && $expected != 0) {
                         $update['behavioral_compliance_evaluation'] = ($taken / $expected) * 100;
@@ -178,7 +174,7 @@ $value = $value * 2;
             $success = $DB->update("drug_compliance", $update, array('ID'=>$DCID));
         }
 
-        if (isset($success) && Utility::isErrorX($success)) {
+        if (isset($success) && !$success) {
             return PEAR::raiseError(
                 "NDB_Form_drug_compliance::calculateSpecific: ".$success->getMessage()
             );
@@ -360,11 +356,12 @@ if (is_object($intervalPOIP1TA) && (!empty($POITIcommID) || !empty($POIMA03compl
         // save the values by inserting
         $oldIDs = $DB->pselect("SELECT ID from drug_compliance where candid=:cid", array('cid'=>$this->identifier));
         $success = $DB->insert("drug_compliance", $values);
-        $newIDs = $DB->pselect("SELECT ID from drug_compliance where candid=:cid", array('cid'=>$this->identifier));
-        $diff = array_diff_assoc($newIDs, $oldIDs);
-        $newID = $diff[key($diff)]['ID'];
+//        $newIDs = $DB->pselect("SELECT ID from drug_compliance where candid=:cid", array('cid'=>$this->identifier));
+//        $diff = array_diff_assoc($newIDs, $oldIDs);
+//        $newID = $diff[key($diff)]['ID'];
+$newID = $DB->pselectOne("SELECT ID from drug_compliance where candid=:cid order by ID desc", array('cid'=>$this->identifier));
 
-        if (Utility::isErrorX($success)) {
+        if (isset($success) && !$success) {
             return PEAR::raiseError(
                 "NDB_Form_drug_compliance::_process: ".$success->getMessage()
             );
@@ -551,6 +548,14 @@ if (is_object($intervalPOIP1TA) && (!empty($POITIcommID) || !empty($POIMA03compl
             $visit_labels
         );
 
+        //probucol dosage
+        $dosage = array(null=>null,'300mg'=>"300mg",'600mg'=>"600mg",'900mg'=>"900mg",'1200mg'=>"1200mg",'not_answered'=>"Not Answered");
+        $this->addSelect(
+            'dosage',
+            "Dosage",
+            $dosage
+        );
+
         $this->addTextAreaGroup(
             'comments',
             'Comments:'//,
@@ -585,10 +590,10 @@ $this->tpl_data['probucol_phase_1_trial_a_treatment_duration'] = $probucol_phase
                 array('candid'=>$this->identifier)
                 );
 
-        $result = $DB->pselect("SELECT ID, drug_issued_date, pills_issued, drug_returned_date, pills_returned, compliance_evaluation, behavioral_compliance_evaluation, visit_label, entry_staff FROM drug_compliance WHERE CandID=:cid AND drug=:drug ORDER BY drug_issued_date asc", array('cid'=>$this->identifier,'drug'=>'naproxen'));
+        $result = $DB->pselect("SELECT ID, drug_issued_date, pills_issued, drug_returned_date, pills_returned, compliance_evaluation, behavioral_compliance_evaluation, visit_label, dosage, entry_staff FROM drug_compliance WHERE CandID=:cid AND drug=:drug ORDER BY drug_issued_date asc", array('cid'=>$this->identifier,'drug'=>'naproxen'));
         $this->tpl_data['history_list_naproxen'] = $result;
 
-        $result = $DB->pselect("SELECT ID, drug_issued_date, pills_issued, drug_returned_date, pills_returned, compliance_evaluation, behavioral_compliance_evaluation, visit_label, entry_staff FROM drug_compliance WHERE CandID=:cid AND drug=:drug ORDER BY drug_issued_date asc", array('cid'=>$this->identifier,'drug'=>'probucol'));
+        $result = $DB->pselect("SELECT ID, drug_issued_date, pills_issued, drug_returned_date, pills_returned, compliance_evaluation, behavioral_compliance_evaluation, visit_label, dosage, entry_staff FROM drug_compliance WHERE CandID=:cid AND drug=:drug ORDER BY drug_issued_date asc", array('cid'=>$this->identifier,'drug'=>'probucol'));
         $this->tpl_data['history_list_probucol'] = $result;
 
     }
