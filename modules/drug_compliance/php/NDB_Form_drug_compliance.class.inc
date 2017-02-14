@@ -81,11 +81,11 @@ class NDB_Form_drug_compliance extends NDB_Form
             $datetime1 = new DateTime($drug_issued_date);
             $datetime2 = new DateTime($drug_returned_date);
             $interval = $datetime1->diff($datetime2,true);
-$drug = $DB->pselectOne("SELECT drug from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
+            $drug = $DB->pselectOne("SELECT drug from drug_compliance where ID=:dcid",array('dcid'=>$DCID));
             $expected = $interval->days * 2; 
-if ($drug == "probucol") {
-            $expected = $expected * 2; 
-}
+            if ($drug == "probucol") {
+                $expected = $expected * 2; 
+            }
             $taken = $pills_issued - $pills_returned;
             if ($expected != NULL && $expected != 0) {
                 $update['compliance_evaluation'] = ($taken / $expected) * 100;
@@ -155,9 +155,9 @@ if ($drug == "probucol") {
 
                     }
                     foreach ($interruptions as $key => $value) {
-if ($drug == "probucol") {
-$value = $value * 2;
-}
+                        if ($drug == "probucol") {
+                            $value = $value * 2;
+                        }
                         $expected = $expected - $value;
                     }
                     if ($expected != NULL && $expected != 0) {
@@ -212,12 +212,12 @@ $value = $value * 2;
             }
         }
 
-$intervalPOIP1TA = null;
-$POITIcommID = $DB->pselectOne("SELECT CommentID FROM flag join session on (flag.sessionid=session.id) AND candid=$candid AND test_name='treatment_interruption' AND visit_label='POITI00'",array());
+        $intervalPOIP1TA = null;
+        $POITIcommID = $DB->pselectOne("SELECT CommentID FROM flag join session on (flag.sessionid=session.id) AND candid=$candid AND test_name='treatment_interruption' AND visit_label='POITI00'",array());
 
-// If POIMA03 exists
-$POIMA03completed = $DB->pselectOne("SELECT drug_returned_date from drug_compliance where candid=$candid and visit_label='POIMA03' and drug_returned_date!='0000-00-00' and drug_returned_date is not null and drug_returned_date!=''",array());
-if (!empty($POIMA03completed)) {
+        // If POIMA03 exists
+        $POIMA03completed = $DB->pselectOne("SELECT drug_returned_date from drug_compliance where candid=$candid and visit_label='POIMA03' and drug_returned_date!='0000-00-00' and drug_returned_date is not null and drug_returned_date!=''",array());
+        if (!empty($POIMA03completed)) {
             $startDate = $DB->pselectOne("SELECT drug_issued_date from drug_compliance where candid=$candid and visit_label='POIWA01' and drug_issued_date!='0000-00-00' and drug_issued_date is not null and drug_issued_date!='' order by drug_issued_date asc",array());
             $lastDate = $POIMA03completed;
                 if (!empty($lastDate) && !empty($startDate)) {
@@ -244,9 +244,9 @@ if (!empty($POIMA03completed)) {
 
 
         $ID = $DB->pselectOne("SELECT ID FROM treatment_duration WHERE Candid=$candid AND Trial='Naproxen'",array());
-$IDPOIP1TA = $DB->pselectOne("SELECT ID FROM treatment_duration WHERE Candid=$candid AND Trial='Probucol_Phase_1_Trial_A'",array());
+        $IDPOIP1TA = $DB->pselectOne("SELECT ID FROM treatment_duration WHERE Candid=$candid AND Trial='Probucol_Phase_1_Trial_A'",array());
 
-// Naproxen Treatment Duration
+        // Naproxen Treatment Duration
         if (is_object($interval) && (!empty($NAPTIcommID) || !empty($NAPFU24completed))) {
             // Update treatment_duration
             if (!empty($ID)) {
@@ -268,8 +268,8 @@ $IDPOIP1TA = $DB->pselectOne("SELECT ID FROM treatment_duration WHERE Candid=$ca
             }
         }
 
-// Probucol Phase 1 Trial A Treatment Duration
-if (is_object($intervalPOIP1TA) && (!empty($POITIcommID) || !empty($POIMA03completed))) {
+        // Probucol Phase 1 Trial A Treatment Duration
+        if (is_object($intervalPOIP1TA) && (!empty($POITIcommID) || !empty($POIMA03completed))) {
             // Update treatment_duration
             if (!empty($IDPOIP1TA)) {
                 if (!empty($POITIcommID) || !empty($POIMA03completed)) {
@@ -345,7 +345,7 @@ if (is_object($intervalPOIP1TA) && (!empty($POITIcommID) || !empty($POIMA03compl
             $values['entry_staff'] = $id;
         }
 
-//manually created the date/not_answered elements / different than LorisForm so no need to parse the date
+        //manually created the date/not_answered elements / different than LorisForm so no need to parse the date
         if ($values['drug_issued_date_status'] == 'not_answered' ) {
             $values['drug_issued_date'] = null;
         }
@@ -356,10 +356,7 @@ if (is_object($intervalPOIP1TA) && (!empty($POITIcommID) || !empty($POIMA03compl
         // save the values by inserting
         $oldIDs = $DB->pselect("SELECT ID from drug_compliance where candid=:cid", array('cid'=>$this->identifier));
         $success = $DB->insert("drug_compliance", $values);
-//        $newIDs = $DB->pselect("SELECT ID from drug_compliance where candid=:cid", array('cid'=>$this->identifier));
-//        $diff = array_diff_assoc($newIDs, $oldIDs);
-//        $newID = $diff[key($diff)]['ID'];
-$newID = $DB->pselectOne("SELECT ID from drug_compliance where candid=:cid order by ID desc", array('cid'=>$this->identifier));
+        $newID = $DB->pselectOne("SELECT ID from drug_compliance where candid=:cid order by ID desc", array('cid'=>$this->identifier));
 
         if (isset($success) && !$success) {
             return PEAR::raiseError(
@@ -569,12 +566,12 @@ $newID = $DB->pselectOne("SELECT ID from drug_compliance where candid=:cid order
         $this->addScoreColumn('naproxen_treatment_duration', 'Naproxen Treatment Duration');
         $this->tpl_data['naproxen_treatment_duration'] = $naproxen_treatment_duration;
 
-$probucol_phase_1_trial_a_treatment_duration = $DB->pselectOne(
+        $probucol_phase_1_trial_a_treatment_duration = $DB->pselectOne(
             'SELECT treatment_duration FROM treatment_duration where Trial = "Probucol_Phase_1_Trial_A" AND CandID = :candID',
             array('candID'=>$this->identifier)
         );
-$this->addScoreColumn('probucol_phase_1_trial_a_treatment_duration', 'Probucol Phase 1 Trial A Treatment Duration');
-$this->tpl_data['probucol_phase_1_trial_a_treatment_duration'] = $probucol_phase_1_trial_a_treatment_duration;
+        $this->addScoreColumn('probucol_phase_1_trial_a_treatment_duration', 'Probucol Phase 1 Trial A Treatment Duration');
+        $this->tpl_data['probucol_phase_1_trial_a_treatment_duration'] = $probucol_phase_1_trial_a_treatment_duration;
 
         $this->drug_compliance_details();
 
