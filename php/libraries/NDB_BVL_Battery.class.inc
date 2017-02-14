@@ -445,14 +445,25 @@ class NDB_BVL_Battery
                     AND b.Active='Y'
                     AND (SubprojectID=:SubprojID OR SubprojectID IS NULL)";
 
+        $timepoint = '';
+        if (strlen($visit_label) > 2 && substr_compare($visit_label, 'lego_phantom', 0, 12) != 0 && substr_compare($visit_label, 'living_phantom', 0, 14) != 0) {
+            $timepoint = substr($visit_label, 5, 2);
+            $visit_label = substr($visit_label, 3, 2);
+	}
+        //'scanner' phantom
+        if (substr_compare($visit_label, 'lego_phantom', 0, 12) == 0 || substr_compare($visit_label, 'living_phantom', 0, 14) == 0) {
+            $timepoint = '';
+            $visit_label = 'phantom';
+        }
+
         if (!is_null($visit_label)) {
             $VisitBatteryExists = $DB->pselectOne(
                 "SELECT COUNT(*)
                     FROM test_battery
-                    WHERE Visit_label =:VL AND SubprojectID=:SubID",
+                    WHERE Visit_label =:VL", // AND SubprojectID=:SubID",
                 array(
                  'VL'    => $visit_label,
-                 'SubID' => $SubprojectID,
+                 //'SubID' => $SubprojectID,
                 )
             );
             if ($VisitBatteryExists > 0) {
@@ -466,7 +477,12 @@ class NDB_BVL_Battery
             $query         .= " AND b.Stage=:stg";
             $qparams['stg'] = $stage;
         }
-
+        if(($timepoint == '06' || $timepoint == '18') && $visit_label != 'TL') {
+                $query .= " AND b.Timepoint = 'other'";
+        }
+        if(($timepoint == '01' || $timepoint == '02' || $timepoint == '03') && ($visit_label == 'WA' || $visit_label == 'MA')) {
+                $query .= " AND b.Timepoint = '$timepoint'";
+        }
         if (!is_null($center_ID)) {
             // return all instruments that match this center or all centers (null)
             $query         .= " AND (b.CenterID=:CID OR b.CenterID IS NULL)";
