@@ -362,3 +362,7 @@ REPLACE INTO help (parentID, hash, topic, content, updated) VALUES(IFNULL((SELEC
 REPLACE INTO help (parentID, hash, topic, content, updated) VALUES(IFNULL((SELECT h.helpID FROM help as h WHERE h.topic LIKE 'Configuration%'),-1), md5('subproject'), 'Subproject', 'You then click on &quot;New SubprojectID&quot;, fill in the fields on the right, click save.  Immediately refresh the page to view your new subproject.  Clicking save more than once will register a duplicate subproject ID.  If you create an extra ID, you have to delete it from the database manually with an sql command.\n\nDefine all projectID-subprojectID relationships by populating the project_rel table, e.g.\n\nINSERT INTO `project_rel` VALUES (1,1),(1,2),(2,3);', '2016-04-01 00:00:00');
 UPDATE Config SET Value = LEFT(Value , LENGTH(Value)-1) WHERE ConfigID=(SELECT ID FROM ConfigSettings WHERE Name='url') AND RIGHT(Value,1) = "/";
 UPDATE LorisMenu SET Link = RIGHT(Link, LENGTH(Link)-1) WHERE LEFT(Link,1) = "/";
+
+ALTER TABLE test_names ADD COLUMN IsDirectEntry BOOLEAN;
+
+
