@@ -233,6 +233,7 @@ UPDATE files_qcstatus AS fq, parameter_file AS pf, parameter_type AS pt SET fq.S
 -- Remove all Selected values from parameter_file
 -- DELETE FROM parameter_file WHERE ParameterTypeID=(SELECT ParameterTypeID FROM parameter_type WHERE Name='Selected');
 -- DELETE FROM parameter_type WHERE Name="Selected";
+ALTER TABLE test_battery ADD COLUMN firstVisit enum('Y','N') DEFAULT 'N';
 ALTER TABLE test_battery ADD instr_order tinyint after firstVisit;
 ALTER TABLE test_subgroups ADD group_order tinyint after Subgroup_name;
 -- Update the Dataquery Menu Link
