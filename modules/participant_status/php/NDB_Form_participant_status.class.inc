@@ -32,9 +32,6 @@ class NDB_Form_participant_status extends NDB_Form
     {
         // create user object
         $user =& User::singleton();
-        if (Utility::isErrorX($user)) {
-            return PEAR::raiseError("User Error: ".$user->getMessage());
-        }
 
         // check that the $candID is passed b/c the profile needs to be opened
         if ($this->identifier != $_REQUEST['candID']) {
@@ -194,11 +191,6 @@ class NDB_Form_participant_status extends NDB_Form
                 $DNA_values['PSCID'] = $DNA_PSCID;
                 $success = $DB->insert("genetics", $DNA_values);
             }
-            if (Utility::isErrorX($success)) {
-                return PEAR::raiseError(
-                    "NDB_Form_participant_status::_process: ".$success->getMessage()
-                );
-            }
         } else {
             //unset only_DNA flag
             unset($values['only_DNA']);
@@ -218,18 +210,8 @@ class NDB_Form_participant_status extends NDB_Form
                 //insert it
                 $success = $DB->insert("participant_status", $values);
             }
-            if (Utility::isErrorX($success)) {
-                return PEAR::raiseError(
-                    "NDB_Form_participant_status::_process: ".$success->getMessage()
-                );
-            }
             // update participant_status_history
             $success = $DB->insert("participant_status_history", $values);
-            if (Utility::isErrorX($success)) {
-                return PEAR::raiseError(
-                    "NDB_Form_participant_status::_process: ".$success->getMessage()
-                );
-            }
         }
 
         $this->tpl_data['success'] = true;
