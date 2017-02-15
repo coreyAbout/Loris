@@ -366,3 +366,6 @@ UPDATE LorisMenu SET Link = RIGHT(Link, LENGTH(Link)-1) WHERE LEFT(Link,1) = "/"
 ALTER TABLE test_names ADD COLUMN IsDirectEntry BOOLEAN;
 
 
+alter table data_release_permissions engine='InnoDB';
+
+
