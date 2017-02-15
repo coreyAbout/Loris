@@ -75,6 +75,8 @@ update LorisMenu SET Link='/server_process_manager/' WHERE Link="main.php?test_n
 INSERT INTO ConfigSettings (Name, Description, Visible, AllowMultiple, Label, OrderNumber) VALUES ('APIKeys', 'Specify any API keys required for LORIS', 1, 0, 'API Keys', 10);
 INSERT INTO ConfigSettings (Name, Description, Visible, AllowMultiple, DataType, Parent, Label, OrderNumber) SELECT 'JWTKey', 'Secret key for signing JWT tokens on this server. This should be unique and never shared with anyone. ', 1, 0, 'text', ID, 'JWT Secret Key', 9 FROM ConfigSettings WHERE Name="APIKeys";
 
+update LorisMenu SET Link='/acknowledgements' WHERE Link="main.php?test_name=acknowledgements";
+
 INSERT INTO Config (ConfigID, Value) SELECT ID, "S3cret" FROM ConfigSettings WHERE Name="JWTKey";
 UPDATE LorisMenuPermissions SET PermID = (SELECT permID FROM permissions WHERE code = 'conflict_resolver') 
   WHERE PermID = (SELECT permID FROM permissions where code = 'data_entry') 
