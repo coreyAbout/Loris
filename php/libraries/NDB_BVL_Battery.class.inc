@@ -266,7 +266,7 @@ class NDB_BVL_Battery
 
         // craft the select query
         $query = "SELECT f.Test_name FROM ";
-        if(!is_null($stage)) $query .= "test_battery AS b, ";
+        if(!is_null($stage)) $query .= "test_battery AS b, test_names as t, ";
         $query .= " flag f JOIN session s
             ON (s.ID=f.SessionID)
             JOIN candidate c ON (c.CandID=s.CandID)
