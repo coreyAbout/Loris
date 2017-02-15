@@ -115,18 +115,18 @@ class State
         if (isset($_REQUEST['test_name'])
             && $_REQUEST['test_name'] == 'timepoint_list'
         ) {
-            return 'main.php?test_name=candidate_list';
+            return "{$baseurl}/candidate_list/";
         } elseif (!empty($_REQUEST['candID'])
             && in_array($_REQUEST['test_name'], $timepointSubMenus)
         ) {
-            return 'main.php?test_name=timepoint_list&candID='.$_REQUEST['candID'];
+            return "{$baseurl}/timepoint_list/?candID=" . $_REQUEST['candID'];
         } elseif ($caller->type == 'instrument'
             || (isset($_REQUEST['test_name'])
             && $_REQUEST['test_name'] == 'next_stage')
         ) {
             if (isset($_REQUEST['candID']) && isset($_REQUEST['sessionID'])) {
-                return 'main.php?test_name=instrument_list&candID='
-                    .$_REQUEST['candID'].'&sessionID='.$_REQUEST['sessionID'];
+                return "{$baseurl}/instrument_list/?candID="
+                    . $_REQUEST['candID'] . "&sessionID=" . $_REQUEST['sessionID'];
             }
         }
 
