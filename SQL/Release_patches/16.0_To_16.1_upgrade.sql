@@ -1,3 +1,5 @@
+ALTER TABLE session CONVERT TO CHARACTER SET utf8;
+ALTER TABLE test_names CONVERT TO CHARACTER SET utf8;
 
 -- Add 'media' tab to the menu under Clinical section
 DELETE FROM LorisMenu WHERE Label='Media';
