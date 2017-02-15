@@ -6,12 +6,12 @@
 <button class="btn btn-primary" onclick="location.href='{$baseurl}/candidate_parameters/?candID={$candID}&identifier={$candID}'">Candidate Info</button>
 {/if}
 {if $isDataEntryPerson}
-<button class="btn btn-primary" onclick="location.href='main.php?test_name=participant_status&candID={$candID}&identifier={$candID}'">Participant Status</button>
+<button class="btn btn-primary" onclick="location.href='{$baseurl}/participant_status/?candID={$candID}&identifier={$candID}'">Participant Status</button>
 {else}
 Participant Status
 {/if}
 {if $isDataEntryPerson}
-<button class="btn btn-primary" onclick="location.href='main.php?test_name=family_information&candID={$candID}&identifier={$candID}'">Family Information</button>
+<button class="btn btn-primary" onclick="location.href='{$baseurl}/family_information/?candID={$candID}&identifier={$candID}'">Family Information</button>
 {else}
 Family Information
 {/if}
@@ -21,7 +21,7 @@ Family Information
 Drug Compliance
 {/if}
 {if $isDataEntryPerson}
-<button class="btn btn-primary" onclick="location.href='main.php?test_name=family_history&candID={$candID}&identifier={$candID}'">Family History</button>
+<button class="btn btn-primary" onclick="location.href='{$baseurl}/family_history/?candID={$candID}&identifier={$candID}'">Family History</button>
 {else}
 Family History
 {/if}
