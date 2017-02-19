@@ -33,7 +33,7 @@ INSERT IGNORE INTO permissions (`permID`, `code`, `description`, `categoryID`) V
     @uploadPermissionID, 'media_write', 'Media files: Uploading/Downloading/Editing', 2
 );
 INSERT IGNORE INTO user_perm_rel (`userID`, `permID`) VALUES (
-  (SELECT ID FROM users WHERE UserID = 'admin'), (SELECT permID FROM permissions WHERE code = 'media_write')
+  (SELECT ID FROM users WHERE UserID = 'justin'), (SELECT permID FROM permissions WHERE code = 'media_write')
 );
 
 -- Browse Media Files
@@ -42,7 +42,7 @@ INSERT IGNORE INTO permissions (`permID`, `code`, `description`, `categoryID`) V
     @browsePermissionID, 'media_read', 'Media files: Browsing ', 2
 );
 INSERT IGNORE INTO user_perm_rel (`userID`, `permID`) VALUES (
-  (SELECT ID FROM users WHERE UserID = 'admin'), (SELECT permID FROM permissions WHERE code = 'media_read')
+  (SELECT ID FROM users WHERE UserID = 'justin'), (SELECT permID FROM permissions WHERE code = 'media_read')
 );
 
 
