@@ -29,9 +29,6 @@ class NDB_Form_family_information extends NDB_Form
     {
         // create user object
         $user =& User::singleton();
-        if (Utility::isErrorX($user)) {
-            return PEAR::raiseError("User Error: ".$user->getMessage());
-        }
 
         // check that the $candID is passed b/c the profile needs to be opened
         if ($this->identifier != $_REQUEST['candID']) {
@@ -109,13 +106,6 @@ class NDB_Form_family_information extends NDB_Form
         //insert it
         $success = $DB->insert("family_information", $values);
 
-        if (Utility::isErrorX($success)) {
-            return PEAR::raiseError(
-                "NDB_Form_family_information::_process: ".$success->getMessage()
-            );
-        }
-
-
         // automatically populate/save related participant's information
         if ($values['related_participant_status'] == 'parent') {
             $values['related_participant_status'] = 'child';
@@ -136,12 +126,6 @@ class NDB_Form_family_information extends NDB_Form
         );
 
         $success = $DB->insert("family_information", $values);
-
-        if (Utility::isErrorX($success)) {
-            return PEAR::raiseError(
-                "NDB_Form_family_information::_process: ".$success->getMessage()
-            );
-        }
 
         $this->tpl_data['success'] = true;
         $this->form->freeze();
