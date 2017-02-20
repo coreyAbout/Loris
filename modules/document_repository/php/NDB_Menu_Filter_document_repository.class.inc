@@ -351,10 +351,10 @@ class NDB_Menu_Filter_Document_Repository extends NDB_Menu_Filter
         $deps    = parent::getCSSDependencies();
         return array_merge(
             $deps,
-            [
+            array(
                 $baseURL . "/css/loris-jquery/jquery-ui-1.10.4.custom.min.css",
                 $baseURL . "/document_repository/css/document_repository.css"
-            ]
+            )
         );
     }
 
