@@ -116,7 +116,7 @@
         {if not $success}
             <input class="btn btn-sm btn-primary col-sm-offset-2" name="fire_away" value="Save" type="submit" />
         {/if}
-            <input class="btn btn-sm btn-primary" onclick="location.href='main.php?test_name=timepoint_list&candID={$candID}'" value="Return to profile" type="button" />
+            <input class="btn btn-sm btn-primary" onclick="location.href='{$baseurl}/test_name=timepoint_list/?candID={$candID}'" value="Return to profile" type="button" />
 
     </div>
     <br>
