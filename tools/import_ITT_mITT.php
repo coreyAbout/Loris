@@ -89,8 +89,19 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 			$success = $DB->update($table, $setData, $where);
 			echo "Updated!\n";
 		} else {
-			echo "Error updating.\n";
-		}			
+			echo "Error updating Participant Status.\n";
+		}
+
+                $currentData = $db->pselectRow("SELECT * FROM participant_status WHERE CandID =:cid", array("cid"=>$candID));
+                $currentData['naproxen_ITT'] = $ITT;
+                $currentData['naproxen_mITT'] = $mITT;
+
+                if (count($currentData) <= 3) {
+                        $success = $DB->insert($table_history, $currentData);
+                        echo "Updated!\n";
+                } else {
+                        echo "Error updating Participant Status History.\n";
+                }
 
 	}
 }
