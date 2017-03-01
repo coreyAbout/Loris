@@ -154,6 +154,26 @@
                         {/if}
                 </div>
         </div>
+        <br>
+        <div class="row">
+                <label class="col-sm-2">{$form.naproxen_ITT.label}</label>
+                <div class="col-sm-8">
+                    {$form.naproxen_ITT.html}
+                        {if $form.errors.naproxen_ITT}
+                            <span class='error'>{$form.errors.naproxen_ITT}</span>
+                        {/if}
+                </div>
+        </div>
+        <div class="row">
+                <label class="col-sm-2">{$form.naproxen_mITT.label}</label>
+                <div class="col-sm-8">
+                    {$form.naproxen_mITT.html}
+                        {if $form.errors.naproxen_mITT}
+                            <span class='error'>{$form.errors.naproxen_mITT}</span>
+                        {/if}
+                </div>
+        </div>
+
     </div>
     <div class="panel-heading">
         Probucol Participant Status
