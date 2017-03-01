@@ -63,7 +63,6 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                                         echo "ERROR parsing PSCID!";
                                         die();
                                 }
-                                strlen
 				echo "-------count: " . $counter ."\n";
 				echo "-------PSCID: " . $PSCID . "\n";
 			}
