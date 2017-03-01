@@ -1,6 +1,6 @@
 <?php
 require_once 'NDB_Menu_Filter.class.inc';
-require_once '../modules/participant_status/php/NDB_Form_participant_status.class.inc';
+require_once '../project/modules/participant_status/php/NDB_Form_participant_status.class.inc';
 /**
 * The candidate list menu
 *
