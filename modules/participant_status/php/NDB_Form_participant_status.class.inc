@@ -378,6 +378,19 @@ class NDB_Form_participant_status extends NDB_Form
             $this->indent . 'If reason specified for withdrawal, please explain:',
             array(null => null) + $notAns4
         );
+
+        $this->addSelect(
+            'naproxen_ITT',
+            "ITT",
+            $eligibilityYesNo
+        );
+
+        $this->addSelect(
+            'naproxen_mITT',
+            "mITT",
+            $eligibilityYesNo
+        );
+
         $this->addSelect(
             'probucol_withdrawal_reasons',
             "If Probucol Status is Withdrawn, please specify:",
