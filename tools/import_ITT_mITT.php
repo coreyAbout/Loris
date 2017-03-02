@@ -71,8 +71,8 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 				$ITT = $thisField[$key];
 			}
 
-			if ($key == 'mITT') {
-				$mITT = $thisField[$key];
+			if (trim($key) == 'mITT') {
+				$mITT = trim($thisField[$key]);
 			}
 
                 }
@@ -80,13 +80,19 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 		$config =& NDB_Config::singleton();
 		$db =& Database::singleton();
 
-                $setData = array('naproxen_ITT'=>$ITT, 'naproxen_mITT'=>$mITT);
+                $today = date("Y-m-d");
+                $setData = array('naproxen_ITT'=>$ITT, 'naproxen_mITT'=>$mITT, 'entry_staff'=>"justin", 'data_changed_date'=>$today);
 		$candID = $db->pselectOne("SELECT CandID from candidate where PSCID =:pid", array("pid"=>$PSCID));
 		$where = array('CandID'=>$candID);
 
 		if (!empty($candID)) {
-			$success = $DB->update($table, $setData, $where);
-			echo "Updated!\n";
+                        $exists = $db->pselectOne("SELECT 'X' FROM participant_status WHERE CandID =:cid", array("cid"=>$candID));
+			if (!empty($exists)) {
+	 			$success = $db->update($table, $setData, $where);
+				echo "Updated!\n";
+			} else {
+				echo "Missing CandID $candID in Participant Status table!\n";
+			}
 		} else {
 			echo "Error updating Participant Status.\n";
 		}
@@ -94,14 +100,16 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
                 $currentData = $db->pselectRow("SELECT * FROM participant_status WHERE CandID =:cid", array("cid"=>$candID));
                 $currentData['naproxen_ITT'] = $ITT;
                 $currentData['naproxen_mITT'] = $mITT;
+                $currentData['entry_staff'] = "justin";
+                $currentData['ID'] = "";
+                $currentData['data_changed_date'] = $today;
 
-                if (count($currentData) <= 3) {
-                        $success = $DB->insert($table_history, $currentData);
+                if (count($currentData) > 2) {
+                        $success = $db->insert($table_history, $currentData);
                         echo "Updated!\n";
                 } else {
                         echo "Error updating Participant Status History.\n";
                 }
-
 	}
 }
 
