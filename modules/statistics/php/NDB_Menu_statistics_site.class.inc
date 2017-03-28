@@ -26,7 +26,7 @@ class NDB_Menu_statistics_site extends NDB_Menu
 
     function _setInstrumentName()
     {
-        $this->instruments = Utility::getAllInstruments();
+        $this->instruments = Utility::getAllInstruments('genetics');
     }
 
     // Helper function to get a friendlier version of the instrument name.
