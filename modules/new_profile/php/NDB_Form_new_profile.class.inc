@@ -65,8 +65,8 @@ class NDB_Form_new_profile extends NDB_Form
                              'language'        => 'en',
                              'format'          => 'YMd',
                              'addEmptyOption'  => true,
-                             'minYear'         => $startYear - $ageMax - 30,
-                             'maxYear'         => $endYear - $ageMin + 30
+                             'minYear'         => $startYear - $ageMax - 20,
+                             'maxYear'         => $endYear - $ageMin + 40
                              );
         $dateAttributes = array('class' => 'form-control input-sm input-date');
 
