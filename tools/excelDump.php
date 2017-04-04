@@ -137,7 +137,7 @@ $Test_name = "candidate_info";
 //this query is a but clunky, but it gets rid of all the crap that would otherwise appear.
 $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . $nofail . " order by c.PSCID";
 $DB->select($query, $results);
-MapSubprojectID(&$results);
+MapSubprojectID($results);
 writeExcel($Test_name, $results, $dataDir);
 
 /*
