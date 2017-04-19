@@ -98,7 +98,7 @@ function MapSubprojectID(&$results) {
 /*
 * Start with the list of participants
 */
-$query = "select * from candidate where pscid in ('MTL0000', 'MTL0001', 'MTL0003', 'MTL0002', 'MTL0004', 'MTL0005')";
+$query = "select * from candidate where candid in (select candid from participant_status where naproxen_ITT='yes')";
 $results = $DB->pselect($query, array());
 
 print_r($results);
@@ -183,7 +183,7 @@ foreach ($instruments as $instrument) {
 
 } //end foreach instrument
 
-$nofail = " AND c.PSCID in (select pscid from candidate where pscid in ('MTL0000', 'MTL0001', 'MTL0003', 'MTL0002', 'MTL0004', 'MTL0005'))";
+$nofail = " AND c.CandID in (select candid from participant_status where naproxen_ITT='yes')";
 /*
 * Candidate Information query
 */
@@ -226,7 +226,7 @@ if (PEAR::isError($participantstatus)) {
 }
 writeExcel($Test_name, $participantstatus, $dataDir);
 
-$wherenofailnowhere = " AND PSCID in (select pscid from candidate where pscid in ('MTL0000', 'MTL0001', 'MTL0003', 'MTL0002', 'MTL0004', 'MTL0005'))";
+$wherenofailnowhere = " AND candidate.CandID in (select candid from participant_status where naproxen_ITT='yes')";
 /*
 * Family History AD Other
 */
