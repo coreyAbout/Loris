@@ -294,8 +294,12 @@ class NDB_BVL_Battery
 	if(($timepoint == '06' || $timepoint == '18') && $visit_label != 'TL') {
         	$query .= " AND b.Timepoint = 'other'";
 	}
-        if(($timepoint == '01' || $timepoint == '02' || $timepoint == '03') && ($visit_label == 'WA' || $visit_label == 'MA')) {
-                $query .= " AND b.Timepoint = '$timepoint'";
+        if($visit_label == 'WA' || $visit_label == 'MA') {
+                if ($timepoint == '01' || $timepoint == '02' || $timepoint == '03') {
+                    $query .= " AND b.Timepoint = '$timepoint'";
+                } elseif ($timepoint == '00') {
+                    $query .= " AND b.Timepoint IS NULL";
+                }
         }
         if(!is_null($stage) && !is_null($stage)) {
             $query .= " AND t.Test_name=b.Test_name AND b.Stage='$stage'";
@@ -513,8 +517,12 @@ class NDB_BVL_Battery
         if(($timepoint == '06' || $timepoint == '18') && $visit_label != 'TL') {
                 $query .= " AND b.Timepoint = 'other'";
         }
-        if(($timepoint == '01' || $timepoint == '02' || $timepoint == '03') && ($visit_label == 'WA' || $visit_label == 'MA')) {
-                $query .= " AND b.Timepoint = '$timepoint'";
+        if($visit_label == 'WA' || $visit_label == 'MA') {
+                if ($timepoint == '01' || $timepoint == '02' || $timepoint == '03') {
+                    $query .= " AND b.Timepoint = '$timepoint'";
+                } elseif ($timepoint == '00') {
+                    $query .= " AND b.Timepoint IS NULL";
+                }
         }
         if (!is_null($center_ID)) {
             // return all instruments that match this center or all centers (null)
