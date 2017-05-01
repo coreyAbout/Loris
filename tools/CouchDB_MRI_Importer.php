@@ -79,6 +79,8 @@ class CouchDBMRIImporter
      */
     function _generateCandidatesQuery($ScanTypes)
     {
+$visit_list = " and s.Visit_label in ('NAPAE00','NAPAP00','NAPAP01','NAPAP02','NAPBL00','NAPBL12','NAPEC00','NAPEN00','NAPFU03','NAPFU06','NAPFU12','NAPFU18','NAPFU24','NAPLA01','NAPLA03','NAPLA06','NAPLP00','NAPLP03','NAPLP12','NAPLP24','NAPTI00','NAPTL01','NAPTL09','NAPTL15','NAPTL21','PREEL00') ";
+$visit_list_330 = " and s.Visit_label in ('NAPAE00','NAPAP00','NAPAP01','NAPAP02','NAPBL00','NAPBL12','NAPEC00','NAPEN00','NAPFU03','NAPFU06','NAPFU12','NAPFU18','NAPFU24','NAPLA01','NAPLA03','NAPLA06','NAPLP00','NAPLP03','NAPLP12','NAPLP24','NAPTI00','NAPTL01','NAPTL09','NAPTL15','NAPTL21','PREEL00', 'PREEN00') ";
         $Query = "SELECT c.PSCID, s.Visit_label, s.ID as SessionID, fmric.Comment
                   as QCComment";
         foreach ($ScanTypes as $Scan) {
@@ -96,7 +98,10 @@ class CouchDBMRIImporter
                     LEFT JOIN feedback_mri_comments fmric
                     ON (fmric.CommentTypeID=7 AND fmric.SessionID=s.ID)
                     WHERE c.PSCID <> 'scanner' AND c.PSCID NOT LIKE '%9999'
-                          AND c.Active='Y' AND s.Active='Y' AND c.CenterID <> 1";
+                          AND c.Active='Y' AND s.Active='Y' AND c.CenterID <> 1"
+
+. " AND ((c.CandID in (select candid from participant_status where naproxen_ITT='yes') " . $visit_list . ") OR (c.PSCID='MTL0330' " . $visit_list_330 . ")) ";
+
         return $Query;
     }
 
