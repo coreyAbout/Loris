@@ -191,6 +191,12 @@ class NDB_Menu_Filter_Form_Conflict_Resolver extends NDB_Menu_Filter_Form
     function _setupVariables()
     {
 
+        if (strpos($_SERVER['HTTP_REFERER'], "conflict_resolver") === false) {
+            $_SESSION["conflict_resolver_back"] = $_SERVER['HTTP_REFERER'];
+        }
+
+        $this->tpl_data['conflict_resolver_back'] = $_SESSION["conflict_resolver_back"];
+
         $config =& NDB_Config::singleton();
 
         // set the class variables
