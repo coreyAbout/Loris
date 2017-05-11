@@ -70,6 +70,16 @@
     </div>
 </div>
 
+<div class="col-sm-12">
+    <div class="col-md-8 col-sm-8">
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <button class="btn btn-info" onclick="location.href='{$conflict_resolver_back}'">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="tabs" style="background: white">
     <ul class="nav nav-tabs ">
         <li class="active"><a id="onLoad">Unresolved Conflicts</a></li>
