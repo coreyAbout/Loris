@@ -10,22 +10,26 @@ class CouchDBDemographicsImporter {
     // this is just in an instance variable to make
     // the code a little more readable.
     var $Dictionary = array(
+        'DoB' => array(
+            'Description' => 'Date of Birth',
+            'Type' => 'varchar(255)'
+        ),
         'CandID' => array(
             'Description' => 'DCC Candidate Identifier',
             'Type' => 'varchar(255)'
-        ),  
+        ),
         'PSCID' => array(
             'Description' => 'Project Candidate Identifier',
             'Type' => 'varchar(255)'
-        ),  
+        ),
         'Visit_label' => array(
             'Description' => 'Visit of Candidate',
             'Type' => 'varchar(255)'
-        ),  
+        ),
         'Cohort' => array(
             'Description' => 'Cohort of this session',
             'Type' => 'varchar(255)'
-        ),  
+        ),
         'Gender' => array(
             'Description' => 'Candidate\'s gender',
             'Type' => "enum('Male', 'Female')"
@@ -41,7 +45,7 @@ class CouchDBDemographicsImporter {
         'Site' => array(
             'Description' => 'Site that this visit took place at',
             'Type' => "varchar(3)",
-        ),  
+        ),
         'Current_stage' => array(
             'Description' => 'Current stage of visit',
             'Type' => "enum('Not Started','Screening','Visit','Approval','Subject','Recycling Bin')"
@@ -426,7 +430,7 @@ class CouchDBDemographicsImporter {
             $EDCFields = ", c.EDC as EDC";
             $fieldsInQuery .= $EDCFields;
         }
-        $concatQuery = $fieldsInQuery . $tablesToJoin . " WHERE s.Active='Y' AND c.Active='Y' AND c.PSCID <> 'scanner'";
+        $concatQuery = $fieldsInQuery . $tablesToJoin . " WHERE s.Active='Y' AND c.Active='Y' AND c.Entity_type != 'Scanner'";
         return $concatQuery;
     }
 
@@ -448,6 +452,16 @@ class CouchDBDemographicsImporter {
             $this->Dictionary["EDC"] = array(
                 'Description' => 'Expected Date of Confinement (Due Date)',
                 'Type' => "varchar(255)"
+            );
+        }
+        if ($config->getSetting("useProjects") === "true") {
+            $projects = Utility::getProjectList();
+            $projectsEnum = "enum('";
+            $projectsEnum .= implode("', '", $projects);
+            $projectsEnum .= "')";
+            $this->Dictionary["Project"] = array(
+                'Description' => 'Project for which the candidate belongs',
+                'Type' => $projectsEnum
             );
         }
         /*

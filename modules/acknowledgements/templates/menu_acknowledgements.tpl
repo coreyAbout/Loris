@@ -24,6 +24,8 @@
                         {$form.last_name.html}
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="form-group col-sm-4">
                     <label class="col-sm-12 col-md-4">
                         {$form.present.label}
@@ -59,7 +61,7 @@
 <div id="tabs" style="background: white">
     <div class="tab-content">
         <div class="tab-pane active">
-            <table class="table table-hover table-primary table-bordered table-unresolved-conflicts dynamictable" border="0">
+            <table class="table table-hover table-primary table-bordered table-acknowledgements dynamictable" border="0">
                 <thead>
                     <tr class="info">
                         <th>Citation Policy</th>

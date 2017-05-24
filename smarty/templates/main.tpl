@@ -11,7 +11,7 @@
            and can access them through the loris global (ie. loris.BaseURL) *}
         <script src="{$baseurl}/js/loris.js" type="text/javascript"></script>
         <script language="javascript" type="text/javascript">
-        var loris = new LorisHelper({$jsonParams}, {$userPerms|json_encode});
+        var loris = new LorisHelper({$jsonParams}, {$userPerms|json_encode}, {$studyParams|json_encode});
         </script>
         {section name=jsfile loop=$jsfiles}
             <script src="{$jsfiles[jsfile]}" type="text/javascript"></script>
@@ -41,12 +41,36 @@
               React.render(breadcrumbs, document.getElementById("breadcrumbs"));
             {/if}
 
-            // If <input type="date/> is not supported (i.e. Firefox), load
+            // If <input type="date" /> is not supported (i.e. Firefox), load
             // jquery date-picker
             if (!Modernizr.inputtypes.date) {
-              $('input[type=date]').datepicker({
-                dateFormat: 'yy-mm-dd'
+              var dateInputs = $('input[type=date]');
+              dateInputs.datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "1900:" + new Date().getFullYear(),
+                constrainInput: true
               });
+              dateInputs.attr('placeholder', 'yyyy-mm-dd');
+              dateInputs.on('keydown paste', function(e) { e.preventDefault(); });
+            }
+
+            if (!Modernizr.inputtypes.month) {
+              var monthInputs = $('input[type=month]');
+              monthInputs.datepicker({
+                dateFormat: 'yy-mm',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "1900:" + new Date().getFullYear(),
+                constrainInput: true,
+                onChangeMonthYear: function(y, m, d) {
+                  // Update date in the input field
+                  $(this).datepicker('setDate', new Date(y, m - 1, d.selectedDay));
+                }
+              });
+              monthInputs.attr('placeholder', 'yyyy-mm');
+              monthInputs.on('keydown paste', function(e) { e.preventDefault(); });
             }
 
           });

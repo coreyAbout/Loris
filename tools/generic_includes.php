@@ -25,8 +25,6 @@ $client->makeCommandLine();
 $client->initialize($configFile);
 $DB = Database::singleton();
 
-// PEAR::Config
-
 //allow instruments to find libraries
 require_once 'Utility.class.inc';
 

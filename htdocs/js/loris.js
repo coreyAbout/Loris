@@ -1,4 +1,4 @@
-var LorisHelper = function(configParams, userPerms) {
+var LorisHelper = function(configParams, userPerms, studyParams) {
     "use strict";
     var lorisObj = configParams;
 
@@ -47,6 +47,22 @@ var LorisHelper = function(configParams, userPerms) {
             return true;
         }
         return false;
-    }
+    };
+    lorisObj.debounce = function (fn, delay) {
+        var timer = null;
+        return function () {
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+              fn.apply(context, args);
+            }, delay);
+        };
+    };
+
+    // Returns config settings from whitelist passed in main.php (study options)
+    lorisObj.config = function(param) {
+        "use strict";
+        return studyParams[param];
+    };
     return lorisObj;
 };
