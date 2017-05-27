@@ -186,7 +186,7 @@ ALTER TABLE help CHANGE `updated` `updated` DATETIME DEFAULT NULL;
 UPDATE help SET created = NULL WHERE created = '0000-00-00 00:00:00';
 
 -- 2016-08-18-RemovingTitleFromAcknowledgements.sql
-ALTER TABLE acknowledgements DROP COLUMN title;
+-- ALTER TABLE acknowledgements DROP COLUMN title;
 
 -- 2016-08-19-IssueTracker.sql
 -- Change LorisMenu engine to InnoDB so that Foreign Keys can be created
