@@ -204,14 +204,14 @@ VALUES (5, 'Issue Tracker', 'issue_tracker/', true, 8);
 INSERT INTO `permissions` (`code`, `description`, `categoryID`)
 VALUES ('issue_tracker_reporter', 'Can add a new issue, edit own issue, comment on all', 2);
 INSERT IGNORE INTO user_perm_rel (`userID`, `permID`) VALUES (
-  (SELECT ID FROM users WHERE UserID = 'admin'), (SELECT permID FROM permissions WHERE code = 'issue_tracker_reporter')
+  (SELECT ID FROM users WHERE UserID = 'justin'), (SELECT permID FROM permissions WHERE code = 'issue_tracker_reporter')
 );
 
 -- Developer
 INSERT INTO `permissions` (`code`, `description`, `categoryID`)
 VALUES ('issue_tracker_developer', 'Can re-assign issues, mark issues as closed, comment on all, edit issues.', 2);
 INSERT IGNORE INTO user_perm_rel (`userID`, `permID`) VALUES (
-  (SELECT ID FROM users WHERE UserID = 'admin'), (SELECT permID FROM permissions WHERE code = 'issue_tracker_developer')
+  (SELECT ID FROM users WHERE UserID = 'justin'), (SELECT permID FROM permissions WHERE code = 'issue_tracker_developer')
 );
 
 -- LorisMenuPermissions
