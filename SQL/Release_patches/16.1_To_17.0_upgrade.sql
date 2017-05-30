@@ -349,6 +349,7 @@ CREATE UNIQUE INDEX `uniq_snp`
   ON `SNP` (`rsID`, `SNPExternalSource`);
 
 -- 2016-09-13-Visit_Windows_add_primary.sql
+alter table Visit_Windows drop primary key;
 ALTER TABLE Visit_Windows ADD `ID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY;
 
 -- 2016-09-14-Examiners-add-active-pending-fields.sql
