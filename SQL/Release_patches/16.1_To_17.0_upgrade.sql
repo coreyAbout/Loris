@@ -310,9 +310,9 @@ UPDATE files_qcstatus as fqc SET fqc.Selected='true' WHERE fqc.Selected <> '';
 ALTER TABLE files_qcstatus CHANGE `Selected` `Selected` enum('true','false') DEFAULT NULL; 
 
 -- 2016-08-29-AddForeignKeyToCertification.sql
-ALTER TABLE `certification` MODIFY `testID` int(10) UNSIGNED NOT NULL;
+-- ALTER TABLE `certification` MODIFY `testID` int(10) UNSIGNED NOT NULL;
 
-ALTER TABLE `certification` ADD CONSTRAINT `FK_certification` FOREIGN KEY (`testID`) REFERENCES `test_names` (`ID`);
+-- ALTER TABLE `certification` ADD CONSTRAINT `FK_certification` FOREIGN KEY (`testID`) REFERENCES `test_names` (`ID`);
 -- 2016-09-13-AddScannerIDInFiles.sql
 -- Add ScannerCandID column to files, back-populate the newly added column from parameter_file table, then add foreign key constraints 
 ALTER TABLE files ADD `ScannerID` int(10) unsigned default NULL;
