@@ -224,7 +224,7 @@ CREATE TABLE `issues_categories` (
   `categoryName` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   PRIMARY KEY (`categoryID`),
   UNIQUE KEY `categoryName` (`categoryName`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
 -- issuesTable
 CREATE TABLE `issues` (
