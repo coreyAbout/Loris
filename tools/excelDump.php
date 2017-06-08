@@ -31,8 +31,8 @@ if (!empty($argv)) {
         list($y, $m, $d) = explode("-", $arg);
         if ($arg == 'nofail') {
             $nofail = " AND s.Visit!='Failure' ";
-            $wherenofail = " WHERE candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit='Failure' AND session.Visit_label LIKE "%EL00%") ";
-            $wherenofailnowhere = " AND candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit='Failure' AND session.Visit_label LIKE "%EL00%") ";
+            $wherenofail = " WHERE candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') ";
+            $wherenofailnowhere = " AND candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') ";
         } elseif (checkdate($m, $d, $y)) {
             $limit_date_instruments = " AND i.Date_taken <= '{$arg}' ";
             $limit_date = " AND mad.AcquisitionDate <= '{$arg}' ";
