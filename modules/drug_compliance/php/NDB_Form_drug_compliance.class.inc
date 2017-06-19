@@ -13,9 +13,6 @@
  *  @license  Loris License
  *  @link     https://github.com/Jkat/Loris
  */
-require_once "NDB_Form.class.inc";
-require_once "Utility.class.inc";
-
 
 class NDB_Form_drug_compliance extends NDB_Form
 {
