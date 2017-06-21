@@ -185,10 +185,6 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 
 		$config =& NDB_Config::singleton();
 		$db =& Database::singleton();
-		if(Utility::isErrorX($db)) {
-			fwrite(STDERR, "Could not connect to database: ".$db->getMessage());
-			return false;
-		}
 
 
 if ($ApoE == '4/4' || $ApoE == '4-4') {
@@ -319,7 +315,6 @@ if ($CDK5RAP2_rs10984186_allele_no === 0) {
 
 		$mappings1 = array(
 				"PSCID"=>$PSCID,
-                                "Study"=>$Study,
                                 "gDNA_ng_ul"=>$gDNA_ng_ul,
 				"ApoE"=>$ApoE,
 				"apoE_allele_no"=>$apoE_allele_no,
@@ -372,18 +367,10 @@ if ($CDK5RAP2_rs10984186_allele_no === 0) {
 		//insert/update into genetics table
 		if ($db->selectOne("SELECT count(*) FROM genetics WHERE PSCID='$PSCID'") > 0) {
 			$success = $DB->update($table, $insertData1,array("PSCID"=>$PSCID));
-			if (Utility::isErrorX($success)) {
-				fwrite(STDERR, "Failed to update genetics table, DB Error: " . $success->getMessage()."\n");
-				return false;
-			}
 			echo "Updated " . $PSCID . "!\n";
 		} else {
 			$success = $DB->insert($table, $insertData1);
-			if (Utility::isErrorX($success)) {
-				fwrite(STDERR, "Failed to insert genetics table, DB Error: " . $success->getMessage()."\n");
-				return false;
-			}
-			echo "New PSCID " . $PSCID . "@\n";
+			echo "New PSCID " . $PSCID . "!\n";
 		}
 	}
 }
