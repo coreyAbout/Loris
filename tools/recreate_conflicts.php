@@ -12,9 +12,6 @@
  */
 
 require_once __DIR__ . "/../vendor/autoload.php";
-require_once "NDB_Client.class.inc";
-require_once "NDB_Config.class.inc";
-require_once "ConflictDetector.class.inc";
 
 $client = new NDB_Client();
 $client->makeCommandLine();
