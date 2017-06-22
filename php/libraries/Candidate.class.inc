@@ -744,9 +744,6 @@ class Candidate
 
     function _generateIBISID() {
         $db =& Database::singleton();
-        if(Utility::isErrorX($db)) {
-            return $db;
-        }
         do {
             $ibisid = rand(1000, 9999);
         } while($db->selectOne("SELECT count(IBISID) FROM candidate WHERE IBISID='IBIS$ibisid'") > 0);
