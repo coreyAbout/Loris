@@ -233,6 +233,7 @@ class Candidate
             $PSCID = Candidate::_generatePSCID($site->getSiteAlias());
         }
 
+        $ibisid = Candidate::_generateIBISID();
         // insert the new candidate into the database
         $setArray = array(
                      'CandID'          => $candID,
@@ -246,6 +247,7 @@ class Candidate
                      'Entity_type'     => 'Human',
                      'RegisteredBy'    => $user->getUsername(),
                      'UserID'          => $user->getUsername(),
+                     'IBISID'          => $ibisid
                     );
 
         if ($config->getSetting('useExternalID') === 'true') {
@@ -738,6 +740,17 @@ class Candidate
         );
 
         return $pscid;
+    }
+
+    function _generateIBISID() {
+        $db =& Database::singleton();
+        if(Utility::isErrorX($db)) {
+            return $db;
+        }
+        do {
+            $ibisid = rand(1000, 9999);
+        } while($db->selectOne("SELECT count(IBISID) FROM candidate WHERE IBISID='IBIS$ibisid'") > 0);
+        return "IBIS$ibisid";
     }
 
     /**
