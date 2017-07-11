@@ -306,78 +306,6 @@ class CouchDBDemographicsImporter {
             'Description' => 'DNA destruction date status',
             'Type' => "enum('not_answered')"
         ),
-        'drug_compliance_drug' => array(
-            'Description' => 'Drug Compliance drug',
-            'Type' => "enum('naproxen','probucol')"
-        ),
-        'drug_compliance_visit_label' => array(
-            'Description' => 'Drug Compliance visit label',
-            'Type' => "varchar(255)"
-        ),
-        'drug_compliance_drug_issued_date' => array(
-            'Description' => 'Drug Compliance drug issued date',
-            'Type' => "date"
-        ),
-        'drug_compliance_drug_issued_date_status' => array(
-            'Description' => 'Drug Compliance drug issued date status',
-            'Type' => "enum('not_answered')"
-        ),
-        'drug_compliance_pills_issued' => array(
-            'Description' => 'Drug Compliance pills issued',
-            'Type' => "varchar(255)"
-        ),
-        'drug_compliance_pills_issued_status' => array(
-            'Description' => 'Drug Compliance pills issued status',
-            'Type' => "enum('not_answered')"
-        ),
-        'drug_compliance_drug_returned_date' => array(
-            'Description' => 'Drug Compliance drug returned date',
-            'Type' => "date"
-        ),
-        'drug_compliance_drug_returned_date_status' => array(
-            'Description' => 'Drug Compliance drug returned date status',
-            'Type' => "enum('not_answered')"
-        ),
-        'drug_compliance_pills_returned' => array(
-            'Description' => 'Drug Compliance pills returned',
-            'Type' => "varchar(255)"
-        ),
-        'drug_compliance_pills_returned_status' => array(
-            'Description' => 'Drug Compliance pills returned status',
-            'Type' => "enum('not_answered')"
-        ),
-        'drug_compliance_compliance_evaluation' => array(
-            'Description' => 'Drug Compliance compliance evaluation',
-            'Type' => "varchar(255)"
-        ),
-        'drug_compliance_compliance_evaluation_status' => array(
-            'Description' => 'Drug Compliance compliance evaluation status',
-            'Type' => "enum('not_answered')"
-        ),
-        'drug_compliance_behavioral_compliance_evaluation' => array(
-            'Description' => 'Drug Compliance behavioral compliance evaluation',
-            'Type' => "varchar(255)"
-        ),
-        'drug_compliance_behavioral_compliance_evaluation_status' => array(
-            'Description' => 'Drug Compliance behavioral compliance evaluation status',
-            'Type' => "enum('not_answered')"
-        ),
-        'drug_compliance_comments' => array(
-            'Description' => 'Drug Compliance comments',
-            'Type' => "varchar(255)"
-        ),
-        'drug_compliance_comments_status' => array(
-            'Description' => 'Drug Compliance comments status',
-            'Type' => "enum('not_answered')"
-        ),
-        'treatment_duration_trial' => array(
-            'Description' => 'Treatment Duration Trial',
-            'Type' => "enum('Naproxen','Probucol')"
-        ),
-        'treatment_duration' => array(
-            'Description' => 'Treatment Duration',
-            'Type' => "int(6)"
-        ),
         'scan_done' => array(
             'Description' => 'Scan done',
             'Type' => "enum('N', 'Y')"
@@ -418,8 +346,8 @@ class CouchDBDemographicsImporter {
 
     function _generateQuery() {
         $config = NDB_Config::singleton();
-        $fieldsInQuery = "SELECT withdrawal_reasons, naproxen_eligibility, naproxen_eligibility_status, naproxen_eligibility_reason_specify, naproxen_excluded_reason_specify, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, probucol_eligibility, probucol_eligibility_status, probucol_eligibility_reason_specify, probucol_excluded_reason_specify_status, probucol_withdrawal_reasons, probucol_withdrawal_reasons_other_specify, pso.description,ps.reason_specify, ps.withdrawal_reasons_other_specify, scan_done, ApoE, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Technicien_M, Method_M, Reference_M, TLR4_rs_4986790, TLR4_allele_no, Technicien_TLR4, Method_TLR4, Reference_TLR4, PPP2r1A_rs_10406151, ppp2r1A_allele_no, ppp2r1A_copie_no, Technicien_ppp2r1a, Method_ppp2r1a, Reference_ppp2r1a, CDK5RAP2_rs10984186, CDK5RAP2_rs10984186_allele_no, CDK5RAP2_rs10984186_allele_bin, Technicien_CDK5RAP2, Method_CDK5RAP2, Reference_CDK5RAP2, g.comments, dna_collected_eligibility, dna_request_destroy, dna_destroy_date, dna_destroy_date_status, d.drug as 'drug_compliance_drug', d.visit_label as 'drug_compliance_visit_label', d.drug_issued_date as 'drug_compliance_drug_issued_date', d.drug_issued_date_status as 'drug_compliance_drug_issued_date_status', d.pills_issued as 'drug_compliance_pills_issued', d.pills_issued_status as 'drug_compliance_pills_issued_status', d.drug_returned_date as 'drug_compliance_drug_returned_date', d.drug_returned_date_status as 'drug_compliance_drug_returned_date_status', d.pills_returned as 'drug_compliance_pills_returned', d.pills_returned_status as 'drug_compliance_pills_returned_status', d.compliance_evaluation as 'drug_compliance_compliance_evaluation', d.compliance_evaluation_status as 'drug_compliance_compliance_evaluation_status', d.behavioral_compliance_evaluation as 'drug_compliance_behavioral_compliance_evaluation', d.behavioral_compliance_evaluation_status as 'drug_compliance_behavioral_compliance_evaluation_status', d.comments as 'drug_compliance_comments', d.comments_status as 'drug_compliance_comments_status', td.Trial as 'treatment_duration_trial', td.treatment_duration, c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, c.Mother_tongue, c.DoB, s.Current_stage, s.Visit, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status";
-        $tablesToJoin = " FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) LEFT JOIN participant_status ps ON c.CandID=ps.CandID LEFT JOIN participant_status_options as pso ON ps.participant_status=pso.ID LEFT JOIN genetics as g ON g.PSCID=c.PSCID LEFT JOIN drug_compliance as d ON c.CandID=d.CandID LEFT JOIN treatment_duration as td ON c.CandID=td.CandID";
+        $fieldsInQuery = "SELECT withdrawal_reasons, naproxen_eligibility, naproxen_eligibility_status, naproxen_eligibility_reason_specify, naproxen_excluded_reason_specify, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, probucol_eligibility, probucol_eligibility_status, probucol_eligibility_reason_specify, probucol_excluded_reason_specify_status, probucol_withdrawal_reasons, probucol_withdrawal_reasons_other_specify, pso.description,ps.reason_specify, ps.withdrawal_reasons_other_specify, scan_done, ApoE, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Technicien_M, Method_M, Reference_M, TLR4_rs_4986790, TLR4_allele_no, Technicien_TLR4, Method_TLR4, Reference_TLR4, PPP2r1A_rs_10406151, ppp2r1A_allele_no, ppp2r1A_copie_no, Technicien_ppp2r1a, Method_ppp2r1a, Reference_ppp2r1a, CDK5RAP2_rs10984186, CDK5RAP2_rs10984186_allele_no, CDK5RAP2_rs10984186_allele_bin, Technicien_CDK5RAP2, Method_CDK5RAP2, Reference_CDK5RAP2, g.comments, dna_collected_eligibility, dna_request_destroy, dna_destroy_date, dna_destroy_date_status, c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, c.Mother_tongue, c.DoB, s.Current_stage, s.Visit, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status";
+        $tablesToJoin = " FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) LEFT JOIN participant_status ps ON c.CandID=ps.CandID LEFT JOIN participant_status_options as pso ON ps.participant_status=pso.ID LEFT JOIN genetics as g ON g.PSCID=c.PSCID";
         // If proband fields are being used, add proband information into the query
         if ($config->getSetting("useProband") === "true") {
             $probandFields = ", c.ProbandGender as Gender_proband, ROUND(DATEDIFF(c.DoB, c.ProbandDoB) / (365/12)) AS Age_difference";
@@ -699,6 +627,134 @@ class CouchDBDemographicsImporter {
                     $entries++;
                 }
             }
+
+            // drug compliance
+            $exists = $this->SQLDB->pselectOne("SELECT ID FROM drug_compliance WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+            if (!empty($exists)) {
+                $entries = 1;
+                $drug_compliance_fields = $this->SQLDB->pselect("SELECT CandID, drug, visit_label, dosage, drug_issued_date, drug_issued_date_status, pills_issued, pills_issued_status, drug_returned_date, drug_returned_date_status, pills_returned, pills_returned_status, compliance_evaluation, compliance_evaluation_status, behavioral_compliance_evaluation, behavioral_compliance_evaluation_status, comments, comments_status FROM drug_compliance WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+                foreach ($drug_compliance_fields as $row) {
+                    $this->Dictionary["drug_compliance_CandID_" . $entries] = array(
+                           'Description' => "Drug Compliance CandID " . $entries,
+                           'Type'        => "int(6)",
+                    );
+                    $this->Dictionary["drug_compliance_drug_" . $entries] = array(
+                           'Description' => "Drug Compliance drug " . $entries,
+                           'Type'        => "enum('naproxen','probucol')",
+                    );
+                    $this->Dictionary["drug_compliance_visit_label_" . $entries] = array(
+                           'Description' => "Drug Compliance visit label " . $entries,
+                           'Type'        => "varchar(255)",
+                    );
+                    $this->Dictionary["drug_compliance_dosage_" . $entries] = array(
+                           'Description' => "Drug Compliance dosage " . $entries,
+                           'Type'        => "varchar(255)",
+                    );
+                    $this->Dictionary["drug_compliance_drug_issued_date_" . $entries] = array(
+                           'Description' => "Drug Compliance drug issued date " . $entries,
+                           'Type'        => "date",
+                    );
+                    $this->Dictionary["drug_compliance_drug_issued_date_status_" . $entries] = array(
+                           'Description' => "Drug Compliance drug issued date status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $this->Dictionary["drug_compliance_pills_issued_" . $entries] = array(
+                           'Description' => "Drug Compliance pills issued " . $entries,
+                           'Type'        => "varchar(255)",
+                    );
+                    $this->Dictionary["drug_compliance_pills_issued_status_" . $entries] = array(
+                           'Description' => "Drug Compliance pills issued status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $this->Dictionary["drug_compliance_drug_returned_date_" . $entries] = array(
+                           'Description' => "Drug Compliance drug returned date " . $entries,
+                           'Type'        => "date",
+                    );
+                    $this->Dictionary["drug_compliance_drug_returned_date_status_" . $entries] = array(
+                           'Description' => "Drug Compliance drug returned date status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $this->Dictionary["drug_compliance_pills_returned_" . $entries] = array(
+                           'Description' => "Drug Compliance pills returned " . $entries,
+                           'Type'        => "varchar(255)",
+                    );
+                    $this->Dictionary["drug_compliance_pills_returned_status_" . $entries] = array(
+                           'Description' => "Drug Compliance pills returned status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $this->Dictionary["drug_compliance_compliance_evaluation_" . $entries] = array(
+                           'Description' => "Drug Compliance compliance evaluation " . $entries,
+                           'Type'        => "varchar(255)",
+                    );
+                    $this->Dictionary["drug_compliance_compliance_evaluation_status_" . $entries] = array(
+                           'Description' => "Drug Compliance compliance evaluation status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $this->Dictionary["drug_compliance_behavioral_compliance_evaluation_" . $entries] = array(
+                           'Description' => "Drug Compliance behavioral compliance evaluation " . $entries,
+                           'Type'        => "varchar(255)",
+                    );
+                    $this->Dictionary["drug_compliance_behavioral_compliance_evaluation_status_" . $entries] = array(
+                           'Description' => "Drug Compliance behavioral compliance evaluation status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $this->Dictionary["drug_compliance_comments_" . $entries] = array(
+                           'Description' => "Drug Compliance comments " . $entries,
+                           'Type'        => "varchar(255)",
+                    );
+                    $this->Dictionary["drug_compliance_comments_status_" . $entries] = array(
+                           'Description' => "Drug Compliance comments status " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+
+                    $demographics["drug_compliance_CandID_" . $entries] = $row['CandID'];
+                    $demographics["drug_compliance_drug_" . $entries] = $row['drug'];
+                    $demographics["drug_compliance_dosage_" . $entries] = $row['dosage'];
+                    $demographics["drug_compliance_visit_label_" . $entries] = $row['visit_label'];
+                    $demographics["drug_compliance_drug_issued_date_" . $entries] = $row['drug_issued_date'];
+                    $demographics["drug_compliance_drug_issued_date_status_" . $entries] = $row['drug_issued_date_status'];
+                    $demographics["drug_compliance_pills_issued_" . $entries] = $row['pills_issued'];
+                    $demographics["drug_compliance_pills_issued_status_" . $entries] = $row['pills_issued_status'];
+                    $demographics["drug_compliance_drug_returned_date_" . $entries] = $row['drug_returned_date'];
+                    $demographics["drug_compliance_drug_returned_date_status_" . $entries] = $row['drug_returned_date_status'];
+                    $demographics["drug_compliance_pills_returned_" . $entries] = $row['pills_returned'];
+                    $demographics["drug_compliance_pills_returned_status_" . $entries] = $row['pills_returned_status'];
+                    $demographics["drug_compliance_compliance_evaluation_" . $entries] = $row['compliance_evaluation'];
+                    $demographics["drug_compliance_compliance_evaluation_status_" . $entries] = $row['compliance_evaluation_status'];
+                    $demographics["drug_compliance_behavioral_compliance_evaluation_" . $entries] = $row['behavioral_compliance_evaluation'];
+                    $demographics["drug_compliance_behavioral_compliance_evaluation_status_" . $entries] = $row['behavioral_compliance_evaluation_status'];
+                    $demographics["drug_compliance_comments_" . $entries] = $row['comments'];
+                    $demographics["drug_compliance_comments_status_" . $entries] = $row['comments_status'];
+                    $entries++;
+                }
+            }
+
+            // treatment duration
+            $exists = $this->SQLDB->pselectOne("SELECT ID FROM treatment_duration WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+            if (!empty($exists)) {
+                $entries = 1;
+                $treatment_duration_fields = $this->SQLDB->pselect("SELECT CandID, Trial, treatment_duration FROM treatment_duration WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+                foreach ($treatment_duration_fields as $row) {
+                    $this->Dictionary["treatment_duration_CandID_" . $entries] = array(
+                           'Description' => "Treatment Duration CandID " . $entries,
+                           'Type'        => "int(6)",
+                    );
+                    $this->Dictionary["treatment_duration_Trial_" . $entries] = array(
+                           'Description' => "Treatment Duration Trial " . $entries,
+                           'Type'        => "enum('Naproxen','Probucol_Phase_1_Trial_A')",
+                    );
+                    $this->Dictionary["treatment_duration_treatment_duration_" . $entries] = array(
+                           'Description' => "Treatment Duration " . $entries,
+                           'Type'        => "int(6)",
+                    );
+
+                    $demographics["treatment_duration_CandID_" . $entries] = $row['CandID'];
+                    $demographics["treatment_duration_Trial_" . $entries] = $row['Trial'];
+                    $demographics["treatment_duration_treatment_duration_" . $entries] = $row['treatment_duration'];
+                    $entries++;
+                }
+            }
+
 
             if ($config_setting->getSetting("useFamilyID") === "true") {
                 $familyID     = $this->SQLDB->pselectOne("SELECT FamilyID FROM family
