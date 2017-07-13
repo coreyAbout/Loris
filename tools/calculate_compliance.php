@@ -7,7 +7,7 @@ $client = new NDB_Client();
 $client->makeCommandLine();
 $client->initialize();
 
-require_once __DIR__ . "/../modules/drug_compliance/php/NDB_Form_drug_compliance.class.inc";
+require_once __DIR__ . "/../project/modules/drug_compliance/php/NDB_Form_drug_compliance.class.inc";
 NDB_Form_drug_compliance::calculate();
 
 ?>
