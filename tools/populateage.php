@@ -61,7 +61,7 @@ foreach ($instruments as $inst => $inst_name) {
     foreach ($CommentIDs as $row) {
         $date = explode('-', $row['Date_taken']);
         $dateArray = array ('Y' => $date[0], 'M' => $date[1], 'd' => $date[2]);
-        $instrument =& NDB_BVL_Instrument::factory($inst, $row['CommentID'], null, false);
+        $instrument = NDB_BVL_Instrument::factory($inst, $row['CommentID'], null, false);
         if($instrument && !empty($row['Date_taken'])) {
             //print_r($dateArray);
             $instrument->_saveValues(array('Date_taken' => $dateArray));
