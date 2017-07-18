@@ -253,7 +253,7 @@ function addInstrument($sessionID, $testName)
     $timePoint =& TimePoint::singleton($sessionID);
     
     // create battery object
-    $battery =& new NDB_BVL_Battery();
+    $battery = new NDB_BVL_Battery();
 
     // set the SessionID for the battery
     $success = $battery->selectBattery($sessionID);
@@ -485,7 +485,7 @@ function diagnose($sessionID, $dateType=null, $newDate=null)
             fwrite(STDERR, "Age at $stage: $age [ $dateBirth $dateOfStage]\n");
 
             // create battery object
-            $battery =& new NDB_BVL_Battery();
+            $battery = new NDB_BVL_Battery();
 
             // set the SessionID for the battery
             $success = $battery->selectBattery($sessionID);
