@@ -16,6 +16,7 @@
 <br>
 <br>
 <br>
+<br>
 
 <!-- table title -->
 <strong>List of Visits (Time Points)</strong>
