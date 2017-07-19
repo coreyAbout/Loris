@@ -92,7 +92,7 @@ class NDB_Form_next_stage extends NDB_Form
             $this->addRule('scan_done', 'Scan done is required', 'required');
         }
 
-        $dateAttributes = array('class' => 'form-control input-sm input-date');
+        $dateAttributes = ['class' => 'form-control input-sm input-date'];
 
         // add dates
         $this->addBasicDate('date1', "Date of $stage", $dateOptions, $dateAttributes);
