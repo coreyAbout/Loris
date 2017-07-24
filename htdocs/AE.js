@@ -20,5 +20,3 @@ $("[name$=_meddra_soc").autocomplete({
 $(this).val(ui.item.label);
     }
 });
-
-alert('test');
