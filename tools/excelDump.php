@@ -30,6 +30,7 @@ if (!empty($argv)) {
     foreach ($argv as $arg) {
         list($y, $m, $d) = explode("-", $arg);
         if ($arg == 'nofail') {
+            $apsnofail = " WHERE session.Visit!='Failure' ";
             $nofail = " AND s.Visit!='Failure' ";
             $wherenofail = " WHERE candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') ";
             $wherenofailnowhere = " AND candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') ";
@@ -115,8 +116,15 @@ foreach ($instruments as $instrument) {
         } else {
             if (is_file("../project/instruments/NDB_BVL_Instrument_$Test_name.class.inc")) {
                 $instrument =& NDB_BVL_Instrument::factory($Test_name, '', false);
-                if ($instrument->ValidityEnabled == true) {
-	            $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_instruments . $nofail . " order by s.Visit_label, c.PSCID";
+                if ($Test_name == 'adverse_events') {
+                    $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, ";
+                    $query .= " i.CommentID, i.UserID, i.Examiner, i.Testdate, i.Data_entry_completion_status, i.Date_taken, i.Candidate_Age, i.Window_Difference, i.event_comments, ";
+                    for ($i = 1; $i < 91; $i++) {
+                        $query .= " {$i}_event, {$i}_event_status, {$i}_start_date_date, {$i}_start_date_date_status, {$i}_start_date_accuracy, {$i}_end_date_date, {$i}_end_date_date_status, {$i}_end_date_accuracy, {$i}_severity, {$i}_SAE, {$i}_relationship, {$i}_action, {$i}_action_status, {$i}_reported, {$i}_date_reported_date, {$i}_date_reported_date_status, (select PT_DESCRIPTION from meddra_pt where PT_ID={$i}_meddra_pt), (select SOC_DESCRIPTION from meddra_soc where SOC_ID={$i}_meddra_soc), ";
+                    }
+                    $query .= " i.ae_no_end_date from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like " . 
+                    " '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' " . 
+                    " AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_instruments . $nofail . " order by s.Visit_label, c.PSCID";
                 } else {
 	            $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_instruments . $nofail . " order by s.Visit_label, c.PSCID";
                 }
@@ -135,7 +143,11 @@ foreach ($instruments as $instrument) {
 */
 $Test_name = "candidate_info";
 //this query is a but clunky, but it gets rid of all the crap that would otherwise appear.
-$query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . $nofail . " order by c.PSCID";
+if (!empty($nofail)) {
+    $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . $nofail . " order by c.PSCID";
+} else {
+    $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . $nofail . " AND c.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') order by c.PSCID";
+}
 $DB->select($query, $results);
 MapSubprojectID($results);
 writeExcel($Test_name, $results, $dataDir);
@@ -235,6 +247,31 @@ if (PEAR::isError($treatmentduration)) {
 }
 writeExcel($Test_name, $treatmentduration, $dataDir);
 
+ /*
+* MedDRA PT
+*/
+$Test_name = "MedDRAPT";
+$query = "select * from meddra_pt order by PT_ID";
+$DB->select($query, $meddrapt);
+writeExcel($Test_name, $meddrapt, $dataDir);
+
+/*
+* MedDRA SOC
+*/
+$Test_name = "MedDRASOC";
+$query = "select * from meddra_soc order by SOC_ID";
+$DB->select($query, $meddrasoc);
+writeExcel($Test_name, $meddrasoc, $dataDir);
+
+/*
+* APS
+*/
+$Test_name = "APS";
+$query = "select PSCID, CandID, Visit_label, Main_APS_with_CSF from APS join session on (APS.SessionID=session.ID) join candidate using (CandID) " . $apsnofail . " order by PSCID";
+$DB->select($query, $aps);
+writeExcel($Test_name, $aps, $dataDir);
+
+
 /*
 * MRI feedbacks
 */
@@ -261,13 +298,13 @@ foreach ($scan_types as $scan_type) {
         continue;
     } elseif (preg_match("/noRegQCedDTI/i", $Test_name)) {
         $query = file_get_contents("MRI_feedbacks_FinalQCedDWI_query.sql");
-        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" ' . $limit_date . ' GROUP BY f.File';
+        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" ' . $limit_date . $nofail . ' GROUP BY f.File';
     } elseif (($Test_name == 'Encoding') or ($Test_name == 'Retrieval')) {
         $query = file_get_contents("MRI_feedbacks_query.sql");
-        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" ' . $limit_date . ' AND Visit_label NOT LIKE "%EN00%" GROUP BY f.File';
+        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" ' . $limit_date . $nofail . ' AND Visit_label NOT LIKE "%EN00%" GROUP BY f.File';
     } else {
         $query = file_get_contents("MRI_feedbacks_query.sql");
-        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" ' . $limit_date . ' GROUP BY f.File';
+        $query .= ' WHERE f.File LIKE "%\_' . $Test_name . '\_%" ' . $limit_date . $nofail . ' GROUP BY f.File';
     }
 
     $DB->select($query, $scan_type_table);
