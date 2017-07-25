@@ -1102,6 +1102,10 @@ class NDB_BVL_Instrument extends NDB_Page
                     if (is_array($result)) {
                         $errors += $result;
                     }
+                } else if (array_key_exists("tmp_name", $elvalue)) {
+                    if ($this->XINDebug) {
+                        echo "File uploads not required by default";
+                    }
                 } else if (substr($elname, -7) != "_status"
                     && !in_array($elname, array("page", "subtest"))
                 ) {
