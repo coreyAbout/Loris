@@ -133,7 +133,7 @@ class NDB_Form_Dashboard extends NDB_Form
                      LEFT JOIN session s ON (flag.SessionID=s.ID)
 			LEFT JOIN candidate c ON (s.CandID=c.CandID)
                       WHERE s.CenterID <> 1
-			AND s.Active='Y' AND c.Active='Y'",
+			AND s.Active='Y' AND c.Active='Y' AND c.PSCID!='MTL0000' and c.PSCID NOT LIKE '%MTL999%'",
                     array()
                 );
                 $this->tpl_data['conflicts_site'] = 'Site: all';
@@ -145,7 +145,7 @@ class NDB_Form_Dashboard extends NDB_Form
 		             LEFT JOIN candidate c ON (c.CandID=s.CandID)
                      LEFT JOIN psc ON (psc.CenterID=s.CenterID) 
                      WHERE psc.Name=:Site
-			            AND s.Active='Y' AND c.Active='Y'",
+			            AND s.Active='Y' AND c.Active='Y' AND c.PSCID!='MTL0000' and c.PSCID NOT LIKE '%MTL999%'",
                     array('Site' => $site)
                 );
                 $this->tpl_data['conflicts_site'] = 'Site: ' . $site;
@@ -160,7 +160,7 @@ class NDB_Form_Dashboard extends NDB_Form
 			LEFT JOIN session s ON (s.ID=flag.SessionID)
 			LEFT JOIN candidate c ON (s.CandID=c.CandID)
 		     WHERE flag.Data_entry='In Progress'
-			AND s.Active='Y' AND c.Active='Y' AND s.CenterID <> 1",
+			AND s.Active='Y' AND c.Active='Y' AND s.CenterID <> 1 AND c.PSCID!='MTL0000' and c.PSCID NOT LIKE '%MTL999%'",
                     array()
                 );
                 $this->tpl_data['incomplete_forms_site'] = 'Site: all';
@@ -171,7 +171,7 @@ class NDB_Form_Dashboard extends NDB_Form
 			LEFT JOIN candidate c ON (s.CandID=c.CandID)
                     LEFT JOIN psc ON (psc.CenterID=s.CenterID) 
                     WHERE Data_entry='In Progress' AND psc.Name=:Site
-			          AND s.Active='Y' AND c.Active='Y'",
+			          AND s.Active='Y' AND c.Active='Y' AND c.PSCID!='MTL0000' and c.PSCID NOT LIKE '%MTL999%'",
                     array('Site' => $site)
                 );
                 $this->tpl_data['incomplete_forms_site'] = 'Site: ' . $site;
@@ -188,7 +188,7 @@ class NDB_Form_Dashboard extends NDB_Form
 			LEFT JOIN session s ON (s.ID=fg.SessionID)
 			LEFT JOIN candidate c ON (c.CandID=s.CandID)
                 WHERE Review_Done IS NULL
-			AND c.Active='Y' AND s.Active='Y'",
+			AND c.Active='Y' AND s.Active='Y' AND c.PSCID!='MTL0000' and c.PSCID NOT LIKE '%MTL999%'",
                 array()
             );
             $this->tpl_data['radiology_review_site'] = 'Site: all';
@@ -277,7 +277,7 @@ class NDB_Form_Dashboard extends NDB_Form
         $DB = Database::singleton();
         $totalRecruitment = $DB->pselectOne(
             "SELECT COUNT(*) FROM candidate c
-             WHERE c.Active='Y' AND c.Entity_type='Human' AND c.CenterID <> 1",
+             WHERE c.Active='Y' AND c.Entity_type='Human' AND c.CenterID <> 1 AND c.PSCID!='MTL0000' and c.PSCID NOT LIKE '%MTL999%'",
             array()
         );
         return $totalRecruitment;
@@ -297,7 +297,7 @@ class NDB_Form_Dashboard extends NDB_Form
             "SELECT COUNT(*)
              FROM candidate c
              WHERE c.Active='Y' AND c.ProjectID=:PID AND c.Entity_type='Human'
-             AND c.CenterID <> 1",
+             AND c.CenterID <> 1 AND c.PSCID!='MTL0000' and c.PSCID NOT LIKE '%MTL999%'",
             array('PID' => $projectID)
         );
         return $totalRecruitment;
@@ -317,7 +317,7 @@ class NDB_Form_Dashboard extends NDB_Form
             "SELECT COUNT(c.CandID)
              FROM candidate c
              WHERE c.Gender=:Gender AND c.Active='Y' AND c.Entity_type='Human'
-             AND c.CenterID <> 1",
+             AND c.CenterID <> 1 AND c.PSCID!='MTL0000' and c.PSCID NOT LIKE '%MTL999%'",
             array('Gender' => $gender)
         );
         return $total;
@@ -339,7 +339,7 @@ class NDB_Form_Dashboard extends NDB_Form
             "SELECT COUNT(c.CandID)
              FROM candidate c
              WHERE c.Gender=:Gender AND c.Active='Y' AND c.ProjectID=:PID
-             AND c.Entity_type='Human' AND c.CenterID <> 1",
+             AND c.Entity_type='Human' AND c.CenterID <> 1 AND c.PSCID!='MTL0000' and c.PSCID NOT LIKE '%MTL999%'",
             array(
              'Gender' => $gender,
              'PID'    => $projectID,
