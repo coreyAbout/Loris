@@ -171,9 +171,8 @@ $(document).ready(function() {
  		<div class="container">
 	 		<div class="navbar-brand">
                 {if $study_logo}
-		 		<img src="{$baseurl}/{$study_logo}" height="57" />
+		 		<img src="{$baseurl}/{$study_logo}" height="69" />
                 {/if}
-		 		{$study_title}
 	 		</div>
 	 	</div>
  	</div>
