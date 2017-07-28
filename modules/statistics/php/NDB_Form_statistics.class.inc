@@ -671,7 +671,7 @@ class NDB_Form_statistics extends NDB_Form
                             END";
         }
         $scan_done = 'T1_Scan_done';
-        $DB->select("SELECT s.SubprojectID,
+        $result = $DB->pselect("SELECT s.SubprojectID,
                             c.CenterID,
                             CASE WHEN length(s.Visit_label) > 2 THEN SUBSTR(s.Visit_label, 4, 2)
                                  WHEN length(s.Visit_label) = 2 THEN s.Visit_label END as VLabel,
@@ -684,7 +684,7 @@ class NDB_Form_statistics extends NDB_Form
                            AND s.Active='Y'
                            AND c.Active='Y'
                            AND m.CommentID NOT LIKE 'DDE%'
-                     GROUP BY Subcat, s.SubprojectID, c.CenterID, VLabel", &$result);
+                     GROUP BY Subcat, s.SubprojectID, c.CenterID, VLabel", array());
         $M_Visits = Utility::getVisitList();
         $this->tpl_data['MRI_Done_Table'] = $this->render_stats_table($MRIHeader, $MRISubcategories, $M_Visits, "mri_type", $MRIOptions, $MRI_Type, $centers, $result, "mri");
 
@@ -747,7 +747,7 @@ class NDB_Form_statistics extends NDB_Form
                     }
 
         // MRI Browser populated, but no MRI parameter form completed.
-        $DB->select("SELECT s.CenterID as CenterID, COUNT(distinct s.ID) as val
+        $result = $DB->pselect("SELECT s.CenterID as CenterID, COUNT(distinct s.ID) as val
                             FROM files LEFT JOIN session s ON (files.SessionID=s.ID)
                             LEFT JOIN flag f on (f.SessionID=s.ID
                                 AND f.Test_name='mri_parameter_form' 
@@ -760,7 +760,7 @@ class NDB_Form_statistics extends NDB_Form
                             AND mpf.CommentID NOT LIKE 'DDE%'
                             AND s.SubprojectID IN ($subprojList)
                             $ExtraProject_Criteria
-                            GROUP BY s.CenterID", $result);
+                            GROUP BY s.CenterID", array());
 
                     foreach($result as $row) {
                         $this->tpl_data['mri_errors'][$row['CenterID']]['no_parameter'] = $row['val'];
