@@ -41,7 +41,7 @@ class NDB_Menu_statistics_dd_site extends NDB_Menu_statistics_site
 
     function __construct()
     {
-        $this->instruments = Utility::getAllInstruments('genetics');
+        $this->instruments = Utility::getAllInstrumentsExcept('genetics');
         foreach($this->instruments as $k=>$v) {
             $this->instruments[$k] = $k;
         }
