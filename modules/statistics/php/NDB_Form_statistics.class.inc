@@ -312,9 +312,9 @@ class NDB_Form_statistics extends NDB_Form
         //START BIG TABLE
         $inst_dropdown   = array_merge(
             array( '' => 'Recruit Breakdown by Sex'),
-            Utility::getAllInstruments()
+            Utility::getAllInstruments('genetics')
         );
-        $instrument_list = Utility::getAllInstruments();
+        $instrument_list = Utility::getAllInstruments('genetics');
         $this->tpl_data['all_instruments'] = $instrument_list;
         if(isset($_REQUEST['DemographicInstrument']) && $_REQUEST['DemographicInstrument'] != '') {
             $Subcategories = array(
