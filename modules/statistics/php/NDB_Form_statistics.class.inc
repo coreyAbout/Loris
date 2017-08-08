@@ -1125,7 +1125,7 @@ class NDB_Form_statistics extends NDB_Form
 						//print_r($comments);
 						$this->tpl_data['feedback_mri_comments'] = $comments;
 
-	} // End function
+	// } // End function
 
         //GET SCAN TYPES
         $Scan_type_results = $DB->pselect(
