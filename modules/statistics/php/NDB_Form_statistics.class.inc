@@ -80,7 +80,7 @@ class NDB_Form_statistics extends NDB_Form
         $DB =& Database::singleton();
         $this->tpl_data['StatsTabs'] = $DB->pselect(
             "SELECT ModuleName, SubModuleName, Description
-                 FROM StatisticsTabs
+                 FROM StatisticsTabs WHERE SubModuleName!='stats_reliability'
                  ORDER BY OrderNo",
             array()
         );
