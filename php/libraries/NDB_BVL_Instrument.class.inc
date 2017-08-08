@@ -1105,6 +1105,7 @@ class NDB_BVL_Instrument extends NDB_Page
                 } else if (substr($elname, -7) != "_status"
                     && !in_array($elname, array("page", "subtest"))
                     && $this->form->form[$elname]['type'] != "file"
+                    && $this->form->form[$elname]['multiple'] != "multiple"
                 ) {
                     $errors[$elname] = "Required.";
                     if ($this->XINDebug) {
