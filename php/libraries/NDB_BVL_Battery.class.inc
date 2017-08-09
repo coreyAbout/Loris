@@ -299,7 +299,7 @@ class NDB_BVL_Battery
                     $query .= " AND b.Timepoint IS NULL";
                 }
         }
-        if(!is_null($stage) && !is_null($stage)) {
+        if(!is_null($stage)) {
             $query .= " AND t.Test_name=b.Test_name AND b.Stage='$stage'";
             if(!is_null($SubprojectID)) {
                 $query .= " AND (b.SubprojectID IS NULL OR b.SubprojectID='$SubprojectID')";
