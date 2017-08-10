@@ -299,6 +299,9 @@ class NDB_BVL_Battery
                     $query .= " AND b.Timepoint IS NULL";
                 }
         }
+        if ($timepoint == '60') {
+                $query .= " AND b.Timepoint = '60'";
+        }
         if(!is_null($stage)) {
             $query .= " AND t.Test_name=b.Test_name AND b.Stage='$stage'";
             if(!is_null($SubprojectID)) {
@@ -520,6 +523,9 @@ class NDB_BVL_Battery
                 } elseif ($timepoint == '00') {
                     $query .= " AND b.Timepoint IS NULL";
                 }
+        }
+        if ($timepoint == '60') {
+                $query .= " AND b.Timepoint = '60'";
         }
         if (!is_null($center_ID)) {
             // return all instruments that match this center or all centers (null)
