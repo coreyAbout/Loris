@@ -247,17 +247,22 @@ foreach ($instruments AS $instrument) {
             } else {
                 $ParameterTypeID = '';
             }
-
+//temporary
+try {
             $error = $DB->insert(
                 "parameter_type",
                 $query_params
             );
+} catch (Exception $e) {
+}
             print_r($error);
             if ($ParameterTypeID === '') {
                 $paramId = $DB->lastInsertID;
             } else {
                 $paramId = $ParameterTypeID;
             }
+//temporary
+try {
             $error = $DB->insert(
                 "parameter_type_category_rel",
                 array(
@@ -265,6 +270,8 @@ foreach ($instruments AS $instrument) {
                  "ParameterTypeCategoryID" => $catId,
                 )
             );
+} catch (Exception $e) {
+}
         }
     }
 
