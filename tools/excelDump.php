@@ -167,9 +167,6 @@ writeExcel($Test_name, $dictionary, $dataDir);
 $Test_name = "ParticipantStatus";
 $query = "select candidate.PSCID, candidate.CandID, naproxen_ITT, naproxen_mITT, MCI_converter, MCI_converter_confirmed_onset, naproxen_treatment_assignment, data_changed_date, data_entry_date, pso.Description as 'Participant Status Description', reason_specify, reason_specify_status, withdrawal_reasons, withdrawal_reasons_other_specify, withdrawal_reasons_other_specify_status, naproxen_eligibility, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_eligibility_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status from participant_status as psh join candidate on (candidate.CandID=psh.CandID) join participant_status_options as pso on (psh.participant_status=pso.ID) where candidate.PSCID not like 'MTL0000' AND candidate.PSCID not like 'MTL999%' " . $wherenofailnowhere . " order by candidate.PSCID asc";
 $DB->select($query, $participantstatus);
-if (PEAR::isError($participantstatus)) {
-        PEAR::raiseError("Could not generate participant status. " . $participantstatus->getMessage());
-}
 writeExcel($Test_name, $participantstatus, $dataDir);
 
 /*
@@ -178,9 +175,6 @@ writeExcel($Test_name, $participantstatus, $dataDir);
 $Test_name = "ParticipantStatusHistory";
 $query = "select candidate.PSCID, candidate.CandID, naproxen_ITT, naproxen_mITT, MCI_converter, MCI_converter_confirmed_onset, naproxen_treatment_assignment, data_changed_date, data_entry_date, pso.Description as 'Participant Status Description', reason_specify, reason_specify_status, withdrawal_reasons, withdrawal_reasons_other_specify, withdrawal_reasons_other_specify_status, naproxen_eligibility, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_eligibility_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status from participant_status_history as psh join candidate on (candidate.CandID=psh.CandID) join participant_status_options as pso on (psh.participant_status=pso.ID) where candidate.PSCID not like 'MTL0000' AND candidate.PSCID not like 'MTL999%' " . $wherenofailnowhere . " order by candidate.PSCID asc";
 $DB->select($query, $participantstatus);
-if (PEAR::isError($participantstatus)) {
-        PEAR::raiseError("Could not generate participant status history. " . $participantstatus->getMessage());
-}
 writeExcel($Test_name, $participantstatus, $dataDir);
 
 /*
@@ -189,9 +183,6 @@ writeExcel($Test_name, $participantstatus, $dataDir);
 $Test_name = "FamilyHistoryADOther";
 $query = "select PSCID, family_history_ad_other.CandID, family_member, parental_side, ad_dementia_age, living_age, death_age, death_cause, death_cause_status from family_history_ad_other join candidate on family_history_ad_other.CandID=candidate.CandID where PSCID not like '%MTL999%' and PSCID not like 'MTL0000' " . $wherenofailnowhere . " order by PSCID";
 $DB->select($query, $familyhistoryadother);
-if (PEAR::isError($familyhistoryadother)) {
-        PEAR::raiseError("Could not generate family history ad other. " . $familyhistoryadother->getMessage());
-}
 writeExcel($Test_name, $familyhistoryadother, $dataDir);
 /*
 * Family History First Degree
@@ -199,9 +190,6 @@ writeExcel($Test_name, $familyhistoryadother, $dataDir);
 $Test_name = "FamilyHistoryFirstDegree";
 $query = "select PSCID, family_history_first_degree.CandID, family_member, living_age, death_age, death_cause, death_cause_status, ad_dementia, ad_dementia_age, diagnosis_history, diagnosis_history_status from family_history_first_degree join candidate on family_history_first_degree.CandID=candidate.CandID where PSCID not like '%MTL999%' and PSCID not like 'MTL0000' " . $wherenofailnowhere . " order by PSCID";
 $DB->select($query, $familyhistoryfirstdegree);
-if (PEAR::isError($familyhistoryfirstdegree)) {
-        PEAR::raiseError("Could not generate family history first degree. " . $familyhistoryfirstdegree->getMessage());
-}
 writeExcel($Test_name, $familyhistoryfirstdegree, $dataDir);
 /*
 * Family History Memory Problem Other
@@ -209,9 +197,6 @@ writeExcel($Test_name, $familyhistoryfirstdegree, $dataDir);
 $Test_name = "FamilyHistoryMemoryProblemOther";
 $query = "select PSCID, family_history_memory_problem_other.CandID, family_member, parental_side, other_memory_problems, other_memory_problems_status, living_age, death_age, death_cause, death_cause_status from family_history_memory_problem_other join candidate on family_history_memory_problem_other.CandID=candidate.CandID where PSCID not like '%MTL999%' and PSCID not like 'MTL0000' " . $wherenofailnowhere . " order by PSCID";
 $DB->select($query, $familyhistorymemoryproblemother);
-if (PEAR::isError($familyhistorymemoryproblemother)) {
-        PEAR::raiseError("Could not generate family history memory problem other. " . $familyhistorymemoryproblemother->getMessage());
-}
 writeExcel($Test_name, $familyhistorymemoryproblemother, $dataDir);
 
 /*
@@ -220,9 +205,6 @@ writeExcel($Test_name, $familyhistorymemoryproblemother, $dataDir);
 $Test_name = "FamilyInformation";
 $query = "select PSCID, family_information.CandID, entry_staff, related_participant_PSCID, related_participant_CandID, related_participant_status_degree, related_participant_status, related_participant_status_specify from family_information join candidate on family_information.CandID=candidate.CandID where PSCID not like '%MTL999%' and PSCID not like 'MTL0000' " . $wherenofailnowhere . " order by PSCID";
 $DB->select($query, $familyinformation);
-if (PEAR::isError($familyinformation)) {
-        PEAR::raiseError("Could not generate family information. " . $familyinformation->getMessage());
-}
 writeExcel($Test_name, $familyinformation, $dataDir);
 
 /*
@@ -231,9 +213,6 @@ writeExcel($Test_name, $familyinformation, $dataDir);
 $Test_name = "DrugCompliance";
 $query = "select PSCID, drug_compliance.CandID, entry_staff, drug, visit_label, drug_issued_date, drug_issued_date_status, pills_issued, pills_issued_status, drug_returned_date, drug_returned_date_status, pills_returned, pills_returned_status, compliance_evaluation, compliance_evaluation_status, behavioral_compliance_evaluation, behavioral_compliance_evaluation_status, comments, comments_status from drug_compliance join candidate on drug_compliance.CandID=candidate.CandID where PSCID not like '%MTL999%' and PSCID not like 'MTL0000' " . $wherenofailnowhere . " order by PSCID";
 $DB->select($query, $drugcompliance);
-if (PEAR::isError($drugcompliance)) {
-        PEAR::raiseError("Could not generate drug compliance. " . $drugcompliance->getMessage());
-}
 writeExcel($Test_name, $drugcompliance, $dataDir);
 
 /*
@@ -242,9 +221,6 @@ writeExcel($Test_name, $drugcompliance, $dataDir);
 $Test_name = "TreatmentDuration";
 $query = "select PSCID, td.CandID, td.Trial, td.treatment_duration from treatment_duration td join candidate using (CandID) where PSCID not like '%MTL999%' and PSCID not like 'MTL0000' " . $wherenofailnowhere . " order by PSCID";
 $DB->select($query, $treatmentduration);
-if (PEAR::isError($treatmentduration)) {
-        PEAR::raiseError("Could not generate treatment duration. " . $treatmentduration->getMessage());
-}
 writeExcel($Test_name, $treatmentduration, $dataDir);
 
  /*
@@ -279,9 +255,6 @@ writeExcel($Test_name, $aps, $dataDir);
 $query = "select * from mri_scan_type order by Scan_type";
 //$query = "select * from test_names where Test_name like 'a%' order by Test_name";  //for rapid testing
 $DB->select($query, $scan_types);
-if (PEAR::isError($scan_types)) {
-        PEAR::raiseError("Couldn't get scan types. " . $scan_types->getMessage());
-}
 //loop through all scan types
 foreach ($scan_types as $scan_type) {
     //Query to pull the data from the DB
@@ -308,9 +281,6 @@ foreach ($scan_types as $scan_type) {
     }
 
     $DB->select($query, $scan_type_table);
-    if (PEAR::isError($scan_type_table)) {
-        print "Cannot pull scan type table data ".$scan_type_table->getMessage()."<br>\n";
-        die();
     }
     MapSubprojectID($scan_type_table);
     writeExcel("mri_feedbacks_$Test_name", $scan_type_table, $dataDir);
