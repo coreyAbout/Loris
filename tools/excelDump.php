@@ -281,7 +281,6 @@ foreach ($scan_types as $scan_type) {
     }
 
     $DB->select($query, $scan_type_table);
-    }
     MapSubprojectID($scan_type_table);
     writeExcel("mri_feedbacks_$Test_name", $scan_type_table, $dataDir);
 }
