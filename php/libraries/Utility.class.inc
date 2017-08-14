@@ -303,7 +303,7 @@ class Utility
                 $query .= "WHERE Study_site='Y' AND Name != 'DCC'";
         }
         else {
-            if (!DCC)
+            if (!$DCC)
                 $query .= "WHERE Name != 'DCC'";
         }
         $DB->select($query, $result);
