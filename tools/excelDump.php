@@ -157,7 +157,7 @@ writeExcel($Test_name, $results, $dataDir);
 * This relies on the quickform_parser and data_dictionary_builder having being recently run
 */
 $Test_name = "DataDictionary";
-$query = "select Name, Type, Description, SourceField, SourceFrom from parameter_type where SourceField is not null order by SourceFrom";
+$query = "select Name, Type, Description, SourceField, SourceFrom from parameter_type where SourceField is not null and SourceFrom not like 'navigational%' and SourceFrom!='tsi' order by SourceFrom";
 $DB->select($query, $dictionary);
 writeExcel($Test_name, $dictionary, $dataDir);
 
