@@ -15,7 +15,7 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once "generic_includes.php";
 require_once "Archive/Tar.php";
-require_once "CouchDB_MRI_Importer.php";
+//require_once "CouchDB_MRI_Importer.php";
 
 //Default values
 $limit_date_instruments = "";
