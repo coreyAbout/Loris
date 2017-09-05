@@ -101,7 +101,7 @@ function MapSubprojectID(&$results) {
 //Get the names of all instrument tables
 //excluding tsi because data is not complete, therefore should not be analyzed
 $query = "select * from test_names where Test_name!='tsi' and Test_name not like 'navigational%' order by Test_name";
-//$query = "select * from test_names where Test_name like 'a%' order by Test_name";  //for rapid testing
+//$query = "select * from test_names where Test_name like 'h%' order by Test_name";  //for rapid testing
 $DB->select($query, $instruments);
 
 foreach ($instruments as $instrument) {
