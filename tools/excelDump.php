@@ -28,7 +28,7 @@ $wherenofailnowhere = "";
 //Handling arguments passed in
 if (!empty($argv)) {
     foreach ($argv as $arg) {
-        list($y, $m, $d) = explode("-", $arg);
+        list($y, $m, $d) = array_map('intval', explode("-", $arg));
         if ($arg == 'nofail') {
             $apsnofail = " WHERE session.Visit!='Failure' ";
             $nofail = " AND s.Visit!='Failure' ";
