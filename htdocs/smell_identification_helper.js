@@ -1,6 +1,8 @@
 window.onload = function () {
 
   var count = 0;
+  var yearError = false;
+  var postalError = false;
 
   document.getElementsByName('fire_away')[0].onclick = function() {
 
@@ -34,6 +36,32 @@ window.onload = function () {
       return false;
     }
 
+    if (yearError || postalError) {
+      return false;
+    }
+
   };
+
+  $('input[name*=exposure_year]').change(function() {
+
+    if (!/^(19[0-9]\d|200\d|201[0-7])$/.test(this.value)) {
+      $(this).after('<p><font color="red">Please fix this value.</font></p>');
+      yearError = true;
+    } else {
+      yearError = false;
+    }
+
+  });
+
+  $('input[name*=exposure_postal]').change(function() {
+
+    if (!/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]( )?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i.test(this.value)) {
+      $(this).after('<p><font color="red">Please fix this value.</font></p>');
+      postalError = true;
+    } else {
+      postalError = false;
+    }
+
+  });
 
 }
