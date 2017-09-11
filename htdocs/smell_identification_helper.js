@@ -53,7 +53,7 @@ window.onload = function () {
 
   });
 
-  $('input[name*=exposure_postal]').change(function() {
+/*  $('input[name*=exposure_postal]').change(function() {
 
     if (!/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]( )?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i.test(this.value)) {
       $(this).after('<p><font color="red">Please fix this value.</font></p>');
@@ -63,5 +63,6 @@ window.onload = function () {
     }
 
   });
+*/
 
 }
