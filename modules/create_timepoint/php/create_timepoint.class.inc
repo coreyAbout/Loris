@@ -77,7 +77,7 @@ class Create_Timepoint extends \NDB_Form
         $success = \TimePoint::createNew(
             $this->identifier,
             $values['subprojectID'],
-            $concatTimePoint
+            $concatTimePoint,
             $values['psc']
         );
 
@@ -249,7 +249,6 @@ class Create_Timepoint extends \NDB_Form
     {
         $errors = array();
 
-<<<<<<< HEAD
         // This can happen if the user quickly clicks "Create Time Point" before the
         // page has loaded and the Visit Label dropdown hasn't been selected yet.
         // The page will create "V1" when this is the case without this check.
