@@ -412,17 +412,43 @@ class CouchDBDemographicsImporter {
         $config = NDB_Config::singleton();
         $fieldsInQuery = "SELECT withdrawal_reasons, naproxen_eligibility, naproxen_eligibility_status, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status, probucol_eligibility, probucol_eligibility_status, probucol_eligibility_reason_specify, probucol_eligibility_reason_specify_status, probucol_excluded_reason_specify, probucol_excluded_reason_specify_status, probucol_withdrawal_reasons, probucol_withdrawal_reasons_other_specify, probucol_withdrawal_reasons_other_specify_status, naproxen_ITT, naproxen_mITT, MCI_converter, MCI_converter_confirmed_onset, naproxen_treatment_assignment, ps.entry_staff, ps.data_changed_date, ps.data_entry_date, pso.description,ps.reason_specify, ps.reason_specify_status, ps.withdrawal_reasons_other_specify, ps.withdrawal_reasons_other_specify_status, scan_done, ApoE, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Technicien_M, Method_M, Reference_M, TLR4_rs_4986790, TLR4_allele_no, Technicien_TLR4, Method_TLR4, Reference_TLR4, PPP2r1A_rs_10406151, ppp2r1A_allele_no, ppp2r1A_copie_no, Technicien_ppp2r1a, Method_ppp2r1a, Reference_ppp2r1a, CDK5RAP2_rs10984186, CDK5RAP2_rs10984186_allele_no, CDK5RAP2_rs10984186_allele_bin, Technicien_CDK5RAP2, Method_CDK5RAP2, Reference_CDK5RAP2, g.comments, dna_collected_eligibility, dna_request_destroy, dna_destroy_date, dna_destroy_date_status, c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, c.Mother_tongue, c.DoB, s.Current_stage, s.Visit, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status";
         $tablesToJoin = " FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) LEFT JOIN participant_status ps ON c.CandID=ps.CandID LEFT JOIN participant_status_options as pso ON ps.participant_status=pso.ID LEFT JOIN genetics as g ON g.PSCID=c.PSCID";
+/*        $groupBy=" GROUP BY s.ID, 
+                            c.DoB,
+							c.CandID, 
+                            c.PSCID, 
+                            s.Visit_label, 
+                            s.SubprojectID, 
+                            Site, 
+                            c.Gender, 
+                            s.Current_stage,
+                            Failure,
+                            c.ProjectID, 
+                            CEF, 
+                            CEF_reason, 
+                            CEF_comment, 
+                            pc_comment.Value, 
+                            pso.Description, 
+                            ps.participant_suboptions, 
+                            ps.reason_specify, 
+                            ps.study_consent, 
+                            Study_consent_withdrawal
+                            ";
+*/
         // If proband fields are being used, add proband information into the query
         if ($config->getSetting("useProband") === "true") {
             $probandFields = ", c.ProbandGender as Gender_proband, ROUND(DATEDIFF(c.DoB, c.ProbandDoB) / (365/12)) AS Age_difference";
             $fieldsInQuery .= $probandFields;
+            $groupBy .= ", c.ProbandGender, Age_difference";
         }
         // If expected date of confinement is being used, add EDC information into the query
         if ($config->getSetting("useEDC") === "true") {
             $EDCFields = ", c.EDC as EDC";
             $fieldsInQuery .= $EDCFields;
+            $groupBy .= ", c.EDC";
         }
-        $concatQuery = $fieldsInQuery . $tablesToJoin . " WHERE s.Active='Y' AND c.Active='Y' AND c.Entity_type != 'Scanner'";
+        $whereClause=" WHERE s.Active='Y' AND c.Active='Y' AND c.Entity_type != 'Scanner'";
+
+        $concatQuery = $fieldsInQuery . $tablesToJoin . $whereClause . $groupBy;
         return $concatQuery;
     }
 
@@ -476,6 +502,7 @@ class CouchDBDemographicsImporter {
         print "Updating Config:BaseConfig: $config";
 
         // Run query
+        $max_len = $this->SQLDB->run("SET SESSION group_concat_max_len = 100000;", array());
         $demographics = $this->SQLDB->pselect($this->_generateQuery(), array());
 
         $this->CouchDB->beginBulkTransaction();

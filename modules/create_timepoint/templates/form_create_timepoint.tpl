@@ -23,6 +23,12 @@
 		<label class="col-sm-2">Subproject</label>
 		<div class="col-sm-2">{$form.subprojectID.html}</div>
 	</div>
+    {if $pscLabelAdded}
+	    <div class="form-group col-sm-12">
+		    <label class="col-sm-2">{$form.psc.label}</label>
+		    <div class="col-sm-2">{$form.psc.html}</div>
+	    </div>
+    {/if}
 	<div class="form-group col-sm-12">
 		<label class="col-sm-2">Cohort</label>
 		<div class="col-sm-2">{$form.visitLabel1.html}</div>

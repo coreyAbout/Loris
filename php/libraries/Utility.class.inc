@@ -24,6 +24,13 @@
 class Utility
 {
     /**
+     * Stops anyone from instantiating an instance of Utility
+     */
+    private function __construct()
+    {
+    }
+
+    /**
      * This is identical to PEAR::isError from PEAR only the function
      * has the static keyword. This is required because PEAR::isError
      * being called staticly throws a warning in newer versions of PHP
@@ -93,13 +100,15 @@ class Utility
      *
      * @param array $array The multi-dimensional array
      *
-     * @return  string
-     * @cleanup Determine if this is still used.
+     * @return string
+     *
+     * @deprecated
      */
-    function reduce($array)
+    static function reduce($array)
     {
-        $string = array_reduce($array, array('Utility', 'crunch'));
-        return (!empty($string)) ? explode('`', $string) : array();
+        throw new DeprecatedException(
+            "Utility::reduce has been deprecated."
+        );
     }
     /**
      * Implodes a multi-dimensional array using array_reduce()
@@ -109,14 +118,15 @@ class Utility
      *
      * @note If any element of the array contains a backtick, you'll run into trouble
      *
-     * @return  string
-     * @cleanup Determine if this is still used.
+     * @return string
+     *
+     * @deprecated
      */
-    function crunch($x, $y)
+    static function crunch($x, $y)
     {
-        $a = (is_array($x)) ? array_reduce($x, array('Utility', 'crunch')) : $x;
-        $b = (is_array($y)) ? array_reduce($y, array('Utility', 'crunch')) : $y;
-        return (!empty($a)) ? "$a`$b" : $b;
+        throw new DeprecatedException(
+            "Utility::crunch has been deprecated."
+        );
     }
 
 
@@ -265,11 +275,11 @@ class Utility
      * @note    This is no longer used and should be removed
      * @cleanup
      */
-    function getListOfSubjectEthnicities()
+    static function getListOfSubjectEthnicities()
     {
         $DB =& Database::singleton();
         // get the list of ethnicities
-        $query = "SELECT DISTINCT Ethnicity 
+        $query = "SELECT DISTINCT Ethnicity
             FROM candidate
             WHERE Ethnicity NOT IN (NULL, '')
             ORDER BY Ethnicity";
@@ -533,9 +543,9 @@ class Utility
     {
         $DB =& Database::singleton();
         // craft the select query
-        $query  = "SELECT t.Test_name FROM test_battery AS b, test_names AS t 
-            WHERE t.Test_name=b.Test_name 
-            AND b.AgeMinDays<=:CandAge AND b.AgeMaxDays>=:CandAge 
+        $query  = "SELECT t.Test_name FROM test_battery AS b, test_names AS t
+            WHERE t.Test_name=b.Test_name
+            AND b.AgeMinDays<=:CandAge AND b.AgeMaxDays>=:CandAge
             AND b.Active='Y'";
         $params = array('CandAge' => $age);
         if (!is_null($stage)) {
@@ -571,7 +581,7 @@ class Utility
      */
     static function toArray($var)
     {
-        if (!isset($var[0])) {
+        if (is_array($var) && !array_key_exists(0, $var)) {
             $var = array($var);
         }
         return $var;
@@ -611,7 +621,7 @@ class Utility
      *       by NDB_Form_candidate_parameters and if so, should be moved there.
      * @cleanup
      */
-    function explodeEncapsulated($seperator, $delimiter, $string)
+    static function explodeEncapsulated($seperator, $delimiter, $string)
     {
         $state        =0;
         $output       =$string;
@@ -650,7 +660,7 @@ class Utility
      * @note    This function does not appear to be used anymore.
      * @cleanup
      */
-    function arrayMergeKeepKeys()
+    static function arrayMergeKeepKeys()
     {
         $arg_list = func_get_args();
         foreach ((array)$arg_list as $arg) {
@@ -727,7 +737,7 @@ class Utility
      * @note    Function should be removed and code using it cleaned up.
      * @cleanup
      */
-    function flatten($Arr)
+    static function flatten($Arr)
     {
         return $Arr['Test_name'];
     }
@@ -754,7 +764,7 @@ class Utility
      * @note    Function should be removed and code using it cleaned up.
      * @cleanup
      */
-    function flattenFull($Arr)
+    static function flattenFull($Arr)
     {
         return $Arr['Full_name'];
     }
@@ -947,7 +957,7 @@ class Utility
             JOIN flag f ON (s.ID = f.SessionID)
             JOIN candidate c ON (c.Candid = s.Candid)
             JOIN psc ON (s.CenterID = psc.CenterID)
-            WHERE s.Active = 'Y' AND c.Active= 'Y' 
+            WHERE s.Active = 'Y' AND c.Active= 'Y'
             AND f.Test_name = :tn AND psc.Centerid!= '1'";
         $visitlabels = $db->pselect($query, array('tn' => $test_name));
         return $visitlabels;
@@ -1162,7 +1172,7 @@ class Utility
                 array('cid' => $commentID)
             );
             $sourcefields = $DB->pselect(
-                "SELECT SourceField, Name FROM parameter_type 
+                "SELECT SourceField, Name FROM parameter_type
                 WHERE queryable = '1' AND sourcefrom = :instrument
                 ORDER BY Name",
                 array('instrument' => $instrument)
@@ -1194,9 +1204,11 @@ class Utility
     {
         $factory = NDB_Factory::singleton();
         $db      = $factory->database();
+        $qparams = array();
         if ($projectID != null) {
             $ExtraProject_Criteria
-                = ' AND (c.ProjectID IS NULL OR c.ProjectID=' . $projectID . ')';
+                = ' AND (c.ProjectID IS NULL OR c.ProjectID=:ProjectID)';
+            $qparams["ProjectID"]  = $projectID;
         } else {
             $ExtraProject_Criteria ='';
         }
@@ -1208,7 +1220,7 @@ class Utility
             AND c.Entity_type != 'Scanner'
             AND psc.CenterID!= '1'
             $ExtraProject_Criteria ORDER BY Visit_label";
-        $visitlabels = $db->pselect($query, array());
+        $visitlabels = $db->pselect($query, $qparams);
         $visits      = array();
         for ($i = 0; $i < count($visitlabels); $i++) {
             $visits[$visitlabels[$i]['Visit_label']]
@@ -1237,7 +1249,7 @@ class Utility
 
         if ($DB->ColumnExists('test_battery', 'Test_name_display')) {
             $test_names = $DB->pselect(
-                "SELECT DISTINCT Test_name_display FROM test_battery 
+                "SELECT DISTINCT Test_name_display FROM test_battery
                 WHERE Visit_label=:vl",
                 array('vl' => $visit_label)
             );
@@ -1248,7 +1260,7 @@ class Utility
                 JOIN psc ON (s.CenterID = psc.CenterID)
                 JOIN flag f ON (f.sessionid=s.id)
                 JOIN test_names t ON (f.test_name=t.Test_name)
-                WHERE c.Active='Y' AND s.Active='Y' AND s.Visit_label =:vl 
+                WHERE c.Active='Y' AND s.Active='Y' AND s.Visit_label =:vl
                 AND psc.CenterID != '1' AND c.Entity_type != 'Scanner'
                 ORDER BY t.Full_name",
                 array('vl' => $visit_label)
@@ -1338,7 +1350,7 @@ class Utility
      *
      * @return True if the date is invalid, false if it's valid.
      */
-    function _checkDate($dateElement)
+    static function _checkDate($dateElement)
     {
         if (empty($dateElement['M'])
             && empty($dateElement['d'])

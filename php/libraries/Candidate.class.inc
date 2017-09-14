@@ -87,7 +87,8 @@ class Candidate
         $db = $factory->database();
 
         // get candidate data from database
-        $query = "SELECT c.CenterID, c.CandID, c.PSCID, c.DoB, c.EDC, c.Gender,
+        $query = "SELECT c.CenterID, c.CandID, c.PSCID, c.DoB, 
+            c.EDC, c.Gender, c.Entity_type,
             p.Name AS PSC, c.Ethnicity,
             c.Active, u1.Real_name as RegisteredBy, c.UserID, c.ProjectID
             FROM candidate as c
@@ -740,6 +741,13 @@ class Candidate
                 $pscid = Candidate::generateRandomStringFromArrays($pscidArrays);
             }
 
+            if ($pscid == '') {
+                throw new LorisException(
+                    "Well this is embarrassing, our automated PSCID generator "
+                    . "is about to enter an infinite loop."
+                );
+            }
+
             // check if the pscid is used
         } while (
             $db->pselectOne(
@@ -884,6 +892,14 @@ class Candidate
     static function generateArrays($idStructure, $siteAbbrev=null)
     {
         $idStructure = $idStructure['structure']['seq'];
+
+        if (!$idStructure[0]) {
+            // There's only one seq tag so the param format
+            // needs to be fixed
+            $temp        = array();
+            $temp[]      = $idStructure;
+            $idStructure = $temp;
+        }
 
         $arrays = array();
         foreach ($idStructure AS $seq) {
