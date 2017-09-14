@@ -438,13 +438,13 @@ class CouchDBDemographicsImporter {
         if ($config->getSetting("useProband") === "true") {
             $probandFields = ", c.ProbandGender as Gender_proband, ROUND(DATEDIFF(c.DoB, c.ProbandDoB) / (365/12)) AS Age_difference";
             $fieldsInQuery .= $probandFields;
-            $groupBy .= ", c.ProbandGender, Age_difference";
+//            $groupBy .= ", c.ProbandGender, Age_difference";
         }
         // If expected date of confinement is being used, add EDC information into the query
         if ($config->getSetting("useEDC") === "true") {
             $EDCFields = ", c.EDC as EDC";
             $fieldsInQuery .= $EDCFields;
-            $groupBy .= ", c.EDC";
+//            $groupBy .= ", c.EDC";
         }
         $whereClause=" WHERE s.Active='Y' AND c.Active='Y' AND c.Entity_type != 'Scanner'";
 
