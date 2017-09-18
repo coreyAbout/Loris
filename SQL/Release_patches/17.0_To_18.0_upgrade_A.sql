@@ -1,4 +1,17 @@
 WARNINGS;
+CREATE TABLE `certification` (
+  `certID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `examinerID` int(10) unsigned NOT NULL DEFAULT '0',
+  `date_cert` date DEFAULT NULL,
+  `visit_label` varchar(255) DEFAULT NULL,
+  `testID` int(10) UNSIGNED NOT NULL,
+  `pass` enum('not_certified','in_training','certified') DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`certID`,`testID`),
+  CONSTRAINT `FK_certifcation_1` FOREIGN KEY (`testID`) REFERENCES `test_names` (`ID`),
+  CONSTRAINT `FK_certifcation_2` FOREIGN KEY (`examinerID`) REFERENCES `examiners` (`examinerID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `user_psc_rel` (
   `UserID` int(10) unsigned NOT NULL,
   `CenterID` tinyint(2) unsigned NOT NULL,
