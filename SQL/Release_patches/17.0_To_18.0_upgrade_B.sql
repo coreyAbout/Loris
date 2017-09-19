@@ -1,3 +1,17 @@
+drop table permissions_category;
+
+CREATE TABLE `permissions_category` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `Description` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `permissions_category` VALUES 
+  (1,'Roles'),
+  (2,'Permission');
+
+
 ALTER TABLE users DROP COLUMN Password_md5;-- This script put all unique records from LorisMenuPermissions in a
 -- temporary table before adding foreign keys and unique constraint
 -- to the table.
