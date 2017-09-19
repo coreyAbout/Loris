@@ -1,5 +1,10 @@
 drop table permissions_category;
 
+CREATE TABLE `project_rel` (
+	  `ProjectID` int(2) DEFAULT NULL,
+	  `SubprojectID` int(2) DEFAULT NULL
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `permissions_category` (
   `ID` int(10) NOT NULL AUTO_INCREMENT,
   `Description` varchar(255) NOT NULL,
