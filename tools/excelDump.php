@@ -21,25 +21,35 @@ require_once "Archive/Tar.php";
 $limit_date_instruments = "";
 $limit_date = "";
 $limit_date_candidates = "";
-$nofail = "";
+$nofail = " AND s.Visit_label NOT LIKE 'MCI%' AND s.Visit_label NOT LIKE 'CTL%' ";
+$candidate_nofail = false;
 $wherenofail = "";
 $wherenofailnowhere = "";
+$apsnofail = " WHERE session.Visit_label NOT LIKE 'MCI%' AND session.Visit_label NOT LIKE 'CTL%' ";
 
 //Handling arguments passed in
 if (!empty($argv)) {
     foreach ($argv as $arg) {
         list($y, $m, $d) = array_map('intval', explode("-", $arg));
         if ($arg == 'nofail') {
-            $apsnofail = " WHERE session.Visit!='Failure' ";
-            $nofail = " AND s.Visit!='Failure' ";
-            $wherenofail = " WHERE candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') ";
-            $wherenofailnowhere = " AND candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') ";
+            $apsnofail = $apsnofail . " AND session.Visit!='Failure' ";
+            $nofail = $nofail . " AND s.Visit!='Failure' ";
+            $candidate_nofail = true;
+            $wherenofail = " WHERE candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE (session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') OR session.Visit_label LIKE 'CTL%') ";
+            $wherenofailnowhere = " AND candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE (session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') OR session.Visit_label LIKE 'CTL%') ";
         } elseif (checkdate($m, $d, $y)) {
             $limit_date_instruments = " AND i.Date_taken <= '{$arg}' ";
             $limit_date = " AND mad.AcquisitionDate <= '{$arg}' ";
             $limit_date_candidates = " AND s.Date_visit <= '{$arg}' ";
         }
     }
+}
+
+if ($wherenofail == "") {
+    $wherenofail = " WHERE candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit_label LIKE 'CTL%') ";
+}
+if ($wherenofailnowhere == "") {
+    $wherenofailnowhere = " AND candidate.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit_label LIKE 'CTL%') ";
 }
 
 //Configuration variables for this script, possibly installation dependent.
@@ -158,10 +168,10 @@ foreach ($instruments as $instrument) {
 */
 $Test_name = "candidate_info";
 //this query is a but clunky, but it gets rid of all the crap that would otherwise appear.
-if (!empty($nofail)) {
-    $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . $nofail . " order by c.PSCID";
+if ($candidate_nofail) {
+    $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . " AND c.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE (session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') OR session.Visit_label LIKE 'CTL%') order by c.PSCID";
 } else {
-    $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . $nofail . " AND c.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') order by c.PSCID";
+    $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . " AND c.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit_label LIKE 'CTL%') order by c.PSCID";
 }
 $DB->select($query, $results);
 MapSubprojectID($results);
@@ -180,7 +190,7 @@ writeExcel($Test_name, $dictionary, $dataDir);
 * Participant Status
 */
 $Test_name = "ParticipantStatus";
-$query = "select candidate.PSCID, candidate.CandID, naproxen_ITT, naproxen_mITT, MCI_converter, MCI_converter_confirmed_onset, naproxen_treatment_assignment, data_changed_date, data_entry_date, pso.Description as 'Participant Status Description', reason_specify, reason_specify_status, withdrawal_reasons, withdrawal_reasons_other_specify, withdrawal_reasons_other_specify_status, naproxen_eligibility, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_eligibility_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status from participant_status as psh join candidate on (candidate.CandID=psh.CandID) join participant_status_options as pso on (psh.participant_status=pso.ID) where candidate.PSCID not like 'MTL0000' AND candidate.PSCID not like 'MTL999%' " . $wherenofailnowhere . " order by candidate.PSCID asc";
+$query = "select candidate.PSCID, candidate.CandID, naproxen_ITT, naproxen_mITT, MCI_converter, MCI_converter_confirmed_onset, naproxen_treatment_assignment, data_changed_date, data_entry_date, pso.Description as 'Participant Status Description', reason_specify, reason_specify_status, withdrawal_reasons, withdrawal_reasons_other_specify, withdrawal_reasons_other_specify_status, naproxen_eligibility, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_eligibility_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status, probucol_eligibility, probucol_eligibility_status, probucol_eligibility_reason_specify, probucol_eligibility_reason_specify_status, probucol_excluded_reason_specify, probucol_excluded_reason_specify_status, probucol_withdrawal_reasons, probucol_withdrawal_reasons_other_specify, probucol_withdrawal_reasons_other_specify_status, mci_eligibility, mci_eligibility_reason_specify, mci_eligibility_reason_specify_status, mci_eligibility_status, mci_excluded_reason_specify, mci_excluded_reason_specify_status, mci_withdrawal_reasons, mci_withdrawal_reasons_other_specify, mci_withdrawal_reasons_other_specify_status from participant_status as psh join candidate on (candidate.CandID=psh.CandID) join participant_status_options as pso on (psh.participant_status=pso.ID) where candidate.PSCID not like 'MTL0000' AND candidate.PSCID not like 'MTL999%' " . $wherenofailnowhere . " order by candidate.PSCID asc";
 $DB->select($query, $participantstatus);
 writeExcel($Test_name, $participantstatus, $dataDir);
 
@@ -188,7 +198,7 @@ writeExcel($Test_name, $participantstatus, $dataDir);
 * Participant Status History
 */
 $Test_name = "ParticipantStatusHistory";
-$query = "select candidate.PSCID, candidate.CandID, naproxen_ITT, naproxen_mITT, MCI_converter, MCI_converter_confirmed_onset, naproxen_treatment_assignment, data_changed_date, data_entry_date, pso.Description as 'Participant Status Description', reason_specify, reason_specify_status, withdrawal_reasons, withdrawal_reasons_other_specify, withdrawal_reasons_other_specify_status, naproxen_eligibility, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_eligibility_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status from participant_status_history as psh join candidate on (candidate.CandID=psh.CandID) join participant_status_options as pso on (psh.participant_status=pso.ID) where candidate.PSCID not like 'MTL0000' AND candidate.PSCID not like 'MTL999%' " . $wherenofailnowhere . " order by candidate.PSCID asc";
+$query = "select candidate.PSCID, candidate.CandID, naproxen_ITT, naproxen_mITT, MCI_converter, MCI_converter_confirmed_onset, naproxen_treatment_assignment, data_changed_date, data_entry_date, pso.Description as 'Participant Status Description', reason_specify, reason_specify_status, withdrawal_reasons, withdrawal_reasons_other_specify, withdrawal_reasons_other_specify_status, naproxen_eligibility, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_eligibility_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status, probucol_eligibility, probucol_eligibility_status, probucol_eligibility_reason_specify, probucol_eligibility_reason_specify_status, probucol_excluded_reason_specify, probucol_excluded_reason_specify_status, probucol_withdrawal_reasons, probucol_withdrawal_reasons_other_specify, probucol_withdrawal_reasons_other_specify_status, mci_eligibility, mci_eligibility_reason_specify, mci_eligibility_reason_specify_status, mci_eligibility_status, mci_excluded_reason_specify, mci_excluded_reason_specify_status, mci_withdrawal_reasons, mci_withdrawal_reasons_other_specify, mci_withdrawal_reasons_other_specify_status from participant_status_history as psh join candidate on (candidate.CandID=psh.CandID) join participant_status_options as pso on (psh.participant_status=pso.ID) where candidate.PSCID not like 'MTL0000' AND candidate.PSCID not like 'MTL999%' " . $wherenofailnowhere . " order by candidate.PSCID asc";
 $DB->select($query, $participantstatus);
 writeExcel($Test_name, $participantstatus, $dataDir);
 
