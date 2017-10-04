@@ -166,6 +166,42 @@ class CouchDBDemographicsImporter {
             'Description' => 'Probucol Withdrawal Reason Other status',
             'Type' => "enum('not_answered')"
         ),
+        'mci_eligibility' => array(
+            'Description' => 'MCI Eligibility',
+            'Type' => "enum('yes','no')"
+        ),
+        'mci_eligibility_status' => array(
+            'Description' => 'MCI Eligibility Status',
+            'Type' => "enum('active','stop_medication_active','withdrawn','excluded','death','completed','stop_medication_completed')"
+        ),
+        'mci_eligibility_reason_specify' => array(
+            'Description' => 'MCI Eligibility Reason',
+            'Type' => "text"
+        ),
+        'mci_eligibility_reason_specify_status' => array(
+            'Description' => 'MCI Eligibility Reason status',
+            'Type' => "enum('not_answered')"
+        ),
+        'mci_excluded_reason_specify' => array(
+            'Description' => 'MCI Excluded Reason',
+            'Type' => "text"
+        ),
+        'mci_excluded_reason_specify_status' => array(
+            'Description' => 'MCI Excluded Reason status',
+            'Type' => "enum('not_answered')"
+        ),
+        'mci_withdrawal_reasons' => array(
+            'Description' => 'MCI Withdrawal Reason',
+            'Type' => "enum('1_voluntary_withdrawal','2_recommended_withdrawal','3_lost_follow_up','4_other')"
+        ),
+        'mci_withdrawal_reasons_other_specify' => array(
+            'Description' => 'MCI Withdrawal Reason Other',
+            'Type' => "text"
+        ),
+        'mci_withdrawal_reasons_other_specify_status' => array(
+            'Description' => 'MCI Withdrawal Reason Other status',
+            'Type' => "enum('not_answered')"
+        ),
         'naproxen_ITT' => array(
             'Description' => 'Naproxen ITT',
             'Type' => "enum('yes','no')"
@@ -410,7 +446,7 @@ class CouchDBDemographicsImporter {
 
     function _generateQuery() {
         $config = NDB_Config::singleton();
-        $fieldsInQuery = "SELECT withdrawal_reasons, naproxen_eligibility, naproxen_eligibility_status, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status, probucol_eligibility, probucol_eligibility_status, probucol_eligibility_reason_specify, probucol_eligibility_reason_specify_status, probucol_excluded_reason_specify, probucol_excluded_reason_specify_status, probucol_withdrawal_reasons, probucol_withdrawal_reasons_other_specify, probucol_withdrawal_reasons_other_specify_status, naproxen_ITT, naproxen_mITT, MCI_converter, MCI_converter_confirmed_onset, naproxen_treatment_assignment, ps.entry_staff, ps.data_changed_date, ps.data_entry_date, pso.description,ps.reason_specify, ps.reason_specify_status, ps.withdrawal_reasons_other_specify, ps.withdrawal_reasons_other_specify_status, scan_done, ApoE, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Technicien_M, Method_M, Reference_M, TLR4_rs_4986790, TLR4_allele_no, Technicien_TLR4, Method_TLR4, Reference_TLR4, PPP2r1A_rs_10406151, ppp2r1A_allele_no, ppp2r1A_copie_no, Technicien_ppp2r1a, Method_ppp2r1a, Reference_ppp2r1a, CDK5RAP2_rs10984186, CDK5RAP2_rs10984186_allele_no, CDK5RAP2_rs10984186_allele_bin, Technicien_CDK5RAP2, Method_CDK5RAP2, Reference_CDK5RAP2, g.comments, dna_collected_eligibility, dna_request_destroy, dna_destroy_date, dna_destroy_date_status, c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, c.Mother_tongue, c.DoB, s.Current_stage, s.Visit, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status";
+        $fieldsInQuery = "SELECT withdrawal_reasons, naproxen_eligibility, naproxen_eligibility_status, naproxen_eligibility_reason_specify, naproxen_eligibility_reason_specify_status, naproxen_excluded_reason_specify, naproxen_excluded_reason_specify_status, naproxen_withdrawal_reasons, naproxen_withdrawal_reasons_other_specify, naproxen_withdrawal_reasons_other_specify_status, probucol_eligibility, probucol_eligibility_status, probucol_eligibility_reason_specify, probucol_eligibility_reason_specify_status, probucol_excluded_reason_specify, probucol_excluded_reason_specify_status, probucol_withdrawal_reasons, probucol_withdrawal_reasons_other_specify, probucol_withdrawal_reasons_other_specify_status, mci_eligibility, mci_eligibility_reason_specify, mci_eligibility_reason_specify_status, mci_eligibility_status, mci_excluded_reason_specify, mci_excluded_reason_specify_status, mci_withdrawal_reasons, mci_withdrawal_reasons_other_specify, mci_withdrawal_reasons_other_specify_status, naproxen_ITT, naproxen_mITT, MCI_converter, MCI_converter_confirmed_onset, naproxen_treatment_assignment, ps.entry_staff, ps.data_changed_date, ps.data_entry_date, pso.description,ps.reason_specify, ps.reason_specify_status, ps.withdrawal_reasons_other_specify, ps.withdrawal_reasons_other_specify_status, scan_done, ApoE, apoE_allele_no, E4_allele_Bin, Technicien_ApoE, Method_ApoE, Reference_ApoE, BchE_K_variant, K_variant_copie_no, K_variant_bin, Technicien_BchE, Method_BchE, Reference_BchE, BDNF, BDNF_allele_no, BDNF_copie_bin, Technicien_BDNF, Method_BDNF, Reference_BDNF, HMGR_Intron_M, Intron_M_allele_no, Technicien_M, Method_M, Reference_M, TLR4_rs_4986790, TLR4_allele_no, Technicien_TLR4, Method_TLR4, Reference_TLR4, PPP2r1A_rs_10406151, ppp2r1A_allele_no, ppp2r1A_copie_no, Technicien_ppp2r1a, Method_ppp2r1a, Reference_ppp2r1a, CDK5RAP2_rs10984186, CDK5RAP2_rs10984186_allele_no, CDK5RAP2_rs10984186_allele_bin, Technicien_CDK5RAP2, Method_CDK5RAP2, Reference_CDK5RAP2, g.comments, dna_collected_eligibility, dna_request_destroy, dna_destroy_date, dna_destroy_date_status, c.CandID, c.PSCID, s.Visit_label, s.SubprojectID, p.Alias as Site, c.Gender, c.Mother_tongue, c.DoB, s.Current_stage, s.Visit, CASE WHEN s.Visit='Failure' THEN 'Failure' WHEN s.Screening='Failure' THEN 'Failure' WHEN s.Visit='Withdrawal' THEN 'Withdrawal' WHEN s.Screening='Withdrawal' THEN 'Withdrawal' ELSE 'Neither' END as Failure, c.ProjectID, pso.Description as Status";
         $tablesToJoin = " FROM session s JOIN candidate c USING (CandID) LEFT JOIN psc p ON (p.CenterID=s.CenterID) LEFT JOIN parameter_type pt_plan ON (pt_plan.Name='candidate_plan') LEFT JOIN parameter_candidate AS pc_plan ON (pc_plan.CandID=c.CandID AND pt_plan.ParameterTypeID=pc_plan.ParameterTypeID) LEFT JOIN participant_status ps ON c.CandID=ps.CandID LEFT JOIN participant_status_options as pso ON ps.participant_status=pso.ID LEFT JOIN genetics as g ON g.PSCID=c.PSCID";
 /*        $groupBy=" GROUP BY s.ID, 
                             c.DoB,
@@ -634,6 +670,42 @@ class CouchDBDemographicsImporter {
                            'Description' => "Probucol Withdrawal Reason Other status history " . $entries,
                            'Type'        => "enum('not_answered')",
                     );
+                    $this->Dictionary["mci_eligibility_history_" . $entries] = array(
+                           'Description' => "MCI Eligibility history " . $entries,
+                           'Type'        => "enum('yes','no')",
+                    );
+                    $this->Dictionary["mci_eligibility_reason_specify_history_" . $entries] = array(
+                           'Description' => "MCI Eligibility Reason history " . $entries,
+                           'Type'        => "text",
+                    );
+                    $this->Dictionary["mci_eligibility_reason_specify_status_history_" . $entries] = array(
+                           'Description' => "MCI Eligibility Reason status history " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $this->Dictionary["mci_eligibility_status_history_" . $entries] = array(
+                           'Description' => "MCI Eligibility Status history " . $entries,
+                           'Type'        => "enum('active','stop_medication_active','withdrawn','excluded','death','completed','stop_medication_completed')",
+                    );
+                    $this->Dictionary["mci_excluded_reason_specify_history_" . $entries] = array(
+                           'Description' => "MCI Excluded Reason history " . $entries,
+                           'Type'        => "text",
+                    );
+                    $this->Dictionary["mci_excluded_reason_specify_status_history_" . $entries] = array(
+                           'Description' => "MCI Excluded Reason status history " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
+                    $this->Dictionary["mci_withdrawal_reasons_history_" . $entries] = array(
+                           'Description' => "MCI Withdrawal Reason history " . $entries,
+                           'Type'        => "enum('1_voluntary_withdrawal','2_recommended_withdrawal','3_lost_follow_up','4_other')",
+                    );
+                    $this->Dictionary["mci_withdrawal_reasons_other_specify_history_" . $entries] = array(
+                           'Description' => "MCI Withdrawal Reason Other history " . $entries,
+                           'Type'        => "text",
+                    );
+                    $this->Dictionary["mci_withdrawal_reasons_other_specify_status_history_" . $entries] = array(
+                           'Description' => "MCI Withdrawal Reason Other status history " . $entries,
+                           'Type'        => "enum('not_answered')",
+                    );
                     $this->Dictionary["naproxen_ITT_history_" . $entries] = array(
                            'Description' => "Naproxen ITT history " . $entries,
                            'Type'        => "enum('yes','no')",
@@ -682,6 +754,15 @@ class CouchDBDemographicsImporter {
                     $demographics["probucol_withdrawal_reasons_history_" . $entries] = $row['probucol_withdrawal_reasons'];
                     $demographics["probucol_withdrawal_reasons_other_specify_history_" . $entries] = $row['probucol_withdrawal_reasons_other_specify'];
                     $demographics["probucol_withdrawal_reasons_other_specify_status_history_" . $entries] = $row['probucol_withdrawal_reasons_other_specify_status'];
+                    $demographics["mci_eligibility_history_" . $entries] = $row['mci_eligibility'];
+                    $demographics["mci_eligibility_reason_specify_history_" . $entries] = $row['mci_eligibility_reason_specify'];
+                    $demographics["mci_eligibility_reason_specify_status_history_" . $entries] = $row['mci_eligibility_reason_specify_status'];
+                    $demographics["mci_eligibility_status_history_" . $entries] = $row['mci_eligibility_status'];
+                    $demographics["mci_excluded_reason_specify_history_" . $entries] = $row['mci_excluded_reason_specify'];
+                    $demographics["mci_excluded_reason_specify_status_history_" . $entries] = $row['mci_excluded_reason_specify_status'];
+                    $demographics["mci_withdrawal_reasons_history_" . $entries] = $row['mci_withdrawal_reasons'];
+                    $demographics["mci_withdrawal_reasons_other_specify_history_" . $entries] = $row['mci_withdrawal_reasons_other_specify'];
+                    $demographics["mci_withdrawal_reasons_other_specify_status_history_" . $entries] = $row['mci_withdrawal_reasons_other_specify_status'];
                     $demographics["naproxen_ITT_history_" . $entries] = $row['naproxen_ITT'];
                     $demographics["naproxen_mITT_history_" . $entries] = $row['naproxen_mITT'];
                     $demographics["MCI_converter_history_" . $entries] = $row['MCI_converter'];
