@@ -169,9 +169,9 @@ foreach ($instruments as $instrument) {
 $Test_name = "candidate_info";
 //this query is a but clunky, but it gets rid of all the crap that would otherwise appear.
 if ($candidate_nofail) {
-    $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . " AND c.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE (session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') OR session.Visit_label LIKE 'CTL%') order by c.PSCID";
+    $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.SubprojectID IS NOT NULL and s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . " AND c.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE (session.Visit='Failure' AND session.Visit_label LIKE '%EL00%') OR session.Visit_label LIKE 'CTL%') order by c.PSCID";
 } else {
-    $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . " AND c.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit_label LIKE 'CTL%') order by c.PSCID";
+    $query = "select distinct c.PSCID, c.CandID, c.Gender, c.Mother_tongue, s.SubprojectID from candidate c, session s where s.SubprojectID IS NOT NULL and s.CenterID <> 1 and s.CenterID in (select CenterID from psc where Study_site='Y') and c.CandID = s.CandID and c.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_candidates . " AND c.CandID NOT IN (SELECT CandID FROM session JOIN candidate USING (CandID) WHERE session.Visit_label LIKE 'CTL%') order by c.PSCID";
 }
 $DB->select($query, $results);
 MapSubprojectID($results);
