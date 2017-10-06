@@ -115,6 +115,7 @@ $query = "select * from test_names where Test_name!='tsi' and Test_name not like
 $DB->select($query, $instruments);
 
 foreach ($instruments as $instrument) {
+        $instrument_table = null;
         //Query to pull the data from the DB
         $Test_name = $instrument['Test_name'];
         if ($Test_name == 'prefrontal_task') {
