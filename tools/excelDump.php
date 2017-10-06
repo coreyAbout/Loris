@@ -291,6 +291,11 @@ foreach ($scan_types as $scan_type) {
          or (preg_match("/rgb/", $Test_name))
          or (preg_match("/Siemens/", $Test_name))
          or (preg_match("/HighRes/", $Test_name))
+         or (preg_match("/qT2starEcho[2-8]/", $Test_name))
+         or (preg_match("/MP2RAGEinv/", $Test_name))
+         or (preg_match("/MultiShellDWI/", $Test_name))
+         or ($Test_name == 'MP2RAGEuni')
+         or ($Test_name == 'MP2RAGEt1map')
          or ($Test_name == 'FinalQCedDTI')
          or ($Test_name == 'QCedDTI')) {
         continue;
