@@ -13,8 +13,6 @@ CREATE TABLE `certification` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 update mri_parameter_form set examiner=1 where examiner=2;
-update navigational_task_session_1 set examiner=1 where examiner="";
-update navigational_task_session_2 set examiner=1 where examiner="";
 update final_radiological_review set Final_Examiner=null where Final_Examiner=0;
 update final_radiological_review set Final_Examiner2=null where Final_Examiner2=0;
 
