@@ -245,7 +245,7 @@ class Create_Timepoint extends \NDB_Form
      *
      * @return array
      */
-    function _validate(array $val)
+    function _validate(array $values)
     {
         $errors = array();
 
