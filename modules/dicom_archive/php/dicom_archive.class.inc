@@ -153,7 +153,7 @@ class Dicom_Archive extends \NDB_Menu_Filter
     function display()
     {
         $content = null;
-        $format  = $_REQUEST['format'] ?? '';
+        $format  = $_REQUEST['format'] ?: '';
 
         if ($format == 'json') {
             $content = $this->toJSON();
