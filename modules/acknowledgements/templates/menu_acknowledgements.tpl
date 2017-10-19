@@ -134,6 +134,7 @@
                                             <option value="Banner Alzheimer Institute, Phoenix, AZ, USA">Banner Alzheimer Institute, Phoenix, AZ, USA</option>
                                             <option value="University California, San Diego, School of medicine, La Jolla, CA, USA">University California, San Diego, School of medicine, La Jolla, CA, USA</option>
                                             <option value="Alzheimer Center, VU University Amsterdam, Amsterdam, Netherlands">Alzheimer Center, VU University Amsterdam, Amsterdam, Netherlands</option>
+                                            <option value="Northwestern University, Chicago, IL, USA">Northwestern University, Chicago, IL, USA</option>
                                         </select>
                                     </div>
                                 </td>
