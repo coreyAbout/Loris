@@ -185,7 +185,7 @@ class NDB_Form_Statistics extends NDB_Form
             $projects[$key] = $value;
         }
         $currentProject = null;
-        if ($_REQUEST['DemographicProject'] ?? ''
+        if ($_REQUEST['DemographicProject'] ?: ''
         ) {
             $currentProject = htmlspecialchars($_REQUEST['DemographicProject']);
             $this->tpl_data['CurrentProject']
@@ -213,7 +213,7 @@ class NDB_Form_Statistics extends NDB_Form
         }
 
         //SITES
-        if ($_REQUEST['DemographicSite'] ?? ''
+        if ($_REQUEST['DemographicSite'] ?: ''
         ) {
             $Param_Site          ='AND (c.CenterID IS NULL OR c.CenterID=:sid) ';
             $this->params['sid'] = htmlspecialchars($_REQUEST['DemographicSite']);
@@ -395,7 +395,7 @@ class NDB_Form_Statistics extends NDB_Form
         );
         $instrument_list = Utility::getAllInstrumentsExcept('genetics');
         $this->tpl_data['all_instruments'] = $instrument_list;
-        if ($_REQUEST['DemographicInstrument'] ?? ''
+        if ($_REQUEST['DemographicInstrument'] ?: ''
         ) {
             $Subcategories = array(
                               'Complete',
@@ -528,7 +528,7 @@ class NDB_Form_Statistics extends NDB_Form
 
         }
 
-        if ($_REQUEST['BehaviouralProject'] ?? ''
+        if ($_REQUEST['BehaviouralProject'] ?: ''
         ) {
             $currentProject = htmlspecialchars($_REQUEST['BehaviouralProject']);
             $this->tpl_data['CurrentProject']
@@ -660,7 +660,7 @@ class NDB_Form_Statistics extends NDB_Form
             $projects[$key] = $value;
         }
         $currentProject = null;
-        if ($_REQUEST['MRIProject'] ?? '') {
+        if ($_REQUEST['MRIProject'] ?: '') {
             $currentProject = htmlspecialchars($_REQUEST['MRIProject']);
             $this->tpl_data['CurrentProject']
                 = array(
@@ -687,7 +687,7 @@ class NDB_Form_Statistics extends NDB_Form
             $suproject_query ='';
         }
         //SITES
-        if ($_REQUEST['MRIsite'] ?? '') {
+        if ($_REQUEST['MRIsite'] ?: '') {
             $Param_Site          ='AND (c.CenterID IS NULL OR c.CenterID=:sid) ';
             $this->params['sid'] = htmlspecialchars($_REQUEST['MRIsite']);
         } else {
@@ -724,7 +724,7 @@ class NDB_Form_Statistics extends NDB_Form
             $scan_types[$row['ID']] = $row['Scan_type'];
         }
         $scans_selected =array();
-        if ($_REQUEST['Scans'] ?? '') {
+        if ($_REQUEST['Scans'] ?: '') {
             $scans_selected_input = explode(",", $_REQUEST['Scans']);
         }
         if (empty($scans_selected_input)) {
@@ -996,7 +996,7 @@ class NDB_Form_Statistics extends NDB_Form
             $projects[$key] = $value;
         }
 
-        if ($_REQUEST['ReliabilityProject'] ?? ''
+        if ($_REQUEST['ReliabilityProject'] ?: ''
         ) {
             $currentProject = htmlspecialchars($_REQUEST['ReliabilityProject']);
             $this->tpl_data['CurrentProject']
@@ -1011,7 +1011,7 @@ class NDB_Form_Statistics extends NDB_Form
         }
 
         //SITES
-        if ($_REQUEST['ReliabilitySite'] ?? ''
+        if ($_REQUEST['ReliabilitySite'] ?: ''
         ) {
             $Param_Site          ='AND (c.CenterID IS NULL OR c.CenterID=:sid) ';
             $this->params['sid'] = htmlspecialchars($_REQUEST['ReliabilitySite']);
