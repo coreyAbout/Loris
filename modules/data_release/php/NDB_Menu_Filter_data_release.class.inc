@@ -99,7 +99,7 @@ class NDB_Menu_Filter_Data_Release extends NDB_Menu_Filter
         }
 
         $results = $DB->pselect(
-            "SELECT DISTINCT users.ID, users.UserID, version FROM users LEFT JOIN data_release_permissions ON (users.ID=data_release_permissions.userid) LEFT JOIN data_release ON (data_release_permissions.data_release_id=data_release.id) ORDER BY users.ID",
+            "SELECT DISTINCT users.ID, users.UserID, users.Real_name, version FROM users LEFT JOIN data_release_permissions ON (users.ID=data_release_permissions.userid) LEFT JOIN data_release ON (data_release_permissions.data_release_id=data_release.id) WHERE users.Active='Y' AND users.Pending_approval='N' AND users.Real_name!='' AND users.Real_name IS NOT NULL ORDER BY users.Real_name",
             array()
         );
         foreach ($results as $row) {
@@ -108,6 +108,7 @@ class NDB_Menu_Filter_Data_Release extends NDB_Menu_Filter
             }
                 $version[] = $row['version'];
                 $manage_permissions[$row['UserID']] = $version;
+                $map_usernames[$row['UserID']] = $row['Real_name'];
         }
 
         $this->tpl_data['superuser']        = $superuser;
@@ -115,6 +116,7 @@ class NDB_Menu_Filter_Data_Release extends NDB_Menu_Filter
         $this->tpl_data['data_release_ids'] = $data_release_ids;
         $this->tpl_data['data_release_versions'] = $data_release_versions;
         $this->tpl_data['manage_permissions'] = $manage_permissions;
+        $this->tpl_data['map_usernames'] = $map_usernames;
 
         return true;
     }
