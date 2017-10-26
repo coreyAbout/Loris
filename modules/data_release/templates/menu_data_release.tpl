@@ -118,7 +118,12 @@
                                 {foreach from = $manage_permissions key=k item=elem}
                                 <tr>
                                     <td>
-                                        {$k}
+                                        {foreach from = $map_usernames key=username item=realname}
+                                            {if $k == $username}
+                                                {$realname}
+                                            {else}
+                                            {/if}
+                                        {/foreach}
                                         <!--<input type="hidden" name="{$k}" value="{$k}" readonly>{$k}</input>-->
                                     </td>
                                     <td>
