@@ -51,12 +51,12 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 				$PSCID = $thisField[$key];
 				echo "-------PSCID: " . $PSCID . "\n";
 			}
-                        elseif ($key == 'Study') {
-                        $Study = $thisField[$key];
-                        }
-                        elseif ($key == 'gDNA_ng_ul') {
-                        $gDNA_ng_ul = $thisField[$key];
-                        }
+			elseif ($key == 'Study') {
+			$Study = $thisField[$key];
+			}
+			elseif ($key == 'gDNA_ng_ul') {
+			$gDNA_ng_ul = $thisField[$key];
+			}
 			elseif ($key == 'ApoE') {
 			$ApoE = $thisField[$key];
 			}
@@ -315,31 +315,31 @@ if ($CDK5RAP2_rs10984186_allele_no === 0) {
 
 		$mappings1 = array(
 				"PSCID"=>$PSCID,
-                                "gDNA_ng_ul"=>$gDNA_ng_ul,
+//                                "gDNA_ng_ul"=>$gDNA_ng_ul,
 				"ApoE"=>$ApoE,
 				"apoE_allele_no"=>$apoE_allele_no,
 				"E4_allele_Bin"=>$E4_allele_Bin,
-				"Technicien_ApoE"=>$Technicien_ApoE,
-				"Method_ApoE"=>$Method_ApoE,
-				"Reference_ApoE"=>$Reference_ApoE,
+//				"Technicien_ApoE"=>$Technicien_ApoE,
+//				"Method_ApoE"=>$Method_ApoE,
+//				"Reference_ApoE"=>$Reference_ApoE,
 				"BchE_K_variant"=>$BchE_K_variant,
 				"K_variant_copie_no"=>$K_variant_copie_no,
 				"K_variant_bin"=>$K_variant_bin,
-				"Technicien_BchE"=>$Technicien_BchE,
-				"Method_BchE"=>$Method_BchE,
-				"Reference_BchE"=>$Reference_BchE,
+//				"Technicien_BchE"=>$Technicien_BchE,
+//				"Method_BchE"=>$Method_BchE,
+//				"Reference_BchE"=>$Reference_BchE,
 				"BDNF"=>$BDNF,
 				"BDNF_allele_no"=>$BDNF_allele_no,
 				"BDNF_copie_bin"=>$BDNF_copie_bin,
-				"Technicien_BDNF"=>$Technicien_BDNF,
-				"Method_BDNF"=>$Method_BDNF,
-				"Reference_BDNF"=>$Reference_BDNF,
+//				"Technicien_BDNF"=>$Technicien_BDNF,
+//				"Method_BDNF"=>$Method_BDNF,
+//				"Reference_BDNF"=>$Reference_BDNF,
 				"HMGR_Intron_M"=>$HMGR_Intron_M,
 				"Intron_M_allele_no"=>$Intron_M_allele_no,
                                 "Intron_M_protective"=>$Intron_M_protective,
-				"Technicien_M"=>$Technicien,
-				"Method_M"=>$Method,
-				"Reference_M"=>$Reference_M,
+//				"Technicien_M"=>$Technicien,
+//				"Method_M"=>$Method,
+//				"Reference_M"=>$Reference_M,
 				"TLR4_rs_4986790"=>$TLR4_rs_4986790,
 				"TLR4_allele_no"=>$TLR4_allele_no,
                                 "TLR4_copie_no"=>$TLR4_copie_no,
