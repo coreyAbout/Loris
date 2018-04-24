@@ -44,7 +44,7 @@ window.onload = function () {
 
   $('input[name*=exposure_year]').change(function() {
 
-    if (!/^(19[0-9]\d|200\d|201[0-7])$/.test(this.value)) {
+    if (!/^(19[0-9]\d|200\d|201[0-8])$/.test(this.value)) {
       $(this).after('<p><font color="red">Please fix this value.</font></p>');
       yearError = true;
     } else {
@@ -66,3 +66,4 @@ window.onload = function () {
 */
 
 }
+
