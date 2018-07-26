@@ -772,6 +772,66 @@ class CouchDBDemographicsImporter {
                 }
             }
 
+            // adverse events summary
+            $exists = $this->SQLDB->pselectOne("SELECT ID FROM adverse_events_summary WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
+            if (!empty($exists)) {
+                $entries = 1;
+                $adverse_events_summary_fields = $this->SQLDB->pselect("SELECT CandID, Visit_label, AE_description, DateOnset, DateEnd, Duration, Severity, Serious, Relationship, ActionTaken FROM adverse_events_summary join session on adverse_events_summary.sessionid=session.id WHERE adverse_events_summary.CandID=:cid", array('cid'=>$demographics['CandID']));
+                foreach ($adverse_events_summary_fields as $row) {
+                    $this->Dictionary["adverse_events_summary_CandID_" . $entries] = array(
+                           'Description' => "Participant's CandID " . $entries,
+                           'Type'        => "int(6)",
+                    );
+                    $this->Dictionary["adverse_events_summary_Visit_label_" . $entries] = array(
+                           'Description' => "Adverse Events Summary linked visit " . $entries,
+                           'Type'        => "varchar(255)",
+                    );
+                    $this->Dictionary["adverse_events_summary_AE_description_" . $entries] = array(
+                           'Description' => "Adverse Events Summary description " . $entries,
+                           'Type'        => "text",
+                    );
+                    $this->Dictionary["adverse_events_summary_DateOnset_" . $entries] = array(
+                           'Description' => "Adverse Events Summary date onset " . $entries,
+                           'Type'        => "date",
+                    );
+                    $this->Dictionary["adverse_events_summary_DateEnd_" . $entries] = array(
+                           'Description' => "Adverse Events Summary date end " . $entries,
+                           'Type'        => "date",
+                    );
+                    $this->Dictionary["adverse_events_summary_Duration_" . $entries] = array(
+                           'Description' => "Adverse Events Summary duration " . $entries,
+                           'Type'        => "int(6)",
+                    );
+                    $this->Dictionary["adverse_events_summary_Severity_" . $entries] = array(
+                           'Description' => "Adverse Events Summary severity " . $entries,
+                           'Type'        => "enum('1_mild','2_moderate','3_severe','not_answered')",
+                    );
+                    $this->Dictionary["adverse_events_summary_Serious_" . $entries] = array(
+                           'Description' => "Adverse Events Summary serious" . $entries,
+                           'Type'        => "enum('yes','no','not_answered')",
+                    );
+                    $this->Dictionary["adverse_events_summary_Relationship_" . $entries] = array(
+                           'Description' => "Adverse Events Summary relationship " . $entries,
+                           'Type'        => "enum('1_not_relate','2_unlikely','4_possibly_related','5_related','not_answered')",
+                    );
+                    $this->Dictionary["adverse_events_summary_ActionTaken_" . $entries] = array(
+                           'Description' => "Adverse Events Summary action taken " . $entries,
+                           'Type'        => "text",
+                    );
+                    $demographics["adverse_events_summary_CandID_" . $entries] = $row['CandID'];
+                    $demographics["adverse_events_summary_Visit_label_" . $entries] = $row['Visit_label'];
+                    $demographics["adverse_events_summary_AE_description_" . $entries] = $row['AE_description'];
+                    $demographics["adverse_events_summary_DateOnset_" . $entries] = $row['DateOnset'];
+                    $demographics["adverse_events_summary_DateEnd_" . $entries] = $row['DateEnd'];
+                    $demographics["adverse_events_summary_Duration_" . $entries] = $row['Duration'];
+                    $demographics["adverse_events_summary_Severity_" . $entries] = $row['Severity'];
+                    $demographics["adverse_events_summary_Serious_" . $entries] = $row['Serious'];
+                    $demographics["adverse_events_summary_Relationship_" . $entries] = $row['Relationship'];
+                    $demographics["adverse_events_summary_ActionTaken_" . $entries] = $row['ActionTaken'];
+                    $entries++;
+                }
+            }
+
             // family history
             $exists = $this->SQLDB->pselectOne("SELECT ID FROM family_history_ad_other WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
             if (!empty($exists)) {
