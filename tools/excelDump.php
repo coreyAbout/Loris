@@ -206,6 +206,14 @@ $DB->select($query, $participantstatus);
 writeExcel($Test_name, $participantstatus, $dataDir);
 
 /*
+* Adverse Events Summary
+*/
+$Test_name = "AdverseEventsSummary";
+$query = "select candidate.PSCID, candidate.CandID, Visit_label, AE_description, DateOnset, DateEnd, Duration, Severity, Serious, Relationship, ActionTaken from adverse_events_summary aes join session on (aes.sessionid=session.id) join candidate on (aes.candid=candidate.candid) where PSCID not like '%MTL999%' and PSCID not like 'MTL0000' " . $wherenofailnowhere . " order by PSCID";
+$DB->select($query, $adverseeventssummary);
+writeExcel($Test_name, $adverseeventssummary, $dataDir);
+
+/*
 * Family History AD Other
 */
 $Test_name = "FamilyHistoryADOther";
