@@ -110,7 +110,7 @@ function MapSubprojectID(&$results) {
 */
 //Get the names of all instrument tables
 //excluding tsi because data is not complete, therefore should not be analyzed
-$query = "select * from test_names where Test_name!='tsi' and Test_name not like 'navigational%' order by Test_name";
+$query = "select * from test_names where Test_name!='tsi' and Test_name not like 'navigational%' and Test_name not like 'adverse_events' order by Test_name";
 //$query = "select * from test_names where Test_name like 'h%' order by Test_name";  //for rapid testing
 $DB->select($query, $instruments);
 
@@ -124,7 +124,7 @@ foreach ($instruments as $instrument) {
             $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, 'Site review:', i.*, 'Final Review:', COALESCE(fr.Review_Done, 0) as Review_Done, fr.Final_Review_Results, fr.Final_Exclusionary, fr.Final_Incidental_Findings, fre.full_name as Final_Examiner_Name, fr.Final_Review_Results2, fre2.full_name as Final_Examiner2_Name, fr.Final_Exclusionary2, COALESCE(fr.Review_Done2, 0) as Review_Done2, fr.Final_Incidental_Findings2, fr.Finalized from candidate c, session s, flag f, $Test_name i left join final_radiological_review fr ON (fr.CommentID=i.CommentID) left outer join examiners e on (i.Examiner = e.examinerID) left join examiners fre ON (fr.Final_Examiner=fre.examinerID) left join examiners fre2 ON (fre2.examinerID=fr.Final_Examiner2) where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' AND Scan_done='Y' " . $limit_date_instruments . $nofail . " order by s.Visit_label, c.PSCID";
         } else if ($Test_name == 'genetics') {
             $query = "select candidate.CandID, g.* from genetics g JOIN candidate USING (PSCID) " . $wherenofail;
-        } else if ($Test_name == 'adverse_events') {
+/*        } else if ($Test_name == 'adverse_events') {
             $instrument =& NDB_BVL_Instrument::factory($Test_name, '', false);
             $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, ";
             $query .= " i.CommentID, i.UserID, i.Examiner, i.Testdate, i.Data_entry_completion_status, i.Date_taken, i.Candidate_Age, i.Window_Difference, i.event_comments, ";
@@ -148,6 +148,8 @@ foreach ($instruments as $instrument) {
             for ($i = 0; $i < count($instrument_table_tmp); $i++) {
                 $instrument_table[] = array_merge($instrument_table_tmp[$i], $instrument_table_tmp2[$i]);
             }
+        }
+*/
         } else {
             if (is_file("../project/instruments/NDB_BVL_Instrument_$Test_name.class.inc")) {
                 $instrument =& NDB_BVL_Instrument::factory($Test_name, '', false);
@@ -156,9 +158,9 @@ foreach ($instruments as $instrument) {
 	        $query = "select c.PSCID, c.CandID, s.SubprojectID, s.Visit_label, s.Submitted, s.Current_stage, s.Visit, f.Administration, e.full_name as Examiner_name, f.Data_entry, f.Validity, i.* from candidate c, session s, flag f, $Test_name i left outer join examiners e on i.Examiner = e.examinerID where c.PSCID not like 'dcc%' and c.PSCID not like '0%' and c.PSCID not like '1%' and c.PSCID not like '2%' and c.PSCID != 'scanner' and i.CommentID not like 'DDE%' and c.CandID = s.CandID and s.ID = f.sessionID and f.CommentID = i.CommentID AND c.Active='Y' AND s.Active='Y' AND c.PSCID not like 'MTL0000' AND c.PSCID not like 'MTL999%' " . $limit_date_instruments . $nofail . " order by s.Visit_label, c.PSCID";
             }
         }
-	if ($Test_name != 'adverse_events') {
+//	if ($Test_name != 'adverse_events') {
             $DB->select($query, $instrument_table);
-        }
+//        }
     MapSubprojectID($instrument_table);
 	writeExcel($Test_name, $instrument_table, $dataDir);
 
