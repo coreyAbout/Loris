@@ -776,7 +776,7 @@ class CouchDBDemographicsImporter {
             $exists = $this->SQLDB->pselectOne("SELECT ID FROM adverse_events_summary WHERE CandID=:cid", array('cid'=>$demographics['CandID']));
             if (!empty($exists)) {
                 $entries = 1;
-                $adverse_events_summary_fields = $this->SQLDB->pselect("SELECT CandID, Visit_label, AE_description, DateOnset, DateEnd, Duration, Severity, Serious, Relationship, ActionTaken FROM adverse_events_summary join session on adverse_events_summary.sessionid=session.id WHERE adverse_events_summary.CandID=:cid", array('cid'=>$demographics['CandID']));
+                $adverse_events_summary_fields = $this->SQLDB->pselect("SELECT adverse_events_summary.CandID, Visit_label, AE_description, DateOnset, DateEnd, Duration, Severity, Serious, Relationship, ActionTaken FROM adverse_events_summary join session on adverse_events_summary.sessionid=session.id WHERE adverse_events_summary.CandID=:cid", array('cid'=>$demographics['CandID']));
                 foreach ($adverse_events_summary_fields as $row) {
                     $this->Dictionary["adverse_events_summary_CandID_" . $entries] = array(
                            'Description' => "Participant's CandID " . $entries,
