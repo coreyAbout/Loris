@@ -273,6 +273,7 @@ class NDB_BVL_Battery
         $qparams = array('SID' => $this->sessionID);
 
 	$timepoint = '';
+        $originalvl = $visit_label;
 	if (strlen($visit_label) > 2 && substr_compare($visit_label, 'lego_phantom', 0, 12) != 0 && substr_compare($visit_label, 'living_phantom', 0, 14) != 0) {
 		$timepoint = substr($visit_label, 5, 2);
 		$visit_label = substr($visit_label, 3, 2);
@@ -288,6 +289,9 @@ class NDB_BVL_Battery
             } else {
                 $query .= " OR b.Visit_label IS NULL";
             }
+        }
+        if($timepoint >= 60 && (substr($originalvl, 0, 3) != "PRE" || substr($originalvl, 0, 3) != "NAP")) {
+            $query .= " AND b.Test_name!='current_med_use'";
         }
 	if(($timepoint == '06' || $timepoint == '18') && $visit_label != 'TL') {
         	$query .= " AND b.Timepoint = 'other'";
@@ -483,6 +487,7 @@ class NDB_BVL_Battery
                     AND (SubprojectID=:SubprojID OR SubprojectID IS NULL)";
 
         $timepoint = '';
+        $originalvl = $visit_label;
         if (strlen($visit_label) > 2 && substr_compare($visit_label, 'lego_phantom', 0, 12) != 0 && substr_compare($visit_label, 'living_phantom', 0, 14) != 0) {
             $timepoint = substr($visit_label, 5, 2);
             $visit_label = substr($visit_label, 3, 2);
@@ -513,6 +518,9 @@ class NDB_BVL_Battery
         if (!is_null($stage)) {
             $query         .= " AND b.Stage=:stg";
             $qparams['stg'] = $stage;
+        }
+        if($timepoint >= 60 && (substr($originalvl, 0, 3) != "PRE" || substr($originalvl, 0, 3) != "NAP")) {
+            $query .= " AND b.Test_name!='current_med_use'";
         }
         if(($timepoint == '06' || $timepoint == '18') && $visit_label != 'TL') {
                 $query .= " AND b.Timepoint = 'other'";
