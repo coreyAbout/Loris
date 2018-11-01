@@ -273,7 +273,7 @@ class NDB_BVL_Battery
         $qparams = array('SID' => $this->sessionID);
 
 	$timepoint = '';
-        $originalvl = $visit_label;
+	$originalvl = $visit_label;
 	if (strlen($visit_label) > 2 && substr_compare($visit_label, 'lego_phantom', 0, 12) != 0 && substr_compare($visit_label, 'living_phantom', 0, 14) != 0) {
 		$timepoint = substr($visit_label, 5, 2);
 		$visit_label = substr($visit_label, 3, 2);
