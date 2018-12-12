@@ -50,17 +50,9 @@ for( $i = 0; $i < sizeof($fixedLines); $i++ )
 
 		$config =& NDB_Config::singleton();
 		$db =& Database::singleton();
-		if(Utility::isErrorX($db)) {
-			fwrite(STDERR, "Could not connect to database: ".$db->getMessage());
-			return false;
-		}
 
 $success = $db->pselectOne("SELECT candid FROM candidate WHERE PSCID=:pid",array("pid"=>$PSCID));
 echo $success . "\n";
-			if (Utility::isErrorX($success)) {
-				fwrite(STDERR, "Failed, DB Error: " . $success->getMessage()."\n");
-				return false;
-			}
 //			echo "Updated!\n";
 	}
 }
