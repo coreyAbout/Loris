@@ -60,6 +60,12 @@ if ($argv[1] == 'local') {
         elseif($candidate_age >=80 && $candidate_age <= 89) {
             $age_range = "80_89";
         }
+        elseif($candidate_age >=20 && $candidate_age <= 39) {
+//            $age_range = "20_39";
+        }
+        elseif($candidate_age >=40 && $candidate_age <= 49) {
+//            $age_range = "40_49";
+        }
 
         if ($age_range == "") {
             echo "Row " . $i . "+1 has no age range because candidate age is: " . $candidate_age . "\n";
@@ -83,7 +89,7 @@ if ($argv[1] == 'local') {
 
 } elseif ($argv[1] == 'database') {
 
-    $RBANS = $DB->pselect("select * from RBANS where commentid not like '%MTL0000%' and commentid not like '%MTL999%'",array());
+    $RBANS = $DB->pselect("select * from RBANS join flag using (commentid) where RBANS.commentid not like '%MTL0000%' and RBANS.commentid not like '%MTL999%' and flag.Administration!='None'",array());
     foreach ($RBANS as $R) {
         $candidate_age = floor(($R['Candidate_Age'])/12);
         $age_range = "";
@@ -99,7 +105,13 @@ if ($argv[1] == 'local') {
         elseif($candidate_age >=80 && $candidate_age <= 89) {
             $age_range = "80_89";
         }
- 
+        elseif($candidate_age >=20 && $candidate_age <= 39) {
+            $age_range = "20_39";
+        }
+        elseif($candidate_age >=40 && $candidate_age <= 49) {
+            $age_range = "40_49";
+        }
+
         if ($age_range == "") {
             echo "CommentID " . $R['CommentID'] . " has no age range because candidate age is: " . $candidate_age . "\n";
         } else {
