@@ -22,7 +22,7 @@ require_once 'generic_includes.php';
 $config   = NDB_Config::singleton();
 $database = $config->getSetting('database');
 
-$instruments = Utility::getAllInstruments();
+$instruments = Utility::getAllInstrumentsExcept('genetics');
 
 $confirm =false;
 if (!empty($argv[1]) && $argv[1] == 'confirm') {
