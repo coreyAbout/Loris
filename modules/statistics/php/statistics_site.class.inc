@@ -69,7 +69,7 @@ class Statistics_Site extends \NDB_Form
      */
     function _setInstrumentName()
     {
-        $this->instruments = Utility::getAllInstrumentsExcept('genetics')
+        $this->instruments = Utility::getAllInstrumentsExcept('genetics');
     }
 
     /**
