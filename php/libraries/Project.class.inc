@@ -75,9 +75,9 @@ class Project
 
                 $project = new Project();
 
-                $project->projectId         = $projectData['projectId'];
-                $project->projectName       = $projectData['name'];
-                $project->recruitmentTarget = (integer) $projectData['recTarget'];
+                $project->_projectId         = $projectData['projectId'];
+                $project->_projectName       = $projectData['name'];
+                $project->_recruitmentTarget = (integer) $projectData['recTarget'];
             } else {
                 if ($projectName != 'loris') {
                     throw new \LorisException("This study is not using projects");
@@ -151,7 +151,7 @@ class Project
      */
     public function getId()
     {
-        return $this->projectId;
+        return $this->_projectId;
     }
 
     /**
@@ -165,7 +165,7 @@ class Project
      */
     public function setId($projectId)
     {
-        $this->projectId = $projectId;
+        $this->_projectId = $projectId;
     }
 
     /**
@@ -176,7 +176,7 @@ class Project
      */
     public function getName()
     {
-        return $this->projectName;
+        return $this->_projectName;
     }
 
     /**
@@ -190,7 +190,7 @@ class Project
      */
     public function setName($projectName)
     {
-        $this->projectName = $projectName;
+        $this->_projectName = $projectName;
     }
 
     /**
@@ -204,19 +204,19 @@ class Project
      */
     public function getRecruitmentTarget()
     {
-        if (empty($this->recruitmentTarget)) {
+        if (empty($this->_recruitmentTarget)) {
             $total = array_reduce(
                 $this->getSubprojects(),
                 function ($carry, $item) {
-                    return $carry + $item->recruitmentTarget;
+                    return $carry + $item->_recruitmentTarget;
                 },
                 0
             );
             // The following assignment is temporary and is not transmitted to the
             // database.
-            $this->recruitmentTarget = $total;
+            $this->_recruitmentTarget = $total;
         }
-        return $this->recruitmentTarget;
+        return $this->_recruitmentTarget;
     }
 
     /**
@@ -242,7 +242,7 @@ class Project
             WHERE
               pr.projectId = :v_project_id
             ",
-            array('v_project_id' => $this->projectId)
+            array('v_project_id' => $this->_projectId)
         );
 
         return array_map(
@@ -268,7 +268,7 @@ class Project
     {
         $factory = \NDB_Factory::singleton();
 
-        $p = array($this->projectId);
+        $p = array($this->_projectId);
         if ($factory->config()->getSetting('useProjects') !== 'true') {
             array_push($p, '-1');
         }

@@ -316,12 +316,13 @@ class Utility
             if (!$DCC)
                 $query .= "WHERE Name != 'DCC'";
         }
-        $DB->select($query, $result);
+        $result = $DB->pselect($query, array());
         // fix the array
         $list = array();
         foreach ($result as $row) {
             $list[$row["CenterID"]] = $row["Name"];
         }
+        natcasesort($list);
         return $list;
     }
 
@@ -376,7 +377,6 @@ class Utility
         }
         return $list;
     }
-
 
     /**
      * Returns the test name associated with a given commentID
@@ -864,7 +864,7 @@ class Utility
         $All     = Utility::getAllInstruments();
         $Scored  = array();
         $Nothing = array();
-        foreach ($All as $Instrument=>$Full_name) {
+        foreach (array_keys($All) as $Instrument) {
             if (Utility::getScoreColsForInstrument($Instrument) != $Nothing) {
                 $Scored[] = $Instrument;
             }
@@ -1399,6 +1399,46 @@ class Utility
         }
         $resolvedPath = implode('/', $resolvedPath);
         return $resolvedPath;
+    }
+
+    /**
+     * Get maximum upload size. Will be the smaller value of
+     * upload_max_filesize and post_max_size
+     *
+     * @return string smaller value of upload_max_filesize or post_max_size
+     */
+    static function getMaxUploadSize()
+    {
+        $umf = ini_get('upload_max_filesize');
+        $pms = ini_get('post_max_size');
+        return self::returnBytes($umf) < self::returnBytes($pms) ? $umf : $pms;
+    }
+
+    /**
+     * Takes in a storage string (e.g., 64K, 1024M, 2G, etc.)
+     * and returns value in bytes
+     *
+     * @param string $val The formatted string
+     *
+     * @return int|string The formatted string represented as bytes
+     *
+     * @note taken from http://php.net/manual/en/function.ini-get.php
+     */
+    static function returnBytes($val)
+    {
+        $val  = trim($val);
+        $last = strtolower($val[strlen($val)-1]);
+
+        switch($last) {
+        case 'g':
+            return $val * 1024 * 1024 * 1024;
+        case 'm':
+            return $val * 1024 * 1024;
+        case 'k':
+            return $val * 1024;
+        default:
+            return $val;
+        }
     }
 }
 ?>
