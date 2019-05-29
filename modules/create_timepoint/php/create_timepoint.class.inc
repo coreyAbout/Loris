@@ -222,12 +222,12 @@ class Create_Timepoint extends \NDB_Form
                 $this->tpl_data['pscLabelAdded'] = true;
                 $psc_labelOptions = array(null => '');
                 foreach ($user_list_of_sites as $key => $siteID) {
-                        $center = $DB->pselectRow(
-                            "SELECT CenterID as ID, Name FROM psc 
+                    $center = $DB->pselectRow(
+                        "SELECT CenterID as ID, Name FROM psc 
                         WHERE CenterID =:cid",
-                            array('cid' => $siteID)
-                        );
-                        $psc_labelOptions[$siteID] = $center['Name'];
+                        array('cid' => $siteID)
+                    );
+                    $psc_labelOptions[$siteID] = $center['Name'];
                 }
             }
             $this->addSelect('psc', 'Site', $psc_labelOptions);
@@ -247,6 +247,8 @@ class Create_Timepoint extends \NDB_Form
      */
     function _validate(array $values)
     {
+        $user = \User::singleton();
+
         $errors = array();
 
         // This can happen if the user quickly clicks "Create Time Point" before the

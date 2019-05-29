@@ -492,7 +492,8 @@ class User extends UserPermissions
     {
         return in_array(
             $center_id,
-            $this->getCenterIDs()
+            $this->getCenterIDs(),
+            true
         );
     }
     /**
