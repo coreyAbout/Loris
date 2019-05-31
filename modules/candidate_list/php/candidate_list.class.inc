@@ -1,6 +1,6 @@
 <?php
+namespace LORIS\candidate_list;
 require_once 'NDB_Menu_Filter.class.inc';
-require_once '../project/modules/participant_status/php/NDB_Form_participant_status.class.inc';
 /**
 * The candidate list menu
 *
@@ -12,8 +12,6 @@ require_once '../project/modules/participant_status/php/NDB_Form_participant_sta
 * @license  http://www.gnu.org/licenses/gpl-3.0.txt GPLv3
 * @link     https://www.github.com/aces/Loris/
 */
-namespace LORIS\candidate_list;
-use LORIS\candidate_parameters as CP;
 /**
  * Implements the candidate_list menu
  *
@@ -132,7 +130,7 @@ class Candidate_List extends \NDB_Menu_Filter
             LEFT JOIN subproject sp ON (s.SubprojectID=sp.SubprojectID)
             WHERE c.Active = 'Y'";
 
-        $user =& User::singleton();
+        $user =& \User::singleton();
 
         if (!$user->hasPermission('access_all_profiles')) {
 
@@ -210,7 +208,6 @@ class Candidate_List extends \NDB_Menu_Filter
         parent::setup();
         // Relying on a side-effect of the the server process module to autoload
         // its namespace.
-        \Module::factory('candidate_parameters');
 
         // create user object
          $user    =& \User::singleton();
@@ -232,10 +229,6 @@ class Candidate_List extends \NDB_Menu_Filter
         $list_of_subprojects = \Utility::getSubprojectList();
 
         // list of feedback statuses
-    
-        $participant_status_options=   array(null=>'All') +  NDB_Form_participant_status::getParticipantStatusOptions();
-        $scan_options = array(null=>'All','Y'=>'Yes','N'=>'No');
-
         $feedback_status_options = array(
                                     null => 'All',
                                     '0'  => 'None',
@@ -253,7 +246,6 @@ class Candidate_List extends \NDB_Menu_Filter
                                         'Approval'      => 'Approval',
                                         'Recycling Bin' => 'Recycling Bin',
                                        );
-
         $participant_status_options = array(null => 'All')
              + \Candidate::getParticipantStatusOptions();
         $scan_options = array(
