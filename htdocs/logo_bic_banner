@@ -1,0 +1,12 @@
+--2019-06-05 14:21:21--  https://github.com/coreyAbout/codeSample/blob/master/Douglas_Brain_Banner.gif
+Resolving github.com (github.com)... 192.30.253.113
+Connecting to github.com (github.com)|192.30.253.113|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘Douglas_Brain_Banner.gif’
+
+     0K .......... .......... .......... .......... ..........  209K
+    50K .......... ...                                         11.6M=0.2s
+
+2019-06-05 14:21:23 (263 KB/s) - ‘Douglas_Brain_Banner.gif’ saved [64806]
+
