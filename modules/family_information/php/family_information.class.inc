@@ -1,4 +1,5 @@
 <?php
+namespace LORIS\family_information;
 /**
  * This form contains the code for recording 
  * family information between candidates.
@@ -11,11 +12,8 @@
  *  @license  Loris License
  *  @link     https://github.com/Jkat/Loris
  */
-require_once "NDB_Form.class.inc";
-require_once "Utility.class.inc";
 
-
-class NDB_Form_family_information extends NDB_Form
+class Family_Information extends \NDB_Form
 {
     var $indent = "&nbsp;&nbsp;&nbsp;&nbsp;";
 
@@ -28,14 +26,11 @@ class NDB_Form_family_information extends NDB_Form
     function _hasAccess()
     {
         // create user object
-        $user =& User::singleton();
+        $user =& \User::singleton();
 
         // check that the $candID is passed b/c the profile needs to be opened
         if ($this->identifier != $_REQUEST['candID']) {
-            return PEAR::raiseError(
-                "NDB_Form_family_information::_access: " 
-                . "Candidate Profile Error ($this->identifier)"
-            );
+            throw new Exception("Family Information candidate profile error: " . $this->identifier . " : " . $_REQUEST['candID']);
         }
         // check user permissions
         return ($user->hasPermission('data_entry'));
@@ -63,7 +58,7 @@ class NDB_Form_family_information extends NDB_Form
         if (!is_array($values) || count($values) === 0) {
             return true;
         }
-        $DB =& Database::singleton();
+        $DB =& \Database::singleton();
 
         //pscid is not saved
         if (array_key_exists('pscid', $values)) {
@@ -73,7 +68,7 @@ class NDB_Form_family_information extends NDB_Form
         $values['candID'] = $this->identifier;
 
         if (!(is_null($_SESSION['State']))) {
-            $currentUser =& User::singleton($_SESSION['State']->getUsername());
+            $currentUser =& \User::singleton($_SESSION['State']->getUsername());
             $id = $currentUser->getData("UserID");
             $values['entry_staff'] = $id;
         }
@@ -137,17 +132,18 @@ class NDB_Form_family_information extends NDB_Form
      *
      * @return null
      */
-    function family_information()
+    function setup()
     {
 
+        parent::setup();
         $this->tpl_data['candID'] = $this->identifier;
 
-        $config =& NDB_Config::singleton();
-        $DB =& Database::singleton();
+        $config =& \NDB_Config::singleton();
+        $DB =& \Database::singleton();
 
         //entry staff info
         if (!(is_null($_SESSION['State']))) {
-            $currentUser =& User::singleton($_SESSION['State']->getUsername());
+            $currentUser =& \User::singleton($_SESSION['State']->getUsername());
             $id = $currentUser->getData("UserID");
             $entry_staff = $id;
         }
@@ -199,7 +195,7 @@ class NDB_Form_family_information extends NDB_Form
     function family_information_details() {
         
         $this->tpl_data['candID'] = $_REQUEST['candID'];
-        $DB =& Database::singleton();
+        $DB =& \Database::singleton();
         $pscid = $DB->pselectOne(
                 'SELECT PSCID FROM candidate where CandID = :candid',
                 array('candid'=>$this->identifier)
@@ -236,7 +232,7 @@ class NDB_Form_family_information extends NDB_Form
             $errors['related_participant_status'] = 'Required!';
         }
 
-        $DB =& Database::singleton();
+        $DB =& \Database::singleton();
         $pscid = $DB->pselectOne(
             'SELECT PSCID FROM candidate where CandID = :Candid',
             array('Candid'=>$this->identifier)
