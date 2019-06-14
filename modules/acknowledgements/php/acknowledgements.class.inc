@@ -237,7 +237,7 @@ class Acknowledgements extends \NDB_Menu_Filter_Form
     function _getList()
     {
         // create DB object
-        $DB =& Database::singleton();
+        $DB =& \Database::singleton();
 
         $qparams = array();
         // add the base query
@@ -263,7 +263,7 @@ class Acknowledgements extends \NDB_Menu_Filter_Form
 
         $this->_getNumberPages($query);
 
-        $config         =& NDB_Config::singleton();
+        $config         =& \NDB_Config::singleton();
 //        $resultsPerPage = $config->getSetting('rowsPerPage');
 //        $limit          = " LIMIT $resultsPerPage"
 //                          ." OFFSET " . (($pageNum-1)*$resultsPerPage);
