@@ -158,7 +158,8 @@ class Family_Information extends \NDB_Form
         $this->tpl_data['pscid'] = $pscid;
 
         $pscidList = $DB->pselect(
-            'SELECT PSCID FROM candidate'
+            'SELECT PSCID FROM candidate',
+            array()
         );
         $pscidList = array_map(
                         function($a) {
