@@ -549,6 +549,12 @@ class NDB_BVL_Battery
             $query .= " AND (b.firstVisit IS NULL OR b.firstVisit='N')";
         }
 
+        $Date_visit_query = "SELECT Date_visit FROM session WHERE ID=$this->sessionID";
+        $Date_visit  = $DB->pselectOne($Date_visit_query, array());
+        if ($Date_visit <= "2019-01-01" && (((substr($originalvl, 0, 3) == "PRE" || substr($originalvl, 0, 3) == "NAP") && $visit_label == "FU" && ($timepoint == "12" || $timepoint == "24" || $timepoint == "36" || $timepoint == "48" || $timepoint == "60" || $timepoint == "72" || $timepoint == "84")) || (substr($originalvl, 0, 3) == "MCI" && ($timepoint == "12" || $timepoint == "24")))) {
+            $query .= " AND b.test_name!='TMT' ";
+        }
+
         // get the list of instruments
         $tests = array();
         $rows  = $DB->pselect($query, $qparams);
