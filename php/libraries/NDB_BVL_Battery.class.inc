@@ -315,7 +315,9 @@ class NDB_BVL_Battery
 
         $Date_visit_query = "SELECT Date_visit FROM session WHERE ID=$this->sessionID";
         $Date_visit  = $DB->pselectOne($Date_visit_query, array());
-        if ($Date_visit <= "2019-01-01" && !(((substr($originalvl, 0, 3) == "PRE" || substr($originalvl, 0, 3) == "NAP") && $visit_label == "FU" && ($timepoint == "12" || $timepoint == "24" || $timepoint == "36" || $timepoint == "48" || $timepoint == "60" || $timepoint == "72" || $timepoint == "84")) || (substr($originalvl, 0, 3) == "MCI" && ($timepoint == "12" || $timepoint == "24")))) {
+        $viz_label_query = "SELECT visit_label FROM session WHERE ID=$this->sessionID";
+        $viz_label = $DB->pselectOne($viz_label_query, array());
+        if (!($Date_visit >= "2019-01-01" && ($viz_label == "PREFU12" || $viz_label == "PREFU24" || $viz_label == "PREFU36" || $viz_label == "PREFU48" || $viz_label == "PREFU60" || $viz_label = "PREFU72" || $viz_label == "PREFU84" || $viz_label == "NAPFU12" || $viz_label == "NAPFU24" || $viz_label == "NAPFU36" || $viz_label = "NAPFU48" || $viz_label == "NAPFU60" || $viz_label == "NAPFU72" || $viz_label == "NAPFU84" || $viz_label == "MCIFU12" || $viz_label == "MCIFU24"))) {
             $query .= " AND b.test_name!='TMT' ";
         }
 
@@ -557,7 +559,10 @@ class NDB_BVL_Battery
 
         $Date_visit_query = "SELECT Date_visit FROM session WHERE ID=$this->sessionID";
         $Date_visit  = $DB->pselectOne($Date_visit_query, array());
-        if ($Date_visit <= "2019-01-01" && !(((substr($originalvl, 0, 3) == "PRE" || substr($originalvl, 0, 3) == "NAP") && $visit_label == "FU" && ($timepoint == "12" || $timepoint == "24" || $timepoint == "36" || $timepoint == "48" || $timepoint == "60" || $timepoint == "72" || $timepoint == "84")) || (substr($originalvl, 0, 3) == "MCI" && ($timepoint == "12" || $timepoint == "24")))) {
+        $viz_label_query = "SELECT visit_label FROM session WHERE ID=$this->sessionID";
+        $viz_label = $DB->pselectOne($viz_label_query, array());
+        if (!($Date_visit >= "2019-01-01" && ($viz_label == "PREFU12" || $viz_label == "PREFU24" || $viz_label == "PREFU36" || $viz_label == "PREFU48" || $viz_label == "PREFU60" || $viz_label = "PREFU72" || $viz_label == "PREFU84" || $viz_label == "NAPFU12" || $viz_label == "NAPFU24" || $viz_label == "NAPFU36" || $viz_label = "NAPFU48" || $viz_label == "NAPFU60" || $viz_label == "NAPFU72" || $viz_label == "NAPFU84" || $viz_label == "MCIFU12" || $viz_label == "MCIFU24"))) {
+error_log("wtf");
             $query .= " AND b.test_name!='TMT' ";
         }
 
