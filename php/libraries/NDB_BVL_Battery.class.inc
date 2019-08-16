@@ -320,6 +320,7 @@ class NDB_BVL_Battery
         if (!($Date_visit >= "2019-01-01" && ($viz_label == "PREFU12" || $viz_label == "PREFU24" || $viz_label == "PREFU36" || $viz_label == "PREFU48" || $viz_label == "PREFU60" || $viz_label = "PREFU72" || $viz_label == "PREFU84" || $viz_label == "NAPFU12" || $viz_label == "NAPFU24" || $viz_label == "NAPFU36" || $viz_label = "NAPFU48" || $viz_label == "NAPFU60" || $viz_label == "NAPFU72" || $viz_label == "NAPFU84" || $viz_label == "MCIFU12" || $viz_label == "MCIFU24"))) {
             $query .= " AND b.test_name!='TMT' ";
             $query .= " AND b.test_name!='DKEFS' ";
+            $query .= " AND b.test_name!='RAVLT' ";
         }
 
         $rows    = $DB->pselect($query, $qparams);
@@ -565,6 +566,7 @@ class NDB_BVL_Battery
         if (!($Date_visit >= "2019-01-01" && ($viz_label == "PREFU12" || $viz_label == "PREFU24" || $viz_label == "PREFU36" || $viz_label == "PREFU48" || $viz_label == "PREFU60" || $viz_label = "PREFU72" || $viz_label == "PREFU84" || $viz_label == "NAPFU12" || $viz_label == "NAPFU24" || $viz_label == "NAPFU36" || $viz_label = "NAPFU48" || $viz_label == "NAPFU60" || $viz_label == "NAPFU72" || $viz_label == "NAPFU84" || $viz_label == "MCIFU12" || $viz_label == "MCIFU24"))) {
             $query .= " AND b.test_name!='TMT' ";
             $query .= " AND b.test_name!='DKEFS' ";
+            $query .= " AND b.test_name!='RAVLT' ";
         }
 
         // get the list of instruments
