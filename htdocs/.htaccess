@@ -10,9 +10,6 @@
  # mantis is not a Loris module, don't rewrite it.
  RewriteRule ^mantisbt/(.*) mantisbt/$1 [L]
 
- RewriteRule ^password-reset/$ lost_password.php [L]
- RewriteRule ^request-account/$ request_account/process_new_account.php [L]
-
  # Redirect /CandID/ to visit label list
  RewriteRule ^([0-9]{6,6})/$ main.php?test_name=timepoint_list&candID=$1
  # Want to redirect /CandID/Visit_label/ to instrument list, but
@@ -40,7 +37,7 @@
 
  # Add trailing slash to all directories
  RewriteCond %{REQUEST_FILENAME} !-f
- RewriteRule ^(.*[^/])$ /$1/ [L,R=301]
+ RewriteRule ^(.*[^/])$ /$1/ [L,R=307]
 
 </IfModule>
 
