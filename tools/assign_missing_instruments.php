@@ -118,6 +118,14 @@ function populateVisitLabel($result, $visit_label)
         print_r($diff);
     }
     if ($confirm === true) {
+        $pquery = "SELECT PSCID FROM candidate WHERE CandID=:cid";
+        $p = $DB->pselectOne($pquery, array("cid"=>$timePoint->getCandID()));
+        if ($p != "scanner" && $p != "MTL0000") {
+            print($p . "," . $timePoint->getVisitLabel());
+            echo "\n";
+        } else {
+            return;
+        }
         foreach ($diff AS $test_name) {
             $battery->addInstrument($test_name);
         }
