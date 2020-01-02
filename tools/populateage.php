@@ -48,7 +48,8 @@ $database = $config->getSetting('database');
     */
 
 //}
-$instruments = Utility::getAllInstruments();
+//$instruments = Utility::getAllInstruments();
+//$instruments = array('DKEFS'=>'DKEFS-Stroop');
 foreach ($instruments as $inst => $inst_name) {
   if ($inst != 'genetics') {
     print_r($inst);
@@ -59,8 +60,9 @@ foreach ($instruments as $inst => $inst_name) {
     $db->select("SELECT TABLE_NAME FROM information_schema.columns WHERE TABLE_SCHEMA='$database[database]' AND COLUMN_NAME='Date_taken' AND TABLE_NAME='$inst'", $tables);
     if(count($tables) > 0) {
     foreach ($CommentIDs as $row) {
-        $date = explode('-', $row['Date_taken']);
-        $dateArray = array ('Y' => $date[0], 'M' => $date[1], 'd' => $date[2]);
+$dateArray = $row['Date_taken'];
+//        $date = explode('-', $row['Date_taken']);
+//        $dateArray = array ('Y' => $date[0], 'M' => $date[1], 'd' => $date[2]);
         $instrument = NDB_BVL_Instrument::factory($inst, $row['CommentID'], null, false);
         if($instrument && !empty($row['Date_taken'])) {
             //print_r($dateArray);
