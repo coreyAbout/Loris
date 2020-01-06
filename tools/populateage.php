@@ -48,8 +48,7 @@ $database = $config->getSetting('database');
     */
 
 //}
-//$instruments = Utility::getAllInstruments();
-//$instruments = array('DKEFS'=>'DKEFS-Stroop');
+$instruments = Utility::getAllInstruments();
 foreach ($instruments as $inst => $inst_name) {
   if ($inst != 'genetics') {
     print_r($inst);
