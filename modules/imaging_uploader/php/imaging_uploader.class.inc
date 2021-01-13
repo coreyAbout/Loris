@@ -40,7 +40,7 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
     var $uploaded_file_path;
 
     /**
-     * initilize animal mri indicator.  default value false
+     * initilize animal mri indicator. Default value false.
      * If animal, does not start human mri process pipeline. --yc
      */
     var $animalMri = false;
@@ -154,10 +154,7 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
      *
      * @return true on success, false othewise
      */
-    function _process($values)                        // for debug
-    file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in _process. For animalMri (should be false): " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
-    die();
-
+    function _process($values)
     {
         if ($this->_saveFile($values)) {
             // MRI archive is now in the mri_upload table. If there are existing
@@ -177,7 +174,7 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
                 'ImagingUploaderAutoLaunch'
             );
 
-            // if not animalMRi, start the human preprocess
+            // start the human pipeline if not animal mri
             if (
                 ($ImagingUploaderAutoLaunch == '1' || $ImagingUploaderAutoLaunch == 'true') 
                 && !$this->$animalMri
