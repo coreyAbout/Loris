@@ -38,6 +38,13 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
      * Path to the uploaded file (value of SourceLocation in mri_upload table).
      */
     var $uploaded_file_path;
+
+    /**
+     * initilize animal mri indicator.  default value false
+     * If animal, does not start human mri process pipeline. --yc
+     */
+    var $animalMri = false;
+
     /**
      * The hasAccess function ensures that the user has the imaging_uploader
      * permission.
@@ -95,6 +102,7 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
                                'Visit_label' => 's.Visit_label',
                                'IsPhantom'   => 'mu.IsPhantom',
                               );
+
         return true;
     }
      /**
@@ -146,7 +154,10 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
      *
      * @return true on success, false othewise
      */
-    function _process($values)
+    function _process($values)                        // for debug
+    file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in _process. For animalMri (should be false): " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
+    die();
+
     {
         if ($this->_saveFile($values)) {
             // MRI archive is now in the mri_upload table. If there are existing
@@ -165,10 +176,17 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
             $ImagingUploaderAutoLaunch = $config->getSetting(
                 'ImagingUploaderAutoLaunch'
             );
-            if ($ImagingUploaderAutoLaunch == '1'
-                || $ImagingUploaderAutoLaunch == 'true'
+
+            // if not animalMRi, start the human preprocess
+            if (
+                ($ImagingUploaderAutoLaunch == '1' || $ImagingUploaderAutoLaunch == 'true') 
+                && !$this->$animalMri
             ) {
                 try {
+                        // for debug
+                    file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in _process. For animalMri (should be false): " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
+                    die();
+
                     // Instantiate the server process module to autoload
                     // its namespace classes
                     $spm_module = \Module::factory('server_processes_manager');
@@ -229,6 +247,11 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
        */
     function _saveFile($values)
     {
+
+        // for debug
+        file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in _saveFile. For animalMri: " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
+        file_put_contents('/data/not_backed_up/debug.txt',  serialize($values) . "\n", FILE_APPEND | LOCK_EX);
+
         //get the stored-file path
         $file   = new \File_Upload;
         $config = \NDB_Config::singleton();
@@ -257,6 +280,10 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
         $file->setHandlerArgs(array("values" => $values));
         //proccesses them (including verify, move, and import steps)
         $file->processFiles();
+
+        // for debug
+        file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in _saveFile end. For animalMri: " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
+
         return true;
     }
     /**
@@ -303,6 +330,19 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
         $file_name = $file->fileInfo['name'];
         $file_path = $temp_dir. "/". $file_name;
         $isPhantom = $args['values']['IsPhantom'];
+
+        /***********************************************
+         * set animalMri to be true only if IsAnimal data 
+         ***********************************************/
+        if ($args['values']['IsAnimal']=='Y') {
+            $this->$animalMri = true;
+        }
+
+        // for debug What about Animal Phantom ??
+        file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in isValid. For animalMri: " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
+        file_put_contents('/data/not_backed_up/debug.txt', $args['values']['IsAnimal'] . "\n", FILE_APPEND | LOCK_EX);
+
+
         ///////////////////////////////////////////////////////////////////////
         /////////Validate the advanced Options only if it's not a Phantom//////
         ///////////////////////////////////////////////////////////////////////
@@ -359,7 +399,7 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
                             array_push(
                                 $errors["visitLabel"],
                                 "Invalid Visit Label " . $visit_label .
-                                " for CandID " . $candid .
+                                  " for CandID " . $candid .
                                 ". Check that you entered the correct" .
                                 " Visit Label and CandID."
                             );
@@ -489,10 +529,14 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
      */
     function importFile($file, $args)
     {
+        // for debug, in this function, probably it is better to have isAnimal in mySQL table. 
+        file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in importFile. For animalMri: " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
+        
         $feedbacks  = array();
         $db         = \Database::singleton();
         $pname      = '';
         $IsPhantom  = $args['values']['IsPhantom'];
+        $IsAnimal = $args['values']['IsAnimal'];
         $updateFile = isset($args['values']['overwrite'])
             ? (boolean) $args['values']['overwrite'] : false;
         ///////////////////////////////////////////////////////////////////////
@@ -513,7 +557,8 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
         if ($args['values']['IsPhantom']=='N') {
             if ((!empty($args['values']['candID']))
                 && (!empty($args['values']['pSCID']))
-                &&(!empty($args['values']['visitLabel']))
+                && (!empty($args['values']['visitLabel']))
+                && (!empty($args['values']['IsAnimal']))
             ) {
                 ///////////////////////////////////////////////////////////////////
                 ////////////////////Use the arguments//////////////////////////////
@@ -565,6 +610,7 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
                    'IsTarchiveValidated'      => 0,
                    'number_of_mincInserted'   => null,
                    'number_of_mincCreated'    => null,
+                   'IsAnimal'                => $IsAnimal,
                   );
         if ($updateFile) {
             // Only overwrite file if it failed MRI pipeline. Need to use
