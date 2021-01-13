@@ -95,9 +95,9 @@ class UploadForm extends Component {
         swal({
           title: 'Filename does not match other fields!',
           text: 'Filename and values in the PSCID, CandID ' +
-          'and Visit Label fields of the form do not match. Please ' +
-          'verify that the information entered in the ' +
-          'fields or the filename are correct.',
+            'and Visit Label fields of the form do not match. Please ' +
+            'verify that the information entered in the ' +
+            'fields or the filename are correct.',
           type: 'error',
           confirmButtonText: 'OK',
         });
@@ -295,7 +295,7 @@ class UploadForm extends Component {
         this.setState({errorMessage: errorMessage, hasError: hasError});
         let text = '';
         if (this.props.imagingUploaderAutoLaunch === 'true' ||
-            this.props.imagingUploaderAutoLaunch === '1'
+          this.props.imagingUploaderAutoLaunch === '1'
         ) {
           text = 'Processing of this file by the MRI pipeline has started\n' +
             'Select this upload in the result table to view the processing progress';
@@ -316,6 +316,7 @@ class UploadForm extends Component {
         let errorMessage = Object.assign({}, this.state.errorMessage);
         let hasError = this.state.hasError;
         let messageToPrint = '';
+        // do not really understand this line, probably an error -yc
         errorMessage = (error.responseJSON || {}).errors || 'Submission error!';
         for (let i in errorMessage) {
           if (errorMessage.hasOwnProperty(i)) {
@@ -347,21 +348,26 @@ class UploadForm extends Component {
     form.visitLabel.value = this.state.formData.visitLabel;
     form.mriFile.value = this.state.formData.mriFile;
 
+    // for animal module, maybe not hard coded like this, like others.
+    let animalOptions = {'N': 'No', 'Y': 'Yes'};
+    form.IsAnimal = {};
+    form.IsAnimal.value = this.state.formData.IsAnimal;
+
     // Hide button when progress bar is shown
     const btnClass = (
       (this.state.uploadProgress > -1) ? 'btn btn-primary hide' : undefined
     );
 
     const notes = (
-        <span>
-          File cannot exceed {this.props.maxUploadSize}<br/>
+      <span>
+        File cannot exceed {this.props.maxUploadSize}<br/>
           File must be of type .tgz or tar.gz or .zip<br/>
           For files that are not Phantom Scans, file name must begin with
-          <b> [PSCID]_[CandID]_[Visit Label]</b><br/>
+        <b> [PSCID]_[CandID]_[Visit Label]</b><br/>
           For example, for CandID <i>100000</i>, PSCID <i>ABC123</i>, and
           Visit Label <i>V1</i> the file name should be prefixed by:
-          <b> ABC123_100000_V1</b><br/>
-        </span>
+        <b> ABC123_100000_V1</b><br/>
+      </span>
     );
 
     // Returns individual form elements
@@ -387,6 +393,16 @@ class UploadForm extends Component {
               hasError={this.state.hasError.IsPhantom}
               errorMessage={this.state.errorMessage.IsPhantom}
               value={this.state.formData.IsPhantom}
+            />
+            <SelectElement
+              name='IsAnimal'
+              label='Animal Scans'
+              options={animalOptions}
+              onUserInput={this.onFormChange}
+              required={true}
+              hasError={this.state.hasError.IsAnimal}
+              errorMessage={this.state.errorMessage.IsAnimal}
+              value={this.state.formData.IsAnimal}
             />
             <TextboxElement
               name='candID'
