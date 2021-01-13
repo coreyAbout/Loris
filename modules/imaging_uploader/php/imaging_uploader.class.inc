@@ -180,9 +180,6 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
                 && !$this->$animalMri
             ) {
                 try {
-                        // for debug
-                    file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in _process. For animalMri (should be false): " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
-                    die();
 
                     // Instantiate the server process module to autoload
                     // its namespace classes
@@ -244,11 +241,6 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
        */
     function _saveFile($values)
     {
-
-        // for debug
-        file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in _saveFile. For animalMri: " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
-        file_put_contents('/data/not_backed_up/debug.txt',  serialize($values) . "\n", FILE_APPEND | LOCK_EX);
-
         //get the stored-file path
         $file   = new \File_Upload;
         $config = \NDB_Config::singleton();
@@ -277,9 +269,6 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
         $file->setHandlerArgs(array("values" => $values));
         //proccesses them (including verify, move, and import steps)
         $file->processFiles();
-
-        // for debug
-        file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in _saveFile end. For animalMri: " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
 
         return true;
     }
@@ -334,10 +323,6 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
         if ($args['values']['IsAnimal']=='Y') {
             $this->$animalMri = true;
         }
-
-        // for debug What about Animal Phantom ??
-        file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in isValid. For animalMri: " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
-        file_put_contents('/data/not_backed_up/debug.txt', $args['values']['IsAnimal'] . "\n", FILE_APPEND | LOCK_EX);
 
 
         ///////////////////////////////////////////////////////////////////////
@@ -526,8 +511,6 @@ class Imaging_Uploader extends \NDB_Menu_Filter_Form
      */
     function importFile($file, $args)
     {
-        // for debug, in this function, probably it is better to have isAnimal in mySQL table. 
-        file_put_contents('/data/not_backed_up/debug.txt', "xxxxxxxxxx in importFile. For animalMri: " . ($this->$animalMri ? 'true' : 'false') . "\n", FILE_APPEND | LOCK_EX);
         
         $feedbacks  = array();
         $db         = \Database::singleton();
